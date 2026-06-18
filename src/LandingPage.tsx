@@ -3,7 +3,6 @@ import { FinalCta } from './sections/FinalCta';
 import { HeroSection } from './sections/HeroSection';
 import { PlatformSection } from './sections/PlatformSection';
 import { PricingSection } from './sections/PricingSection';
-import { TestimonialsSection } from './sections/TestimonialsSection';
 import { WorkflowSection } from './sections/WorkflowSection';
 import { FaqSection } from './sections/FaqSection';
 import { cameFromAuth, supabase } from './lib/supabase';
@@ -33,7 +32,6 @@ export function LandingPage() {
       <HeroSection />
       <PlatformSection />
       <WorkflowSection />
-      <TestimonialsSection />
       <PricingSection />
       <FaqSection />
       <FinalCta />
