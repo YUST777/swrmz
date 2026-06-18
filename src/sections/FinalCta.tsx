@@ -1,20 +1,33 @@
-import { ArrowRight, Cloud, Play } from 'lucide-react';
-import { BrandMark } from '../components/BrandMark';
-import { Eyebrow } from '../components/Eyebrow';
-import { AsciiDrones } from '../components/AsciiDrones';
+import { ArrowRight, Play } from 'lucide-react';
+
+const footerLinks = [
+  { label: 'Platform', href: '#platform' },
+  { label: 'Solutions', href: '#workflow' },
+  { label: 'Docs', href: '#docs' },
+  { label: 'Pricing', href: '#pricing' },
+  { label: 'About', href: '#platform' },
+  { label: 'Careers', href: '#early-access' },
+  { label: 'Blog', href: '#workflow' },
+  { label: 'Status', href: '#early-access' },
+  { label: 'Privacy', href: '#early-access' },
+  { label: 'Terms', href: '#early-access' },
+  { label: 'Security', href: '#platform' },
+];
 
 export function FinalCta() {
   return (
     <section id="early-access" className="px-6 pb-10 pt-8 max-[760px]:px-4">
       <div className="mx-auto max-w-[1120px] overflow-hidden rounded-t-[10px] border border-[#3b292d] bg-[#15100f]">
-        <div className="relative isolate min-h-[310px] px-6 py-16 text-center">
-          <AsciiDrones className="-z-20" count={5} />
+        <div className="relative isolate min-h-[310px] overflow-hidden px-6 py-16 text-center">
           <div
-            className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(21,16,15,0.6),rgba(21,16,15,0.85)),radial-gradient(120%_140%_at_50%_0%,rgba(119,38,45,0.22),transparent_60%)]"
+            className="absolute inset-0 -z-20 bg-[url('/background.png')] bg-center bg-no-repeat [background-size:165%]"
             aria-hidden="true"
           />
-          <Eyebrow Icon={Cloud}>Ready to defend</Eyebrow>
-          <h2 className="mx-auto mt-5 max-w-[560px] text-[2rem] font-[620] leading-[1.13] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.7rem]">
+          <div
+            className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(12,8,9,0.68),rgba(12,8,9,0.9)),radial-gradient(120%_140%_at_50%_0%,rgba(119,38,45,0.3),transparent_60%)]"
+            aria-hidden="true"
+          />
+          <h2 className="mx-auto max-w-[560px] text-[2rem] font-[620] leading-[1.13] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.7rem]">
             Stop chasing alerts.
             <br />
             Let the swarm defend.
@@ -44,28 +57,26 @@ export function FinalCta() {
         </div>
 
         <footer className="relative overflow-hidden bg-[#15100f] px-8 pb-16 pt-8 max-[760px]:px-5">
-          <div className="relative z-10 grid grid-cols-[1fr_auto] gap-10 max-[760px]:grid-cols-1">
-            <div className="grid grid-cols-4 gap-9 text-[0.72rem] text-[#a89799] max-[640px]:grid-cols-2">
-              <a href="#platform">Platform</a>
-              <a href="#workflow">Solutions</a>
-              <a href="#docs">Docs</a>
-              <a href="#pricing">Pricing</a>
-              <a href="/">About</a>
-              <a href="/">Careers</a>
-              <a href="/">Blog</a>
-              <a href="/">Status</a>
-              <a href="/">Privacy</a>
-              <a href="/">Terms</a>
-              <a href="/">Security</a>
+          <div className="relative z-10 grid grid-cols-[1fr_auto] gap-6 max-[760px]:grid-cols-1 max-[760px]:gap-3">
+            <div className="grid grid-cols-4 gap-x-6 gap-y-3 text-[0.72rem] text-[#a89799] max-[640px]:grid-cols-2">
+              {footerLinks.map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="w-fit cursor-pointer transition-colors duration-200 hover:text-[#f2eaeb] focus-visible:text-[#f2eaeb]"
+                >
+                  {link.label}
+                </a>
+              ))}
             </div>
             <p className="text-[0.72rem] text-[#a89799]">© 2026 SWRMZ. All rights reserved.</p>
           </div>
-          <div className="pointer-events-none mt-9 flex items-center gap-7 text-[#77262d]/45" aria-hidden="true">
-            <BrandMark dark />
-            <span className="select-none text-[8rem] font-[620] leading-none tracking-[0] max-[760px]:text-[4.8rem]">
-              SWRMZ
-            </span>
-          </div>
+          <img
+            src="/fotter.png"
+            alt=""
+            aria-hidden="true"
+            className="pointer-events-none -mx-8 -mb-16 mt-7 block w-[calc(100%+64px)] max-w-none select-none max-[760px]:-mx-5 max-[760px]:w-[calc(100%+40px)]"
+          />
         </footer>
       </div>
     </section>

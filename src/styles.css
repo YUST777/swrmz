@@ -77,3 +77,47 @@ html {
     filter: none;
   }
 }
+
+/* Step illustration animations */
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+@keyframes art-pulse {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  50% {
+    opacity: 0.68;
+  }
+}
+
+/* Sequential swarm deploy + live chart bob */
+@keyframes deploy-node {
+  0%,
+  34% {
+    opacity: 0.15;
+  }
+  44% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes chart-bob {
+  0%,
+  100% {
+    transform: translateY(3.5px);
+  }
+  50% {
+    transform: translateY(-3.5px);
+  }
+}

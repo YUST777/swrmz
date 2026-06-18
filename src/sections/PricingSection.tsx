@@ -1,5 +1,6 @@
-import { ArrowRight, Check, Circle, Gauge } from 'lucide-react';
-import { Eyebrow } from '../components/Eyebrow';
+import { useState } from 'react';
+import { motion } from 'motion/react';
+import { ArrowRight, Check, Circle } from 'lucide-react';
 
 type Plan = {
   name: string;
@@ -93,28 +94,59 @@ const plans: Plan[] = [
 ];
 
 export function PricingSection() {
+  const [billing, setBilling] = useState<'monthly' | 'annual'>('monthly');
+
+  const priceFor = (plan: Plan) => {
+    const match = /^\$(\d+)$/.exec(plan.price);
+    if (!match) return { price: plan.price, cadence: plan.cadence };
+    const monthly = Number(match[1]);
+    if (billing === 'annual' && monthly > 0) {
+      return { price: `$${Math.round(monthly * 0.9)}`, cadence: '/mo billed yearly' };
+    }
+    return { price: plan.price, cadence: plan.cadence };
+  };
+
   return (
     <section id="pricing" className="px-6 py-14 max-[760px]:px-4 max-[760px]:py-12">
       <div className="mx-auto max-w-[1120px] rounded-[14px] border border-[#2b1f22] bg-[#140f11]/80 px-7 py-9 shadow-[0_28px_90px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] max-[760px]:px-4">
         <div className="mx-auto max-w-[520px] text-center">
-          <Eyebrow Icon={Gauge}>Pricing</Eyebrow>
-          <h2 className="mt-5 text-[2.1rem] font-[620] leading-[1.12] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.75rem]">
+          <h2 className="text-[2.1rem] font-[620] leading-[1.12] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.75rem]">
             Simple. Transparent.
             <br />
             <span className="font-[470] text-[#a89799]">No surprise invoices.</span>
           </h2>
           <div className="mt-6 inline-flex rounded-[7px] border border-[#3b292d] bg-[#1d1518] p-1 text-[0.68rem] font-[720] text-[#c06a71]">
-            <span className="rounded-[5px] bg-[#15100f] px-4 py-2 shadow-sm">Monthly</span>
-            <span className="px-4 py-2">Annual -10%</span>
+            {([
+              { key: 'monthly', label: 'Monthly' },
+              { key: 'annual', label: 'Annual -10%' },
+            ] as const).map(({ key, label }) => (
+              <button
+                key={key}
+                type="button"
+                onClick={() => setBilling(key)}
+                className={`relative cursor-pointer rounded-[5px] px-4 py-2 transition-colors duration-200 ${
+                  billing === key ? 'text-[#f2eaeb]' : 'hover:text-[#f2eaeb]'
+                }`}
+              >
+                {billing === key ? (
+                  <motion.span
+                    layoutId="billing-pill"
+                    className="absolute inset-0 rounded-[5px] bg-[#15100f] shadow-sm"
+                    transition={{ type: 'spring', bounce: 0.2, duration: 0.5 }}
+                  />
+                ) : null}
+                <span className="relative z-10">{label}</span>
+              </button>
+            ))}
           </div>
         </div>
 
         <div className="mt-9 grid grid-cols-3 gap-5 max-[980px]:grid-cols-1">
           {plans.map((plan) => (
             <article
-              className={`relative flex min-h-[620px] flex-col rounded-[9px] border p-6 ${
+              className={`relative flex min-h-[620px] flex-col overflow-hidden rounded-[9px] border p-6 ${
                 plan.highlighted
-                  ? 'border-[#412c30] bg-[#1d1518] shadow-[0_22px_58px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)]'
+                  ? "border-[#8a2c34] bg-[linear-gradient(180deg,rgba(30,16,18,0.84),rgba(12,8,9,0.93)),url('/background.png')] bg-cover bg-center shadow-[0_22px_58px_rgba(119,38,45,0.28),inset_0_1px_0_rgba(255,255,255,0.06)]"
                   : 'border-[#2b1f22] bg-[#181114]/85 shadow-[0_18px_48px_rgba(22,57,53,0.05)]'
               }`}
               key={plan.name}
@@ -128,16 +160,16 @@ export function PricingSection() {
                 ) : null}
               </div>
               <p className="mt-5 text-[1.38rem] font-[720] leading-none text-[#f2eaeb]">
-                {plan.price}
-                {plan.cadence ? (
-                  <span className="text-[0.7rem] font-[560] text-[#a89799]">{plan.cadence}</span>
+                {priceFor(plan).price}
+                {priceFor(plan).cadence ? (
+                  <span className="text-[0.7rem] font-[560] text-[#a89799]">{priceFor(plan).cadence}</span>
                 ) : null}
               </p>
               <p className="mt-4 min-h-[56px] text-[0.76rem] leading-[1.55] text-[#a89799]">
                 {plan.description}
               </p>
 
-              <div className="mt-6 space-y-6">
+              <div className="mt-6 mb-7 space-y-6">
                 {plan.groups.map((group) => (
                   <div key={group.title}>
                     <p className="text-[0.66rem] font-[760] text-[#c2b2b4]">{group.title}</p>
