@@ -56,9 +56,9 @@ export function FinalCta() {
           </div>
         </div>
 
-        <footer className="relative overflow-hidden bg-[#15100f] px-8 pb-16 pt-8 max-[760px]:px-5">
+        <footer className="relative overflow-hidden bg-[#15100f] px-8 pb-16 pt-8 max-[760px]:px-5 max-[760px]:pb-12 max-[760px]:pt-6">
           <div className="relative z-10 grid grid-cols-[1fr_auto] gap-6 max-[760px]:grid-cols-1 max-[760px]:gap-3">
-            <div className="grid grid-cols-4 gap-x-6 gap-y-3 text-[0.72rem] text-[#a89799] max-[640px]:grid-cols-2">
+            <div className="grid grid-cols-4 gap-x-6 gap-y-3 text-[0.72rem] text-[#a89799] max-[640px]:grid-cols-3 max-[640px]:gap-x-3 max-[640px]:gap-y-2 max-[640px]:text-[0.68rem]">
               {footerLinks.map((link) => (
                 <a
                   key={link.label}
@@ -69,13 +69,13 @@ export function FinalCta() {
                 </a>
               ))}
             </div>
-            <p className="text-[0.72rem] text-[#a89799]">© 2026 SWRMZ. All rights reserved.</p>
+            <p className="text-[0.72rem] text-[#a89799] max-[760px]:text-[0.66rem]">© 2026 SWRMZ. All rights reserved.</p>
           </div>
           <img
             src="/fotter.webp"
             alt=""
             aria-hidden="true"
-            className="pointer-events-none -mx-8 -mb-16 mt-7 block w-[calc(100%+64px)] max-w-none select-none max-[760px]:-mx-5 max-[760px]:w-[calc(100%+40px)]"
+            className="pointer-events-none -mx-8 -mb-16 mt-7 block w-[calc(100%+64px)] max-w-none select-none max-[760px]:-mx-5 max-[760px]:-mb-12 max-[760px]:mt-5 max-[760px]:w-[calc(100%+40px)]"
           />
         </footer>
       </div>

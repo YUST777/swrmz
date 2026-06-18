@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Check, Circle } from 'lucide-react';
 
@@ -106,6 +106,18 @@ export function PricingSection() {
     return { price: plan.price, cadence: plan.cadence };
   };
 
+  // On phones the plans scroll sideways — center the highlighted (middle) plan.
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const featuredRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    const card = featuredRef.current;
+    if (!scroller || !card) return;
+    if (window.matchMedia('(min-width: 981px)').matches) return;
+    scroller.scrollLeft = card.offsetLeft - (scroller.clientWidth - card.clientWidth) / 2;
+  }, []);
+
+
   return (
     <section id="pricing" className="px-6 py-14 max-[760px]:px-4 max-[760px]:py-12">
       <div className="mx-auto max-w-[1120px] rounded-[14px] border border-[#2b1f22] bg-[#140f11]/80 px-7 py-9 shadow-[0_28px_90px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] max-[760px]:px-4">
@@ -141,10 +153,14 @@ export function PricingSection() {
           </div>
         </div>
 
-        <div className="mt-9 grid grid-cols-3 gap-5 max-[980px]:grid-cols-1">
+        <div
+          ref={scrollerRef}
+          className="relative mt-9 grid grid-cols-3 gap-5 max-[980px]:flex max-[980px]:snap-x max-[980px]:snap-mandatory max-[980px]:gap-4 max-[980px]:overflow-x-auto max-[980px]:pb-2 max-[980px]:[scrollbar-width:none] max-[980px]:[&::-webkit-scrollbar]:hidden"
+        >
           {plans.map((plan) => (
             <article
-              className={`relative flex min-h-[620px] flex-col overflow-hidden rounded-[9px] border p-6 ${
+              ref={plan.highlighted ? featuredRef : undefined}
+              className={`relative flex min-h-[620px] flex-col overflow-hidden rounded-[9px] border p-6 max-[980px]:min-h-0 max-[980px]:w-[82%] max-[980px]:shrink-0 max-[980px]:snap-center ${
                 plan.highlighted
                   ? "border-[#8a2c34] bg-[linear-gradient(180deg,rgba(30,16,18,0.84),rgba(12,8,9,0.93)),url('/background.webp')] bg-cover bg-center shadow-[0_22px_58px_rgba(119,38,45,0.28),inset_0_1px_0_rgba(255,255,255,0.06)]"
                   : 'border-[#2b1f22] bg-[#181114]/85 shadow-[0_18px_48px_rgba(22,57,53,0.05)]'
