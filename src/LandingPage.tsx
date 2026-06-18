@@ -16,7 +16,7 @@ export function LandingPage() {
     const go = () => {
       if (!done) {
         done = true;
-        window.location.replace('/soon');
+        window.location.replace('/waitlist');
       }
     };
     supabase.auth.getSession().then(({ data }) => {

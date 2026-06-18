@@ -8,7 +8,7 @@ import {
 } from '@tanstack/react-router';
 import { LandingPage } from './LandingPage';
 import { LoginPage } from './LoginPage';
-import { SoonPage } from './SoonPage';
+import { WaitlistPage } from './WaitlistPage';
 import './styles.css';
 
 const rootRoute = createRootRoute();
@@ -25,13 +25,13 @@ const loginRoute = createRoute({
   component: LoginPage,
 });
 
-const soonRoute = createRoute({
+const waitlistRoute = createRoute({
   getParentRoute: () => rootRoute,
-  path: '/soon',
-  component: SoonPage,
+  path: '/waitlist',
+  component: WaitlistPage,
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, soonRoute]);
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute, waitlistRoute]);
 
 const router = createRouter({ routeTree });
 

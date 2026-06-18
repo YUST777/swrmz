@@ -46,7 +46,7 @@ export function LoginPage() {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       setLoading(null);
       if (error) return setError(error.message);
-      window.location.href = '/soon';
+      window.location.href = '/waitlist';
     } else {
       const { error } = await supabase.auth.signUp({
         email,
@@ -76,7 +76,7 @@ export function LoginPage() {
     setLoading(provider);
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: `${window.location.origin}/soon` },
+      options: { redirectTo: `${window.location.origin}/waitlist` },
     });
     if (error) {
       setLoading(null);
