@@ -61,7 +61,7 @@ export function HeroSection() {
         </a>
       </header>
 
-      <div className="relative z-10 mx-auto flex w-[min(94vw,1180px)] flex-1 min-[1500px]:w-[min(90vw,1320px)] max-[1180px]:w-[calc(100%-48px)] max-[820px]:w-full max-[820px]:items-center max-[820px]:px-[18px] max-[820px]:pb-5 max-[820px]:pt-6">
+      <div className="relative z-10 mx-auto flex w-[min(94vw,1180px)] flex-1 min-[1500px]:w-[min(90vw,1320px)] max-[1180px]:w-[calc(100%-48px)] max-[820px]:w-full max-[820px]:items-end max-[820px]:px-[18px] max-[820px]:pb-8 max-[820px]:pt-6">
         <div className="grid h-full w-full grid-cols-[minmax(0,1fr)_auto] grid-rows-1 gap-10 max-[1180px]:h-auto max-[1180px]:grid-cols-1 max-[1180px]:[grid-template-rows:auto] max-[1180px]:gap-7 max-[820px]:block">
           <div className="w-full max-w-[640px] self-end pb-4 min-[1500px]:max-w-[720px] max-[1180px]:max-w-[700px] max-[1180px]:self-auto max-[1180px]:pb-0">
             <div className="mb-5 flex flex-wrap gap-2 max-[820px]:mb-5" aria-label="Launch status">
