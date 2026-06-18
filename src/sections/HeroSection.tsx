@@ -34,7 +34,7 @@ export function HeroSection() {
         aria-hidden="true"
       />
 
-      <header className="relative z-50 grid h-16 w-full shrink-0 grid-cols-[1fr_auto_1fr] items-center border-b border-white/10 bg-[#0e0a0b]/95 px-8 text-[#f4eef0] backdrop-blur-[8px] min-[1500px]:px-12 max-[1180px]:grid-cols-[auto_1fr_auto] max-[820px]:h-14 max-[820px]:grid-cols-[minmax(0,1fr)_auto] max-[820px]:px-4">
+      <header className="relative z-50 grid h-16 w-full shrink-0 grid-cols-[1fr_auto_1fr] items-center border-b border-white/10 bg-transparent px-8 text-[#f4eef0] backdrop-blur-[2px] min-[1500px]:px-12 max-[1180px]:grid-cols-[auto_1fr_auto] max-[820px]:h-14 max-[820px]:grid-cols-[minmax(0,1fr)_auto] max-[820px]:px-4">
         <BrandMark />
 
         <nav
