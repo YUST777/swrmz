@@ -12,32 +12,35 @@ export function LoginPage() {
   const [email, setEmail] = useState('');
 
   return (
-    <main className="grid min-h-[100svh] place-items-center bg-[#0b0809] p-4 font-['Inter',system-ui,sans-serif] text-[#f2eaeb] sm:p-8">
-      <div className="grid w-full max-w-[940px] grid-cols-2 overflow-hidden rounded-[22px] border border-[#2b1f22] bg-[#100b0c] shadow-[0_40px_120px_rgba(0,0,0,0.6)] max-[820px]:grid-cols-1">
-        {/* left — brand image */}
-        <div className="relative min-h-[560px] overflow-hidden border-r border-[#2b1f22] max-[820px]:hidden">
-          <div
-            className="absolute inset-0 bg-[url('/background.webp')] bg-cover bg-center"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,rgba(94,29,35,0.45)_0%,rgba(12,8,9,0.35)_50%,rgba(12,8,9,0.85)_100%)] mix-blend-multiply"
-            aria-hidden="true"
-          />
-          <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_30%_10%,rgba(192,68,76,0.3),transparent_60%)]" aria-hidden="true" />
-          <div className="absolute bottom-0 left-0 right-0 p-8">
-            <p className="max-w-[300px] text-[1.25rem] font-[620] leading-[1.25] text-white">
-              The swarm finds, fixes, and reports, while you sleep.
-            </p>
-          </div>
+    <main className="grid min-h-[100svh] grid-cols-2 bg-[#100b0c] font-['Inter',system-ui,sans-serif] text-[#f2eaeb] max-[820px]:grid-cols-1">
+      {/* left — brand image, full bleed */}
+      <div className="relative overflow-hidden border-r border-[#2b1f22] max-[820px]:hidden">
+        <div
+          className="absolute inset-0 bg-[url('/background.webp')] bg-cover bg-center"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(94,29,35,0.45)_0%,rgba(12,8,9,0.35)_50%,rgba(12,8,9,0.85)_100%)] mix-blend-multiply"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-0 bg-[radial-gradient(120%_90%_at_30%_10%,rgba(192,68,76,0.3),transparent_60%)]"
+          aria-hidden="true"
+        />
+        <div className="absolute bottom-0 left-0 right-0 p-12 max-[1100px]:p-8">
+          <p className="max-w-[340px] text-[1.4rem] font-[620] leading-[1.25] text-white">
+            The swarm finds, fixes, and reports, while you sleep.
+          </p>
         </div>
+      </div>
 
-        {/* right — form */}
-        <div className="flex flex-col gap-6 p-9 max-[820px]:p-7">
+      {/* right — form, fills its half */}
+      <div className="flex flex-col justify-center px-[8%] py-12 max-[1100px]:px-[6%] max-[820px]:px-6 max-[820px]:py-10">
+        <div className="mx-auto flex w-full max-w-[420px] flex-col gap-6">
           <BrandMark />
 
           <div className="flex flex-col gap-2">
-            <h1 className="text-[2.4rem] font-[680] leading-[1.05] tracking-[-0.01em] text-[#f2eaeb] max-[640px]:text-[2rem]">
+            <h1 className="text-[2.6rem] font-[680] leading-[1.05] tracking-[-0.01em] text-[#f2eaeb] max-[640px]:text-[2.1rem]">
               Get started
             </h1>
             <p className="max-w-[320px] text-[0.84rem] leading-[1.55] text-[#a89799]">
@@ -45,10 +48,7 @@ export function LoginPage() {
             </p>
           </div>
 
-          <form
-            className="flex flex-col gap-4"
-            onSubmit={(e) => e.preventDefault()}
-          >
+          <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
             <label className="flex flex-col gap-2">
               <span className="text-[0.7rem] font-[640] text-[#a89799]">Email</span>
               <div className="flex items-center gap-2 rounded-[10px] border border-[#2f2226] bg-[#181114] px-3.5 transition-colors focus-within:border-[#8a2c34]">
@@ -120,7 +120,7 @@ export function LoginPage() {
             </button>
           </div>
 
-          <p className="mt-auto text-[0.7rem] leading-[1.5] text-[#6e5658]">
+          <p className="text-[0.7rem] leading-[1.5] text-[#6e5658]">
             By continuing you agree to the SWRMZ Terms and Privacy Policy.
           </p>
         </div>
