@@ -64,18 +64,16 @@ export function WorkflowSection() {
               key={step}
             >
               <div
-                className="pointer-events-none absolute right-3 top-1/2 size-[150px] -translate-y-1/2 opacity-55 [mask-image:radial-gradient(circle_at_72%_50%,#000_30%,transparent_74%)] max-[960px]:right-4 max-[960px]:top-4 max-[960px]:size-[76px] max-[960px]:translate-y-0 max-[960px]:opacity-90 max-[960px]:[mask-image:none]"
+                className="pointer-events-none absolute right-3 top-1/2 size-[150px] -translate-y-1/2 opacity-55 [mask-image:radial-gradient(circle_at_72%_50%,#000_30%,transparent_74%)] max-[960px]:right-0 max-[960px]:top-0 max-[960px]:size-[150px] max-[960px]:translate-y-0 max-[960px]:opacity-45 max-[960px]:[mask-image:radial-gradient(circle_at_88%_12%,#000_18%,transparent_66%)]"
                 aria-hidden="true"
               >
                 <StepArt variant={variant} />
               </div>
               <div className="relative z-10 min-[961px]:max-w-[60%]">
-                <div className="max-[960px]:pr-[84px]">
-                  <p className="font-mono text-[0.88rem] font-[760] text-[#d98a90]">{step}</p>
-                  <h3 className="mt-4 text-[1.35rem] font-[680] leading-[1.18] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.2rem]">
-                    {title} <span className="font-[480] text-[#a89799]">{tail}</span>
-                  </h3>
-                </div>
+                <p className="font-mono text-[0.88rem] font-[760] text-[#d98a90]">{step}</p>
+                <h3 className="mt-4 text-[1.35rem] font-[680] leading-[1.18] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.2rem]">
+                  {title} <span className="font-[480] text-[#a89799]">{tail}</span>
+                </h3>
                 <p className="mt-4 text-[0.95rem] leading-[1.62] text-[#9a8689]">
                   {copy}
                 </p>

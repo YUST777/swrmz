@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Check, Circle } from 'lucide-react';
+import { ArrowRight, Check, ChevronLeft, ChevronRight, Circle } from 'lucide-react';
 
 type Plan = {
   name: string;
@@ -117,6 +117,12 @@ export function PricingSection() {
     scroller.scrollLeft = card.offsetLeft - (scroller.clientWidth - card.clientWidth) / 2;
   }, []);
 
+  const scrollByCard = (dir: number) => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    scroller.scrollBy({ left: dir * scroller.clientWidth * 0.85, behavior: 'smooth' });
+  };
+
 
   return (
     <section id="pricing" className="px-6 py-14 max-[760px]:px-4 max-[760px]:py-12">
@@ -219,6 +225,26 @@ export function PricingSection() {
             </article>
           ))}
         </div>
+
+        <div className="mt-5 flex items-center justify-center gap-8 min-[981px]:hidden">
+          <button
+            type="button"
+            onClick={() => scrollByCard(-1)}
+            aria-label="Previous plan"
+            className="cursor-pointer text-[#a89799] transition-colors hover:text-[#f2eaeb]"
+          >
+            <ChevronLeft size={26} strokeWidth={1.6} />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollByCard(1)}
+            aria-label="Next plan"
+            className="cursor-pointer text-[#a89799] transition-colors hover:text-[#f2eaeb]"
+          >
+            <ChevronRight size={26} strokeWidth={1.6} />
+          </button>
+        </div>
+
         <p className="mt-7 text-center text-[0.75rem] text-[#a89799]">
           All plans include a 14-day free trial. No credit card required.
         </p>
