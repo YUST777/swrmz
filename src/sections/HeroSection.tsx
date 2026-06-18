@@ -3,9 +3,9 @@ import { BrandMark } from '../components/BrandMark';
 
 const stats = [
   { label: 'Coverage', value: '99.98%', note: 'Code & infra scanned' },
-  { label: 'Swarm', value: '40+', note: 'Specialized AI agents' },
-  { label: 'Auto-fix', value: '4m', note: 'Median time to remediate' },
-  { label: 'Protected', value: '500+', note: 'Environments under guard' },
+  { label: 'Swarm', value: '4+', note: 'Specialized AI agents' },
+  { label: 'Scanning time', value: '30m', note: 'Median full-stack scan' },
+  { label: 'Protected', value: '5+', note: 'Environments under guard' },
 ];
 
 const navLinks = [

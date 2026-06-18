@@ -622,7 +622,7 @@ export function AppShowcase() {
   const showFindingDetail = !!activeFinding;
 
   return (
-    <div className="flex aspect-[3/4] w-full select-none flex-col overflow-hidden rounded-2xl border border-[#2f2226] bg-[#0c0a0a] text-[11px] shadow-[0_40px_120px_rgba(0,0,0,0.6)] sm:aspect-[15/8] sm:text-xs">
+    <div className="flex aspect-[3/4] w-full select-none flex-col overflow-hidden rounded-2xl border border-[#3a3a3a] bg-[#222222] text-[11px] shadow-[0_40px_120px_rgba(0,0,0,0.55)] sm:aspect-[15/8] sm:text-xs">
       <div className="flex shrink-0 items-center justify-between border-b border-white/[0.06] px-5 py-3">
         <div className="flex items-center gap-3">
           <div className="flex gap-2">
