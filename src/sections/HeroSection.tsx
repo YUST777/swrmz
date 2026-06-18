@@ -61,7 +61,7 @@ export function HeroSection() {
         </a>
       </header>
 
-      <div className="relative z-10 mx-auto flex w-[min(94vw,1180px)] flex-1 min-[1500px]:w-[min(90vw,1320px)] max-[1180px]:w-[calc(100%-48px)] max-[820px]:w-full max-[820px]:flex-none max-[820px]:px-[18px] max-[820px]:pb-7 max-[820px]:pt-9">
+      <div className="relative z-10 mx-auto flex w-[min(94vw,1180px)] flex-1 min-[1500px]:w-[min(90vw,1320px)] max-[1180px]:w-[calc(100%-48px)] max-[820px]:w-full max-[820px]:flex-none max-[820px]:px-[18px] max-[820px]:pb-5 max-[820px]:pt-6">
         <div className="grid h-full w-full grid-cols-[minmax(0,1fr)_auto] grid-rows-1 gap-10 max-[1180px]:h-auto max-[1180px]:grid-cols-1 max-[1180px]:[grid-template-rows:auto] max-[1180px]:gap-7 max-[820px]:block">
           <div className="w-full max-w-[640px] self-end pb-4 min-[1500px]:max-w-[720px] max-[1180px]:max-w-[700px] max-[1180px]:self-auto max-[1180px]:pb-0">
             <div className="mb-5 flex flex-wrap gap-2 max-[820px]:mb-5" aria-label="Launch status">
@@ -92,16 +92,16 @@ export function HeroSection() {
             </p>
           </div>
 
-          <div className="flex shrink-0 items-center justify-end gap-4 self-end pb-4 max-[1180px]:justify-start max-[1180px]:self-auto max-[1180px]:pb-0 max-[820px]:mt-7 max-[820px]:max-w-full max-[820px]:flex-col max-[820px]:items-stretch max-[820px]:gap-3" aria-label="Hero actions">
+          <div className="flex shrink-0 items-center justify-end gap-4 self-end pb-4 max-[1180px]:justify-start max-[1180px]:self-auto max-[1180px]:pb-0 max-[820px]:mt-6 max-[820px]:max-w-full max-[820px]:flex-col max-[820px]:items-stretch max-[820px]:gap-3" aria-label="Hero actions">
             <a
-              className="inline-flex min-h-[40px] min-w-36 items-center justify-center gap-2.5 whitespace-nowrap rounded-md bg-[linear-gradient(180deg,#8a2c34,#6a212a)] px-[18px] text-[0.74rem] font-[720] leading-none text-[#ffffff] shadow-[0_14px_30px_rgba(119,38,45,0.2),inset_0_1px_0_rgba(255,255,255,0.68)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:-translate-y-0.5 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[156px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-12 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.9rem]"
+              className="inline-flex min-h-[40px] min-w-36 items-center justify-center gap-2.5 whitespace-nowrap rounded-md bg-[linear-gradient(180deg,#8a2c34,#6a212a)] px-[18px] text-[0.74rem] font-[720] leading-none text-[#ffffff] shadow-[0_14px_30px_rgba(119,38,45,0.2),inset_0_1px_0_rgba(255,255,255,0.68)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:-translate-y-0.5 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[156px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
               href="#early-access"
             >
               <span>Get Early Access</span>
               <ArrowRight className="shrink-0" size={15} strokeWidth={2.4} />
             </a>
             <a
-              className="inline-flex min-h-[40px] min-w-[156px] items-center justify-center gap-2.5 whitespace-nowrap rounded-md border border-[#36262a]/50 bg-[#5e1d23]/85 px-[18px] text-[0.74rem] font-[720] leading-none text-[#f4eef0] shadow-[inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-[14px] transition duration-300 hover:-translate-y-0.5 hover:border-[#241a1d]/85 hover:bg-[#6a212a]/90 focus-visible:-translate-y-0.5 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[174px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-12 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.9rem]"
+              className="inline-flex min-h-[40px] min-w-[156px] items-center justify-center gap-2.5 whitespace-nowrap rounded-md border border-[#36262a]/50 bg-[#5e1d23]/85 px-[18px] text-[0.74rem] font-[720] leading-none text-[#f4eef0] shadow-[inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-[14px] transition duration-300 hover:-translate-y-0.5 hover:border-[#241a1d]/85 hover:bg-[#6a212a]/90 focus-visible:-translate-y-0.5 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[174px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
               href="#demo"
             >
               <Play className="shrink-0" size={14} fill="currentColor" strokeWidth={2.2} />
@@ -112,28 +112,28 @@ export function HeroSection() {
       </div>
 
       <div
-        className="relative z-20 mx-auto mb-5 grid w-[min(94vw,1180px)] shrink-0 grid-cols-[minmax(110px,140px)_1fr] items-center gap-[22px] rounded-lg border border-white/10 bg-[#15100f]/90 px-7 py-4 shadow-[0_20px_54px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.07)] backdrop-blur-[22px] backdrop-saturate-125 min-[1500px]:mb-6 min-[1500px]:w-[min(90vw,1320px)] min-[1500px]:px-8 min-[1500px]:py-5 max-[1180px]:w-[calc(100%-48px)] max-[820px]:mx-3.5 max-[820px]:mb-4 max-[820px]:w-auto max-[820px]:grid-cols-1 max-[820px]:p-5"
+        className="relative z-20 mx-auto mb-5 grid w-[min(94vw,1180px)] shrink-0 grid-cols-[minmax(110px,140px)_1fr] items-center gap-[22px] rounded-lg border border-white/10 bg-[#15100f]/90 px-7 py-4 shadow-[0_20px_54px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.07)] backdrop-blur-[22px] backdrop-saturate-125 min-[1500px]:mb-6 min-[1500px]:w-[min(90vw,1320px)] min-[1500px]:px-8 min-[1500px]:py-5 max-[1180px]:w-[calc(100%-48px)] max-[820px]:mx-3.5 max-[820px]:mb-4 max-[820px]:w-auto max-[820px]:grid-cols-1 max-[820px]:gap-3 max-[820px]:p-4"
         aria-label="SWRMZ performance metrics"
       >
-        <h2 className="text-[0.96rem] font-[680] leading-[1.16] tracking-[0] text-[#f2eaeb] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.15rem]">
+        <h2 className="text-[0.96rem] font-[680] leading-[1.16] tracking-[0] text-[#f2eaeb] min-[1500px]:text-[1.06rem] max-[820px]:text-[0.9rem] max-[820px]:leading-[1.1]">
           Our
           <br />
           performance
         </h2>
 
-        <dl className="grid grid-cols-4 items-stretch max-[1180px]:grid-cols-2 max-[820px]:grid-cols-1 max-[820px]:gap-4">
+        <dl className="grid grid-cols-4 items-stretch max-[1180px]:grid-cols-2 max-[820px]:grid-cols-2 max-[820px]:gap-x-5 max-[820px]:gap-y-3">
           {stats.map((stat) => (
             <div
-              className="border-l border-[#c9b9bb]/15 px-5 first:border-l-0 max-[1180px]:px-4 max-[1180px]:odd:border-l-0 max-[820px]:border-l-0 max-[820px]:border-b max-[820px]:border-[#c9b9bb]/15 max-[820px]:px-0 max-[820px]:pb-3.5 max-[820px]:last:border-b-0 max-[820px]:last:pb-0"
+              className="border-l border-[#c9b9bb]/15 px-5 first:border-l-0 max-[1180px]:px-4 max-[1180px]:odd:border-l-0 max-[820px]:border-l-0 max-[820px]:px-0"
               key={stat.label}
             >
-              <dt className="text-[0.56rem] font-[630] leading-tight text-[#9a8689] max-[820px]:text-[0.7rem]">
+              <dt className="text-[0.56rem] font-[630] leading-tight text-[#9a8689] max-[820px]:text-[0.66rem]">
                 {stat.label}
               </dt>
-              <dd className="mt-1.5 text-[0.96rem] font-[720] leading-none tracking-[0] text-[#d98a90] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.2rem]">
+              <dd className="mt-1.5 text-[0.96rem] font-[720] leading-none tracking-[0] text-[#d98a90] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.05rem]">
                 {stat.value}
               </dd>
-              <span className="mt-1.5 block text-[0.56rem] font-medium leading-[1.34] text-[#c2b2b4] max-[820px]:text-[0.72rem]">
+              <span className="mt-1 block text-[0.56rem] font-medium leading-[1.3] text-[#c2b2b4] max-[820px]:text-[0.64rem]">
                 {stat.note}
               </span>
             </div>
