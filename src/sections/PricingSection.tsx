@@ -52,7 +52,7 @@ const plans: Plan[] = [
     description: 'For teams that want continuous detection, auto-fixes, and audit-ready reports.',
     badge: 'Most popular',
     badgeClass: 'bg-[#77262d] text-white',
-    cta: 'Get Early Access',
+    cta: 'Download the app',
     highlighted: true,
     groups: [
       {
@@ -211,7 +211,7 @@ export function PricingSection() {
                     ? 'border-[#6a212a] bg-[#77262d] text-[#ffffff] shadow-[0_16px_30px_rgba(119,38,45,0.18)]'
                     : 'border-[#5e3a3e] bg-[#15100f] text-[#d98a90]'
                 }`}
-                href="#early-access"
+                href={plan.highlighted ? '/login' : '#early-access'}
               >
                 {plan.cta}
                 <ArrowRight size={14} strokeWidth={2.4} aria-hidden="true" />

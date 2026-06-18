@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-router';
 import { LandingPage } from './LandingPage';
 import { LoginPage } from './LoginPage';
+import { SoonPage } from './SoonPage';
 import './styles.css';
 
 const rootRoute = createRootRoute();
@@ -24,7 +25,13 @@ const loginRoute = createRoute({
   component: LoginPage,
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute]);
+const soonRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/soon',
+  component: SoonPage,
+});
+
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute, soonRoute]);
 
 const router = createRouter({ routeTree });
 

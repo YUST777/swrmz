@@ -3,7 +3,7 @@ import { ArrowRight, Play } from 'lucide-react';
 const footerLinks = [
   { label: 'Platform', href: '#platform' },
   { label: 'Solutions', href: '#workflow' },
-  { label: 'Docs', href: '#docs' },
+  { label: 'See demo', href: '#platform' },
   { label: 'Pricing', href: '#pricing' },
   { label: 'About', href: '#platform' },
   { label: 'Careers', href: '#early-access' },
@@ -40,18 +40,18 @@ export function FinalCta() {
           <div className="mt-7 flex justify-center gap-3 max-[560px]:flex-col">
             <a
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] bg-[#77262d] px-5 text-[0.78rem] font-[720] text-[#ffffff] shadow-[0_16px_30px_rgba(119,38,45,0.18)] transition-transform duration-300 hover:-translate-y-0.5"
-              href="mailto:hello@swrmz.ai"
+              href="/login"
             >
-              Request Beta Access
+              Download the app
               <ArrowRight size={14} strokeWidth={2.4} />
             </a>
             <a
               id="docs"
               className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] border border-[#5e3a3e] bg-[#181114]/85 px-5 text-[0.78rem] font-[720] text-[#d98a90] transition-transform duration-300 hover:-translate-y-0.5"
-              href="/"
+              href="#platform"
             >
               <Play size={14} fill="currentColor" strokeWidth={2.2} />
-              Read the Docs
+              See the demo
             </a>
           </div>
         </div>

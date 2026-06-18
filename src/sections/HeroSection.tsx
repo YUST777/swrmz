@@ -18,11 +18,11 @@ const navLinks = [
 export function HeroSection() {
   return (
     <section
-      className="relative isolate flex h-[100svh] min-h-[500px] flex-col overflow-hidden bg-[#2c1013] max-[820px]:h-auto max-[820px]:min-h-0 max-[820px]:overflow-visible"
+      className="relative isolate flex h-[100svh] min-h-[560px] flex-col overflow-hidden bg-[#2c1013]"
       aria-labelledby="hero-title"
     >
       <div
-        className="absolute inset-0 -z-30 bg-[url('/background.webp')] bg-cover bg-center bg-no-repeat max-[820px]:bg-[53%_top]"
+        className="absolute inset-0 -z-30 bg-[url('/background.webp')] bg-cover bg-[center_60%] bg-no-repeat max-[820px]:bg-[53%_40%]"
         aria-hidden="true"
       />
       <div
@@ -54,14 +54,14 @@ export function HeroSection() {
 
         <a
           className="relative z-10 inline-flex min-h-[38px] items-center justify-center gap-1.5 justify-self-end rounded-md bg-[#77262d] px-5 text-[0.72rem] font-[680] text-white shadow-[0_8px_20px_rgba(119,38,45,0.35)] transition-colors duration-200 hover:bg-[#8a2c34] focus-visible:bg-[#8a2c34] max-[820px]:min-h-9 max-[820px]:px-3.5"
-          href="#early-access"
+          href="/login"
         >
-          <span>Get Access</span>
+          <span>Login now</span>
           <ArrowRight className="shrink-0" size={14} strokeWidth={2.4} />
         </a>
       </header>
 
-      <div className="relative z-10 mx-auto flex w-[min(94vw,1180px)] flex-1 min-[1500px]:w-[min(90vw,1320px)] max-[1180px]:w-[calc(100%-48px)] max-[820px]:w-full max-[820px]:flex-none max-[820px]:px-[18px] max-[820px]:pb-5 max-[820px]:pt-6">
+      <div className="relative z-10 mx-auto flex w-[min(94vw,1180px)] flex-1 min-[1500px]:w-[min(90vw,1320px)] max-[1180px]:w-[calc(100%-48px)] max-[820px]:w-full max-[820px]:items-center max-[820px]:px-[18px] max-[820px]:pb-5 max-[820px]:pt-6">
         <div className="grid h-full w-full grid-cols-[minmax(0,1fr)_auto] grid-rows-1 gap-10 max-[1180px]:h-auto max-[1180px]:grid-cols-1 max-[1180px]:[grid-template-rows:auto] max-[1180px]:gap-7 max-[820px]:block">
           <div className="w-full max-w-[640px] self-end pb-4 min-[1500px]:max-w-[720px] max-[1180px]:max-w-[700px] max-[1180px]:self-auto max-[1180px]:pb-0">
             <div className="mb-5 flex flex-wrap gap-2 max-[820px]:mb-5" aria-label="Launch status">
@@ -95,9 +95,9 @@ export function HeroSection() {
           <div className="flex shrink-0 items-center justify-end gap-4 self-end pb-4 max-[1180px]:justify-start max-[1180px]:self-auto max-[1180px]:pb-0 max-[820px]:mt-6 max-[820px]:max-w-full max-[820px]:flex-col max-[820px]:items-stretch max-[820px]:gap-3" aria-label="Hero actions">
             <a
               className="inline-flex min-h-[40px] min-w-36 items-center justify-center gap-2.5 whitespace-nowrap rounded-md bg-[linear-gradient(180deg,#8a2c34,#6a212a)] px-[18px] text-[0.74rem] font-[720] leading-none text-[#ffffff] shadow-[0_14px_30px_rgba(119,38,45,0.2),inset_0_1px_0_rgba(255,255,255,0.68)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:-translate-y-0.5 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[156px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
-              href="#early-access"
+              href="/login"
             >
-              <span>Get Early Access</span>
+              <span>Download the app</span>
               <ArrowRight className="shrink-0" size={15} strokeWidth={2.4} />
             </a>
             <a
