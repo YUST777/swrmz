@@ -40,9 +40,9 @@ export function WaitlistPage() {
   return (
     <main className="relative grid min-h-[100svh] place-items-center overflow-hidden bg-[#0b0809] px-6 text-[#f2eaeb]">
       {/* grid + maroon glow background */}
-      <div className="absolute inset-0 -z-20 bg-[#0b0809] bg-[linear-gradient(to_right,#1a1012_1px,transparent_1px),linear-gradient(to_bottom,#1a1012_1px,transparent_1px)] bg-[size:6rem_4rem]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_100%_180px,rgba(119,38,45,0.4),transparent)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_600px_at_50%_120%,rgba(192,68,76,0.18),transparent)]" />
+      <div className="absolute inset-0 -z-20 bg-[#0b0809] bg-[linear-gradient(to_right,#241619_1px,transparent_1px),linear-gradient(to_bottom,#241619_1px,transparent_1px)] bg-[size:6rem_4rem]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_100%_200px,rgba(192,68,76,0.55),transparent)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_600px_at_0%_100%,rgba(119,38,45,0.32),transparent)]" />
       </div>
       {/* film grain */}
       <div className="grain pointer-events-none absolute inset-0 -z-10 opacity-[0.05]" aria-hidden="true" />
