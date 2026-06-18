@@ -38,7 +38,7 @@ export function WaitlistPage() {
   };
 
   return (
-    <main className="relative grid min-h-[100svh] place-items-center overflow-hidden bg-[#0b0809] px-6 text-[#f2eaeb]">
+    <main className="relative isolate grid min-h-[100svh] place-items-center overflow-hidden bg-[#0b0809] px-6 text-[#f2eaeb]">
       {/* grid + maroon glow background */}
       <div className="absolute inset-0 -z-20 bg-[#0b0809] bg-[linear-gradient(to_right,#241619_1px,transparent_1px),linear-gradient(to_bottom,#241619_1px,transparent_1px)] bg-[size:6rem_4rem]">
         <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_100%_200px,rgba(192,68,76,0.55),transparent)]" />
