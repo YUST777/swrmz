@@ -22,7 +22,7 @@ export function HeroSection() {
       aria-labelledby="hero-title"
     >
       <div
-        className="absolute inset-0 -z-30 bg-[url('/background.png')] bg-cover bg-center bg-no-repeat max-[820px]:bg-[53%_top]"
+        className="absolute inset-0 -z-30 bg-[url('/background.webp')] bg-cover bg-center bg-no-repeat max-[820px]:bg-[53%_top]"
         aria-hidden="true"
       />
       <div

@@ -20,7 +20,7 @@ export function FinalCta() {
       <div className="mx-auto max-w-[1120px] overflow-hidden rounded-t-[10px] border border-[#3b292d] bg-[#15100f]">
         <div className="relative isolate min-h-[310px] overflow-hidden px-6 py-16 text-center">
           <div
-            className="absolute inset-0 -z-20 bg-[url('/background.png')] bg-center bg-no-repeat [background-size:165%]"
+            className="absolute inset-0 -z-20 bg-[url('/background.webp')] bg-center bg-no-repeat [background-size:165%]"
             aria-hidden="true"
           />
           <div
@@ -72,7 +72,7 @@ export function FinalCta() {
             <p className="text-[0.72rem] text-[#a89799]">© 2026 SWRMZ. All rights reserved.</p>
           </div>
           <img
-            src="/fotter.png"
+            src="/fotter.webp"
             alt=""
             aria-hidden="true"
             className="pointer-events-none -mx-8 -mb-16 mt-7 block w-[calc(100%+64px)] max-w-none select-none max-[760px]:-mx-5 max-[760px]:w-[calc(100%+40px)]"

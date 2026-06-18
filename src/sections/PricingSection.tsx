@@ -146,7 +146,7 @@ export function PricingSection() {
             <article
               className={`relative flex min-h-[620px] flex-col overflow-hidden rounded-[9px] border p-6 ${
                 plan.highlighted
-                  ? "border-[#8a2c34] bg-[linear-gradient(180deg,rgba(30,16,18,0.84),rgba(12,8,9,0.93)),url('/background.png')] bg-cover bg-center shadow-[0_22px_58px_rgba(119,38,45,0.28),inset_0_1px_0_rgba(255,255,255,0.06)]"
+                  ? "border-[#8a2c34] bg-[linear-gradient(180deg,rgba(30,16,18,0.84),rgba(12,8,9,0.93)),url('/background.webp')] bg-cover bg-center shadow-[0_22px_58px_rgba(119,38,45,0.28),inset_0_1px_0_rgba(255,255,255,0.06)]"
                   : 'border-[#2b1f22] bg-[#181114]/85 shadow-[0_18px_48px_rgba(22,57,53,0.05)]'
               }`}
               key={plan.name}

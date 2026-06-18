@@ -4,6 +4,7 @@ import { PlatformSection } from './sections/PlatformSection';
 import { PricingSection } from './sections/PricingSection';
 import { TestimonialsSection } from './sections/TestimonialsSection';
 import { WorkflowSection } from './sections/WorkflowSection';
+import { FaqSection } from './sections/FaqSection';
 
 export function LandingPage() {
   return (
@@ -13,6 +14,7 @@ export function LandingPage() {
       <WorkflowSection />
       <TestimonialsSection />
       <PricingSection />
+      <FaqSection />
       <FinalCta />
     </main>
   );

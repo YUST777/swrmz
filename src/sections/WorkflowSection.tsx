@@ -3,24 +3,28 @@ import { StepArt } from '../components/StepArt';
 const steps: Array<{
   step: string;
   title: string;
+  tail: string;
   copy: string;
   variant: 'deploy' | 'guard' | 'radar';
 }> = [
   {
     step: 'Step 01',
-    title: 'Deploy the swarm.',
+    title: 'Deploy the',
+    tail: 'swarm.',
     copy: 'Point SWRMZ at your repos, cloud, and log streams. The agents map your attack surface in minutes, across any environment.',
     variant: 'deploy',
   },
   {
     step: 'Step 02',
-    title: 'Set your guardrails.',
+    title: 'Set your',
+    tail: 'guardrails.',
     copy: 'Tell the swarm what matters. It learns your baselines and your fix-approval policy, then watches for anything off.',
     variant: 'guard',
   },
   {
     step: 'Step 03',
-    title: 'Let the swarm work.',
+    title: 'Let the swarm',
+    tail: 'work.',
     copy: 'Agents detect, remediate, report, and guard around the clock, while you stay in control from a single dashboard.',
     variant: 'radar',
   },
@@ -32,7 +36,7 @@ export function WorkflowSection() {
       <div className="mx-auto grid max-w-[1120px] grid-cols-[0.96fr_1.04fr] gap-8 max-[960px]:grid-cols-1">
         <article className="relative min-h-[620px] overflow-hidden rounded-[26px] border border-[#8a2c34] shadow-[0_28px_90px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] max-[960px]:min-h-[540px] max-[640px]:min-h-[500px]">
           <div
-            className="absolute inset-0 bg-[url('/background.png')] bg-cover bg-center"
+            className="absolute inset-0 bg-[url('/background.webp')] bg-cover bg-center"
             aria-hidden="true"
           />
           <div
@@ -54,7 +58,7 @@ export function WorkflowSection() {
 
         <div className="relative flex flex-col justify-between gap-6 max-[960px]:gap-5">
           <div className="absolute left-1/2 top-6 h-[calc(100%-48px)] -translate-x-1/2 border-l border-dashed border-[#8a4248]/50 max-[640px]:hidden" aria-hidden="true" />
-          {steps.map(({ step, title, copy, variant }) => (
+          {steps.map(({ step, title, tail, copy, variant }) => (
             <article
               className="relative z-10 min-h-[184px] overflow-hidden rounded-[20px] border border-[#36262a] bg-[#100b0c]/92 p-9 shadow-[0_20px_56px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-[8px] max-[640px]:p-6"
               key={step}
@@ -68,7 +72,7 @@ export function WorkflowSection() {
               <div className="relative z-10 max-w-[60%] max-[760px]:max-w-full">
                 <p className="font-mono text-[0.88rem] font-[760] text-[#d98a90]">{step}</p>
                 <h3 className="mt-4 text-[1.35rem] font-[680] leading-[1.18] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.2rem]">
-                  {title}
+                  {title} <span className="font-[480] text-[#a89799]">{tail}</span>
                 </h3>
                 <p className="mt-4 text-[0.95rem] leading-[1.62] text-[#9a8689]">
                   {copy}
