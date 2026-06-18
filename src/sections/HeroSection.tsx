@@ -115,25 +115,25 @@ export function HeroSection() {
         className="relative z-20 mx-auto mb-5 grid w-[min(94vw,1180px)] shrink-0 grid-cols-[minmax(110px,140px)_1fr] items-center gap-[22px] rounded-lg border border-white/10 bg-[#15100f]/90 px-7 py-4 shadow-[0_20px_54px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.07)] backdrop-blur-[22px] backdrop-saturate-125 min-[1500px]:mb-6 min-[1500px]:w-[min(90vw,1320px)] min-[1500px]:px-8 min-[1500px]:py-5 max-[1180px]:w-[calc(100%-48px)] max-[820px]:mx-3.5 max-[820px]:mb-4 max-[820px]:w-auto max-[820px]:grid-cols-1 max-[820px]:gap-3 max-[820px]:p-4"
         aria-label="SWRMZ performance metrics"
       >
-        <h2 className="text-[0.96rem] font-[680] leading-[1.16] tracking-[0] text-[#f2eaeb] min-[1500px]:text-[1.06rem] max-[820px]:text-[0.9rem] max-[820px]:leading-[1.1]">
+        <h2 className="text-[0.96rem] font-[680] leading-[1.16] tracking-[0] text-[#f2eaeb] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.05rem] max-[820px]:leading-[1.1]">
           Our
           <br />
           performance
         </h2>
 
-        <dl className="grid grid-cols-4 items-stretch max-[1180px]:grid-cols-2 max-[820px]:grid-cols-2 max-[820px]:gap-x-5 max-[820px]:gap-y-3">
+        <dl className="grid grid-cols-4 items-stretch max-[1180px]:grid-cols-2 max-[820px]:grid-cols-1 max-[820px]:gap-0">
           {stats.map((stat) => (
             <div
-              className="border-l border-[#c9b9bb]/15 px-5 first:border-l-0 max-[1180px]:px-4 max-[1180px]:odd:border-l-0 max-[820px]:border-l-0 max-[820px]:px-0"
+              className="border-l border-[#c9b9bb]/15 px-5 first:border-l-0 max-[1180px]:px-4 max-[1180px]:odd:border-l-0 max-[820px]:border-l-0 max-[820px]:border-b max-[820px]:border-[#c9b9bb]/15 max-[820px]:px-0 max-[820px]:py-3 max-[820px]:first:pt-0 max-[820px]:last:border-b-0 max-[820px]:last:pb-0"
               key={stat.label}
             >
-              <dt className="text-[0.56rem] font-[630] leading-tight text-[#9a8689] max-[820px]:text-[0.66rem]">
+              <dt className="text-[0.56rem] font-[630] leading-tight text-[#9a8689] max-[820px]:text-[0.7rem]">
                 {stat.label}
               </dt>
-              <dd className="mt-1.5 text-[0.96rem] font-[720] leading-none tracking-[0] text-[#d98a90] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.05rem]">
+              <dd className="mt-1.5 text-[0.96rem] font-[720] leading-none tracking-[0] text-[#d98a90] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.15rem]">
                 {stat.value}
               </dd>
-              <span className="mt-1 block text-[0.56rem] font-medium leading-[1.3] text-[#c2b2b4] max-[820px]:text-[0.64rem]">
+              <span className="mt-1.5 block text-[0.56rem] font-medium leading-[1.34] text-[#c2b2b4] max-[820px]:text-[0.7rem]">
                 {stat.note}
               </span>
             </div>

@@ -64,12 +64,12 @@ export function WorkflowSection() {
               key={step}
             >
               <div
-                className="pointer-events-none absolute right-3 top-1/2 size-[150px] -translate-y-1/2 opacity-55 [mask-image:radial-gradient(circle_at_72%_50%,#000_30%,transparent_74%)] max-[760px]:hidden"
+                className="pointer-events-none absolute right-3 top-1/2 size-[150px] -translate-y-1/2 opacity-55 [mask-image:radial-gradient(circle_at_72%_50%,#000_30%,transparent_74%)] max-[960px]:hidden"
                 aria-hidden="true"
               >
                 <StepArt variant={variant} />
               </div>
-              <div className="relative z-10 max-w-[60%] max-[760px]:max-w-full">
+              <div className="relative z-10 max-w-[60%] max-[960px]:max-w-full">
                 <p className="font-mono text-[0.88rem] font-[760] text-[#d98a90]">{step}</p>
                 <h3 className="mt-4 text-[1.35rem] font-[680] leading-[1.18] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.2rem]">
                   {title} <span className="font-[480] text-[#a89799]">{tail}</span>
