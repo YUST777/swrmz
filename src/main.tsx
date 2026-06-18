@@ -1,5 +1,6 @@
-import { StrictMode } from 'react';
+import { StrictMode, useEffect } from 'react';
 import { createRoot } from 'react-dom/client';
+import Lenis from 'lenis';
 import {
   createRootRoute,
   createRoute,
@@ -41,8 +42,34 @@ declare module '@tanstack/react-router' {
   }
 }
 
+function Root() {
+  useEffect(() => {
+    // Fast, snappy smooth scroll (higher lerp = quicker catch-up).
+    const lenis = new Lenis({
+      lerp: 0.14,
+      wheelMultiplier: 1.15,
+      smoothWheel: true,
+      touchMultiplier: 1.6,
+    });
+
+    let raf = 0;
+    const loop = (time: number) => {
+      lenis.raf(time);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      lenis.destroy();
+    };
+  }, []);
+
+  return <RouterProvider router={router} />;
+}
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <Root />
   </StrictMode>,
 );
