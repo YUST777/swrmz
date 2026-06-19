@@ -1,16 +1,9 @@
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, ChevronDown, Play } from 'lucide-react';
 import { BrandMark } from '../components/BrandMark';
-
-const stats = [
-  { label: 'Coverage', value: '99.98%', note: 'Code & infra scanned' },
-  { label: 'Swarm', value: '4+', note: 'Specialized AI agents' },
-  { label: 'Scanning time', value: '30m', note: 'Median full-stack scan' },
-  { label: 'Protected', value: '5+', note: 'Environments under guard' },
-];
 
 const navLinks = [
   { label: 'Platform', href: '#platform' },
-  { label: 'Solutions', href: '#workflow' },
+  { label: 'Solutions', href: '#workflow', hasMenu: true },
   { label: 'Docs', href: '#docs' },
   { label: 'Pricing', href: '#pricing' },
 ];
@@ -18,128 +11,151 @@ const navLinks = [
 export function HeroSection() {
   return (
     <section
-      className="relative isolate flex h-[100svh] min-h-[560px] flex-col overflow-hidden bg-[#2c1013]"
+      className="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-[#050505] text-[#f5f1f1]"
       aria-labelledby="hero-title"
     >
-      <div
-        className="absolute inset-0 -z-30 bg-[url('/background.webp')] bg-cover bg-[center_60%] bg-no-repeat max-[820px]:bg-[53%_40%]"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute inset-0 -z-20 bg-[linear-gradient(90deg,rgba(14,10,11,0.92)_0%,rgba(14,10,11,0.7)_34%,rgba(14,10,11,0.32)_66%,rgba(14,10,11,0.5)_100%),linear-gradient(180deg,rgba(14,10,11,0.55)_0%,transparent_38%,rgba(14,10,11,0.85)_100%)]"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(119,38,45,0.12)_0,transparent_22%,transparent_74%,rgba(8,5,6,0.6)_100%)]"
-        aria-hidden="true"
-      />
+      <HeroBackdrop />
 
-      <header className="relative z-50 grid h-16 w-full shrink-0 grid-cols-[1fr_auto_1fr] items-center border-b border-white/10 bg-transparent px-8 text-[#f4eef0] backdrop-blur-[2px] min-[1500px]:px-12 max-[1180px]:grid-cols-[auto_1fr_auto] max-[820px]:h-14 max-[820px]:grid-cols-[minmax(0,1fr)_auto] max-[820px]:px-4">
+      <header className="relative z-30 grid h-[72px] shrink-0 grid-cols-[1fr_auto_1fr] items-center border-b border-white/[0.08] px-8 min-[1440px]:px-10 max-[820px]:h-16 max-[820px]:grid-cols-[1fr_auto] max-[820px]:px-5">
         <BrandMark />
 
         <nav
-          className="relative z-10 flex items-center justify-center gap-9 text-[0.72rem] font-[560] leading-none text-white/55 min-[1500px]:gap-12 min-[1500px]:text-[0.76rem] max-[1180px]:gap-6 max-[820px]:hidden"
+          className="flex items-center justify-center gap-[42px] text-[14px] font-[520] leading-none text-white/58 max-[900px]:hidden"
           aria-label="Primary navigation"
         >
           {navLinks.map((link) => (
             <a
               key={link.label}
-              className="transition-colors duration-200 hover:text-white focus-visible:text-white"
+              className="inline-flex items-center gap-1.5 transition-colors duration-200 hover:text-white"
               href={link.href}
             >
               {link.label}
+              {link.hasMenu && <ChevronDown size={13} strokeWidth={2.1} />}
             </a>
           ))}
         </nav>
 
         <a
-          className="relative z-10 inline-flex min-h-[38px] items-center justify-center gap-1.5 justify-self-end rounded-md bg-[#77262d] px-5 text-[0.72rem] font-[680] text-white transition-colors duration-200 hover:bg-[#8a2c34] focus-visible:bg-[#8a2c34] max-[820px]:min-h-9 max-[820px]:px-3.5"
+          className="inline-flex min-h-10 items-center justify-center gap-2 justify-self-end rounded-[6px] bg-[#a01927] px-5 text-[13.5px] font-[720] leading-none text-white transition-colors duration-200 hover:bg-[#b42331] max-[820px]:min-h-9 max-[820px]:px-3.5 max-[820px]:text-[12.5px]"
           href="/login"
         >
           <span>Login now</span>
-          <ArrowRight className="shrink-0" size={14} strokeWidth={2.4} />
+          <ArrowRight size={16} strokeWidth={2.4} />
         </a>
       </header>
 
-      <div className="relative z-10 mx-auto flex w-[min(94vw,1180px)] flex-1 min-[1500px]:w-[min(90vw,1320px)] max-[1180px]:w-[calc(100%-48px)] max-[820px]:w-full max-[820px]:items-end max-[820px]:px-[18px] max-[820px]:pb-8 max-[820px]:pt-6">
-        <div className="grid h-full w-full grid-cols-[minmax(0,1fr)_auto] grid-rows-1 gap-10 max-[1180px]:h-auto max-[1180px]:grid-cols-1 max-[1180px]:[grid-template-rows:auto] max-[1180px]:gap-7 max-[820px]:block">
-          <div className="w-full max-w-[640px] self-end pb-4 min-[1500px]:max-w-[720px] max-[1180px]:max-w-[700px] max-[1180px]:self-auto max-[1180px]:pb-0">
-            <div className="mb-5 flex flex-wrap gap-2 max-[820px]:mb-5" aria-label="Launch status">
-              <span className="inline-flex min-h-5 items-center rounded-[3px] bg-[#e0a0a5] px-2.5 font-mono text-[0.52rem] font-[760] uppercase leading-none text-[#77262d] min-[1500px]:min-h-[22px] min-[1500px]:px-3 min-[1500px]:text-[0.56rem] max-[820px]:min-h-6 max-[820px]:rounded-[5px] max-[820px]:text-[0.58rem]">
-                Agentic Security
-              </span>
-              <span className="inline-flex min-h-5 items-center rounded-[3px] bg-[#20171a]/90 px-2.5 font-mono text-[0.52rem] font-[760] uppercase leading-none text-[#c2b2b4] min-[1500px]:min-h-[22px] min-[1500px]:px-3 min-[1500px]:text-[0.56rem] max-[820px]:min-h-6 max-[820px]:rounded-[5px] max-[820px]:text-[0.58rem]">
-                Now in Beta
-              </span>
-            </div>
+      <div className="relative z-20 mx-auto flex w-full max-w-[1140px] flex-1 flex-col items-center justify-center px-5 pb-[10vh] pt-[5vh] text-center min-[1440px]:max-w-[1240px] max-[820px]:justify-start max-[820px]:pb-14 max-[820px]:pt-16">
+        <h1
+          id="hero-title"
+          className="max-w-[780px] text-[clamp(2.35rem,5.25vw,4.45rem)] font-[560] leading-[0.94] tracking-[0] text-white max-[820px]:max-w-[620px] max-[820px]:text-[clamp(2.15rem,10.5vw,3.75rem)] max-[520px]:text-[2.28rem]"
+        >
+          <span className="block bg-[linear-gradient(180deg,#ffffff_8%,#cfcaca_48%,#777071_100%)] bg-clip-text pb-2 text-transparent">
+            SWRMZ finds
+          </span>
+          <span className="block bg-[linear-gradient(180deg,#d6d0d1_0%,#979090_45%,#4c4748_100%)] bg-clip-text pb-2 text-transparent">
+            fixes, and guards
+          </span>
+          <span className="block bg-[linear-gradient(180deg,#e6e1e1_0%,#9b9495_90%)] bg-clip-text pb-2 text-transparent">
+            <span className="text-white">your stack</span>
+          </span>
+        </h1>
 
-            <h1
-              className="max-w-[590px] text-[clamp(1.9rem,4.2vw,2.5rem)] font-[640] leading-[1.12] tracking-[0] text-[#f2eaeb] min-[1500px]:max-w-[660px] max-[820px]:max-w-full max-[820px]:text-[2.1rem] max-[820px]:leading-[1.1] max-[430px]:text-[1.92rem]"
-              id="hero-title"
-            >
-              Find every weakness.
-              <br />
-              Fix it automatically.
-              <br />
-              Guard what matters.
-            </h1>
+        <p className="mt-4 max-w-[560px] text-[15px] font-[470] leading-[1.48] text-[#aaa3a4] max-[820px]:mt-4 max-[820px]:max-w-[520px] max-[820px]:text-[14px]">
+          SWRMZ is a swarm of AI security agents, built on Band.ai, that hunt
+          vulnerabilities across your stack, remediate them automatically,
+          generate audit-ready reports, and stand guard over your logs around the clock.
+        </p>
 
-            <p className="mt-4 max-w-[420px] text-[0.78rem] font-[480] leading-[1.62] text-[#9a8689] min-[1500px]:max-w-[470px] min-[1500px]:text-[0.82rem] max-[820px]:mt-5 max-[820px]:max-w-full max-[820px]:text-[0.88rem] max-[820px]:leading-[1.62] max-[430px]:text-[0.84rem]">
-              SWRMZ is a swarm of AI security agents, built on Band.ai, that
-              hunt vulnerabilities across your stack, remediate them
-              automatically, generate audit-ready reports, and stand guard over
-              your logs around the clock.
-            </p>
-          </div>
-
-          <div className="flex shrink-0 items-center justify-end gap-4 self-end pb-4 max-[1180px]:justify-start max-[1180px]:self-auto max-[1180px]:pb-0 max-[820px]:mt-6 max-[820px]:max-w-full max-[820px]:flex-col max-[820px]:items-stretch max-[820px]:gap-3" aria-label="Hero actions">
-            <a
-              className="inline-flex min-h-[40px] min-w-36 items-center justify-center gap-2.5 whitespace-nowrap rounded-md bg-[#77262d] px-[18px] text-[0.74rem] font-[720] leading-none text-[#ffffff] transition-colors duration-200 hover:bg-[#8a2c34] focus-visible:bg-[#8a2c34] min-[1500px]:min-h-[44px] min-[1500px]:min-w-[156px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
-              href="/login"
-            >
-              <span>Download the app</span>
-              <ArrowRight className="shrink-0" size={15} strokeWidth={2.4} />
-            </a>
-            <a
-              className="inline-flex min-h-[40px] min-w-[156px] items-center justify-center gap-2.5 whitespace-nowrap rounded-md border border-[#36262a]/50 bg-[#5e1d23]/85 px-[18px] text-[0.74rem] font-[720] leading-none text-[#f4eef0] backdrop-blur-[14px] transition-colors duration-200 hover:border-[#241a1d]/85 hover:bg-[#6a212a]/90 focus-visible:bg-[#6a212a]/90 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[174px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
-              href="#demo"
-            >
-              <Play className="shrink-0" size={14} fill="currentColor" strokeWidth={2.2} />
-              <span>Watch the Demo</span>
-            </a>
-          </div>
+        <div className="mt-8 flex items-center justify-center gap-6 max-[640px]:mt-7 max-[640px]:w-full max-[640px]:flex-col max-[640px]:gap-3">
+          <a
+            className="inline-flex min-h-[50px] min-w-[222px] items-center justify-center gap-8 rounded-[8px] border border-[#ff3144]/45 bg-[linear-gradient(180deg,#ad1e2b_0%,#851722_100%)] px-7 text-[14.5px] font-[740] text-white shadow-[0_0_30px_rgba(151,16,27,0.32),inset_0_1px_0_rgba(255,255,255,0.18)] transition-colors duration-200 hover:bg-[linear-gradient(180deg,#bb2332_0%,#941b27_100%)] max-[640px]:min-h-12 max-[640px]:w-full max-[640px]:min-w-0 max-[640px]:gap-5 max-[640px]:text-[14px]"
+            href="/login"
+          >
+            <span>Download the app</span>
+            <ArrowRight size={17} strokeWidth={2.3} />
+          </a>
+          <a
+            className="inline-flex min-h-[50px] min-w-[210px] items-center justify-center gap-3.5 rounded-[8px] border border-[#8f1e29] bg-[#120708]/78 px-7 text-[14.5px] font-[730] text-white transition-colors duration-200 hover:border-[#c7313f] hover:bg-[#1a0a0d] max-[640px]:min-h-12 max-[640px]:w-full max-[640px]:min-w-0 max-[640px]:text-[14px]"
+            href="#demo"
+          >
+            <Play size={16} fill="currentColor" strokeWidth={2.2} />
+            <span>Watch the Demo</span>
+          </a>
         </div>
       </div>
-
-      <div
-        className="relative z-20 mx-auto mb-5 grid w-[min(94vw,1180px)] shrink-0 grid-cols-[minmax(110px,140px)_1fr] items-center gap-[22px] rounded-lg border border-white/10 bg-[#15100f]/90 px-7 py-4 min-[1500px]:mb-6 min-[1500px]:w-[min(90vw,1320px)] min-[1500px]:px-8 min-[1500px]:py-5 max-[1180px]:w-[calc(100%-48px)] max-[820px]:hidden"
-        aria-label="SWRMZ performance metrics"
-      >
-        <h2 className="text-[0.96rem] font-[680] leading-[1.16] tracking-[0] text-[#f2eaeb] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.05rem] max-[820px]:leading-[1.1]">
-          Our
-          <br />
-          performance
-        </h2>
-
-        <dl className="grid grid-cols-4 items-stretch max-[1180px]:grid-cols-2 max-[820px]:grid-cols-1 max-[820px]:gap-0">
-          {stats.map((stat) => (
-            <div
-              className="border-l border-[#c9b9bb]/15 px-5 first:border-l-0 max-[1180px]:px-4 max-[1180px]:odd:border-l-0 max-[820px]:border-l-0 max-[820px]:border-b max-[820px]:border-[#c9b9bb]/15 max-[820px]:px-0 max-[820px]:py-3 max-[820px]:first:pt-0 max-[820px]:last:border-b-0 max-[820px]:last:pb-0"
-              key={stat.label}
-            >
-              <dt className="text-[0.56rem] font-[630] leading-tight text-[#9a8689] max-[820px]:text-[0.7rem]">
-                {stat.label}
-              </dt>
-              <dd className="mt-1.5 text-[0.96rem] font-[720] leading-none tracking-[0] text-[#d98a90] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.15rem]">
-                {stat.value}
-              </dd>
-              <span className="mt-1.5 block text-[0.56rem] font-medium leading-[1.34] text-[#c2b2b4] max-[820px]:text-[0.7rem]">
-                {stat.note}
-              </span>
-            </div>
-          ))}
-        </dl>
-      </div>
     </section>
+  );
+}
+
+function HeroBackdrop() {
+  return (
+    <>
+      <div
+        className="absolute inset-0 -z-30 bg-[radial-gradient(circle_at_50%_104%,rgba(186,18,31,0.64)_0%,rgba(118,16,25,0.3)_13%,rgba(20,3,5,0.78)_35%,rgba(0,0,0,0.98)_68%)]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-0 -z-20 bg-[linear-gradient(90deg,rgba(0,0,0,0.88)_0%,rgba(0,0,0,0.28)_28%,rgba(0,0,0,0.24)_72%,rgba(0,0,0,0.9)_100%),radial-gradient(circle_at_50%_42%,rgba(255,255,255,0.075)_0%,rgba(255,255,255,0.015)_31%,transparent_57%)]"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute inset-x-0 top-[72px] -z-10 h-px bg-white/[0.035] max-[820px]:top-16"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute left-0 top-[248px] -z-10 h-[386px] w-[282px] opacity-[0.56] max-[900px]:opacity-25"
+        aria-hidden="true"
+      >
+        <HudGrid />
+      </div>
+      <div
+        className="pointer-events-none absolute right-[18px] top-[91px] -z-10 h-[158px] w-[305px] opacity-[0.5] max-[900px]:right-[-128px] max-[900px]:opacity-25"
+        aria-hidden="true"
+      >
+        <TargetHud />
+      </div>
+      <div
+        className="pointer-events-none absolute bottom-[-76px] left-1/2 -z-10 h-[190px] w-[760px] -translate-x-1/2 rounded-[100%] bg-[#a91522]/38 blur-[44px]"
+        aria-hidden="true"
+      />
+      <div className="grain pointer-events-none absolute inset-0 -z-10 opacity-[0.045]" aria-hidden="true" />
+    </>
+  );
+}
+
+function HudGrid() {
+  return (
+    <svg viewBox="0 0 282 386" className="h-full w-full" fill="none" aria-hidden="true">
+      <defs>
+        <pattern id="hero-dot-grid" width="12" height="12" patternUnits="userSpaceOnUse">
+          <path d="M1 1h1v1H1z" fill="#bd1324" opacity="0.78" />
+        </pattern>
+      </defs>
+      <rect width="155" height="310" fill="url(#hero-dot-grid)" opacity="0.74" />
+      <rect x="71" y="238" width="82" height="7" fill="#8d111d" opacity="0.42" />
+      <rect x="187" y="61" width="43" height="2" fill="#8d111d" opacity="0.55" />
+      <rect x="185" y="170" width="78" height="3" fill="#8d111d" opacity="0.45" />
+      <rect x="95" y="323" width="31" height="2" fill="#8d111d" opacity="0.65" />
+      <path d="M97 116h67m-39 6h63m-25 87h50m-112 149h75" stroke="#8d111d" strokeWidth="1" opacity="0.5" />
+    </svg>
+  );
+}
+
+function TargetHud() {
+  return (
+    <svg viewBox="0 0 305 158" className="h-full w-full" fill="none" aria-hidden="true">
+      <defs>
+        <pattern id="hero-right-grid" width="11" height="11" patternUnits="userSpaceOnUse">
+          <path d="M1 1h1v1H1z" fill="#9d101d" opacity="0.62" />
+        </pattern>
+      </defs>
+      <rect x="0" y="0" width="176" height="130" fill="url(#hero-right-grid)" opacity="0.55" />
+      <path d="M208 78h86M251 35v86" stroke="#a51320" strokeWidth="1" opacity="0.62" />
+      <circle cx="251" cy="78" r="29" stroke="#b51625" strokeWidth="1" opacity="0.78" />
+      <circle cx="251" cy="78" r="8" stroke="#b51625" strokeWidth="1" opacity="0.68" />
+      <path d="M235 78h32M251 62v32" stroke="#d92435" strokeWidth="1" opacity="0.74" />
+      <path d="M59 48h69m-44 8h74M28 91h46m30 12h84m-61 10h48" stroke="#9d101d" strokeWidth="1.5" opacity="0.48" />
+      <path d="M284 105h8v-8m-41-55h-8v8" stroke="#b51625" strokeWidth="1.2" opacity="0.76" />
+    </svg>
   );
 }
