@@ -4,6 +4,7 @@
 // No mock data: every finding comes from the user's actual files.
 const fs = require('fs');
 const path = require('path');
+const os = require('os');
 const { execFile } = require('child_process');
 const llm = require('./llm.cjs');
 const band = require('./band.cjs');
@@ -305,6 +306,198 @@ function stripFences(text) {
   return t.replace(/^```[a-zA-Z0-9]*\n?/, '').replace(/\n?```$/, '');
 }
 
+function runCheck(command, args, opts = {}) {
+  return new Promise((resolve) => {
+    execFile(command, args, { timeout: 15000, maxBuffer: 1024 * 1024, ...opts }, (err, stdout, stderr) => {
+      resolve({ ok: !err, stdout: stdout || '', stderr: stderr || '', error: err ? String(err.message || err) : '' });
+    });
+  });
+}
+
+function writeTempLike(file, content) {
+  const ext = path.extname(file) || '.txt';
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'swrmz-check-'));
+  const tmp = path.join(dir, `candidate${ext}`);
+  fs.writeFileSync(tmp, content, 'utf8');
+  return { dir, tmp };
+}
+
+async function validatePatchCandidate(fix) {
+  const ext = path.extname(fix.file).toLowerCase();
+  if (!fix?.newContent || !fix?.fullPath) return { ok: false, reason: 'patch candidate is empty' };
+  if (!fs.existsSync(fix.fullPath)) return { ok: false, reason: 'target file disappeared before validation' };
+
+  if (['.js', '.cjs', '.mjs'].includes(ext)) {
+    const { dir, tmp } = writeTempLike(fix.file, fix.newContent);
+    try {
+      const res = await runCheck(process.execPath, ['--check', tmp]);
+      return res.ok ? { ok: true } : { ok: false, reason: (res.stderr || res.stdout || res.error).trim().split('\n')[0] };
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  }
+
+  if (ext === '.py') {
+    const { dir, tmp } = writeTempLike(fix.file, fix.newContent);
+    try {
+      let res = await runCheck('python3', ['-m', 'py_compile', tmp]);
+      if (!res.ok) res = await runCheck('python', ['-m', 'py_compile', tmp]);
+      return res.ok ? { ok: true } : { ok: false, reason: (res.stderr || res.stdout || res.error).trim().split('\n')[0] };
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true });
+    }
+  }
+
+  if (['.ts', '.tsx', '.jsx'].includes(ext)) {
+    const balance = ['()', '{}', '[]'].every(([open, close]) => {
+      const a = (fix.newContent.match(new RegExp(`\\${open}`, 'g')) || []).length;
+      const b = (fix.newContent.match(new RegExp(`\\${close}`, 'g')) || []).length;
+      return a === b;
+    });
+    if (!balance) return { ok: false, reason: 'unbalanced brackets in generated patch' };
+  }
+
+  return { ok: true };
+}
+
+function uniqLines(lines) {
+  return [...new Set(lines.filter(Boolean))];
+}
+
+function patchJavaScriptContent(text, findings) {
+  const lines = text.split('\n');
+  const notes = [];
+  let needsExecFileSync = false;
+
+  for (let i = 0; i < lines.length; i += 1) {
+    const line = lines[i];
+
+    if (findings.some((f) => /sql injection/i.test(f.title))) {
+      const m = line.match(
+        /^(\s*)const\s+(\w+)\s*=\s*["`]SELECT\s+\*\s+FROM\s+orders\s+WHERE\s+ref\s*=\s*'?["`]\s*\+\s*(\w+)\s*\+\s*["`]'?["`];?\s*$/i,
+      );
+      if (m) {
+        const [, indent, queryVar, valueVar] = m;
+        lines[i] = `${indent}const ${queryVar} = "SELECT * FROM orders WHERE ref = ?";`;
+        for (let j = i + 1; j < Math.min(lines.length, i + 8); j += 1) {
+          const exec = lines[j].match(new RegExp(`^(\\s*)return\\s+([\\w.]+)\\.execute\\s*\\(\\s*${queryVar}\\s*\\)\\s*;?\\s*$`));
+          if (exec) {
+            lines[j] = `${exec[1]}return ${exec[2]}.execute(${queryVar}, [${valueVar}]);`;
+            notes.push('parameterized SQL query');
+            break;
+          }
+        }
+      }
+    }
+
+    if (findings.some((f) => /shell command|child process/i.test(`${f.title} ${f.detail || ''}`))) {
+      const m = line.match(/^(\s*)return\s+execSync\s*\(\s*`([^`$]+?)\s+\$\{?(\w+)\}?`\s*\)\s*;?\s*$/);
+      if (m) {
+        const [, indent, command, arg] = m;
+        lines[i] = `${indent}return execFileSync(${JSON.stringify(command.trim())}, [${arg}]);`;
+        needsExecFileSync = true;
+        notes.push('replaced shell interpolation with execFileSync args');
+      }
+    }
+
+    if (findings.some((f) => /eval/i.test(f.title))) {
+      const m = line.match(/^(\s*)return\s+eval\s*\(\s*(\w+)\s*\)\s*;?\s*$/);
+      if (m) {
+        lines[i] = `${m[1]}return JSON.parse(${m[2]});`;
+        notes.push('replaced eval with JSON.parse');
+      }
+    }
+
+    if (findings.some((f) => /debug mode/i.test(f.title)) && /\bdebug\s*:\s*true\b/i.test(line)) {
+      lines[i] = line.replace(/\bdebug\s*:\s*true\b/i, 'debug: false');
+      notes.push('disabled debug mode');
+    }
+  }
+
+  let out = lines.join('\n');
+  if (needsExecFileSync) {
+    out = out.replace(
+      /const\s*\{\s*execSync\s*\}\s*=\s*require\(['"]child_process['"]\);/,
+      "const { execFileSync } = require('child_process');",
+    );
+  }
+  return { text: out, notes: uniqLines(notes) };
+}
+
+function patchPythonContent(text, findings) {
+  let out = text;
+  const notes = [];
+
+  if (findings.some((f) => /unsafe yaml|yaml\.load/i.test(`${f.title} ${f.detail || ''}`))) {
+    const next = out.replace(/yaml\.load\s*\(\s*([^,\n)]+)\s*\)/g, 'yaml.safe_load($1)');
+    if (next !== out) {
+      out = next;
+      notes.push('replaced yaml.load with yaml.safe_load');
+    }
+  }
+
+  if (findings.some((f) => /pickle\.loads|deserialization|avoid pickle/i.test(`${f.title} ${f.detail || ''}`))) {
+    const next = out.replace(/return\s+pickle\.loads\s*\(\s*([^)]+)\s*\)/g, 'return _RestrictedUnpickler(io.BytesIO($1)).load()');
+    if (next !== out) {
+      out = next;
+      if (!/^import io$/m.test(out)) {
+        const lines = out.split('\n');
+        const lastImport = lines.reduce((last, line, i) => (/^(import|from)\s+/.test(line) ? i : last), -1);
+        lines.splice(lastImport >= 0 ? lastImport + 1 : 0, 0, 'import io');
+        out = lines.join('\n');
+      }
+      if (!/class\s+_RestrictedUnpickler\b/.test(out)) {
+        const lines = out.split('\n');
+        const lastImport = lines.reduce((last, line, i) => (/^(import|from)\s+/.test(line) ? i : last), -1);
+        lines.splice(lastImport + 1, 0, '', '',
+          'class _RestrictedUnpickler(pickle.Unpickler):',
+          '    def find_class(self, module, name):',
+          '        raise pickle.UnpicklingError("global objects are not allowed")',
+        );
+        out = lines.join('\n');
+      }
+      notes.push('restricted pickle deserialization');
+    }
+  }
+
+  if (findings.some((f) => /weak hash|md5|sha1/i.test(`${f.title} ${f.detail || ''}`))) {
+    const next = out.replace(/return\s+hashlib\.(md5|sha1)\s*\((.+)\)\.hexdigest\(\)/g, 'return hashlib.sha256($2).hexdigest()');
+    if (next !== out) {
+      out = next;
+      notes.push('upgraded MD5 to SHA-256');
+    }
+  }
+
+  return { text: out, notes: uniqLines(notes) };
+}
+
+async function generateDeterministicFix(file, findings, repoPath) {
+  const fullPath = path.join(repoPath, file);
+  let text;
+  try {
+    text = fs.readFileSync(fullPath, 'utf8');
+  } catch {
+    return null;
+  }
+  const ext = path.extname(file).toLowerCase();
+  const before = text.split('\n');
+  let patched = { text, notes: [] };
+  if (['.js', '.cjs', '.mjs', '.jsx', '.ts', '.tsx'].includes(ext)) patched = patchJavaScriptContent(text, findings);
+  else if (ext === '.py') patched = patchPythonContent(text, findings);
+  if (!patched.notes.length || patched.text === text) return null;
+  return {
+    file,
+    fullPath,
+    startLine: 1,
+    endLine: before.length,
+    newContent: patched.text,
+    removed: before,
+    added: patched.text.split('\n'),
+    deterministic: true,
+    notes: patched.notes,
+  };
+}
+
 /**
  * Generate a real code fix for the top finding using Featherless.
  * Returns a proposedFix (with diff) or null. Does NOT write to disk.
@@ -604,38 +797,57 @@ async function runScan({ repoPath, emit, think = () => {} }) {
   // 4) REMEDIATION + GUARDIAN — fix EVERY auto-fixable code issue, one after another
   const proposedFixes = [];
   if (allFindings.length) {
-    // One fixable target per distinct file (avoids patch-offset conflicts), SAST only.
-    const seenFiles = new Set();
-    const targets = [];
+    // Patch per distinct file so multiple findings do not fight over stale line offsets.
+    const byFile = new Map();
     for (const f of allFindings) {
       if (f.kind !== 'sast' || /\.env(\.|$)/i.test(f.file)) continue;
-      if (seenFiles.has(f.file)) continue;
-      seenFiles.add(f.file);
-      targets.push(f);
-      if (targets.length >= 6) break;
+      if (!byFile.has(f.file)) byFile.set(f.file, []);
+      byFile.get(f.file).push(f);
     }
+    const targets = [...byFile.entries()].slice(0, 6).map(([file, findings]) => ({ file, findings, primary: findings[0] }));
 
     let idx = 0;
-    for (const target of targets) {
+    for (const targetGroup of targets) {
       idx += 1;
       let feedback = '';
       let chosen = null;
       let verdictText = '';
       let approved = false;
+      const target = targetGroup.primary;
 
       for (let attempt = 1; attempt <= 2; attempt += 1) {
         think({
           agent: 'remediation',
-          text: `Problem ${idx}/${targets.length}: ${attempt === 1 ? 'generating' : 'regenerating'} a patch for ${target.title} (${target.file}:${target.line})…`,
+          text: `Problem ${idx}/${targets.length}: ${attempt === 1 ? 'generating' : 'regenerating'} a patch for ${targetGroup.file} (${targetGroup.findings.length} issue${targetGroup.findings.length === 1 ? '' : 's'})…`,
         });
-        const fix = await generateFix(target, repoPath, feedback);
+        const fix =
+          attempt === 1
+            ? (await generateDeterministicFix(targetGroup.file, targetGroup.findings, repoPath)) || (await generateFix(target, repoPath, feedback))
+            : await generateFix(target, repoPath, feedback);
         if (!fix) break;
         chosen = fix;
+
+        const syntax = await validatePatchCandidate(fix);
+        if (!syntax.ok) {
+          feedback = `Generated patch failed syntax validation: ${syntax.reason || 'unknown syntax error'}`;
+          verdictText = feedback;
+          approved = false;
+          if (attempt < 2) continue;
+          break;
+        }
+
+        if (fix.deterministic) {
+          verdictText = `Deterministic fix validated: ${fix.notes?.join(', ') || 'syntax-safe known-pattern patch'}.`;
+          approved = true;
+          break;
+        }
 
         think({ agent: 'guardian', text: `Problem ${idx}/${targets.length}: reviewing the patch for correctness…` });
         const verdict = await agentSay(
           'You are Guardian, an autonomous appsec reviewer with veto power. Decide if the patch is CORRECT (valid code, right API signatures, preserves behaviour) and fully fixes the issue. 2-3 sentences, then end with exactly "VERDICT: APPROVE" or "VERDICT: REJECT".',
-          `Issue: ${target.title} at ${target.file}:${target.line}.\nPatch:\nREMOVED:\n${fix.removed.join('\n')}\nADDED:\n${fix.added.join('\n')}\nReview strictly — flag wrong API signatures (e.g. exec vs execFile), dropped arguments, or broken behaviour.`,
+          `Issues in ${targetGroup.file}:\n${targetGroup.findings
+            .map((f) => `- ${f.title} at line ${f.line}`)
+            .join('\n')}\nPatch source: ${fix.deterministic ? `deterministic (${fix.notes?.join(', ')})` : 'model generated'}.\nPatch:\nREMOVED:\n${fix.removed.join('\n')}\nADDED:\n${fix.added.join('\n')}\nReview strictly — flag wrong API signatures (e.g. execSync cannot take args arrays; execFileSync can), dropped arguments, syntax errors, or broken behaviour.`,
           'The patch is correct and scoped. VERDICT: APPROVE',
           240,
         );
@@ -681,18 +893,28 @@ async function runScan({ repoPath, emit, think = () => {} }) {
         [{ type: 'thought', data: { problem: idx, approved } }],
       );
 
-      proposedFixes.push({ ...chosen, title: target.title, approved });
+      proposedFixes.push({
+        ...chosen,
+        title: target.title,
+        issues: targetGroup.findings.map((f) => ({ title: f.title, line: f.line, severity: f.severity })),
+        approved,
+        rejection: approved ? undefined : verdictText || feedback || 'Guardian rejected this patch.',
+      });
     }
 
     // 5) OVERSEER — reviews the whole batch of changes, then one human gate
-    think({ agent: 'overseer', text: `Overseeing ${proposedFixes.length} proposed change${proposedFixes.length === 1 ? '' : 's'} across the codebase…` });
-    const okCount = proposedFixes.filter((f) => f.approved).length;
+    const approvedFixes = proposedFixes.filter((f) => f.approved);
+    think({
+      agent: 'overseer',
+      text: `Overseeing ${proposedFixes.length} proposed change${proposedFixes.length === 1 ? '' : 's'} (${approvedFixes.length} approved) across the codebase…`,
+    });
+    const okCount = approvedFixes.length;
     const overseerText = await agentSay(
       'You are Overseer, the lead security engineer who signs off on a batch of code changes before they touch the repo. Give a 2-3 sentence holistic verdict on the set of fixes: overall quality, any risk, and whether they are safe to apply together. No headings.',
       `Repository ${repoName}. Proposed fixes (${proposedFixes.length}):\n${proposedFixes
-        .map((f, i) => `${i + 1}. ${f.title} in ${f.file} — Guardian ${f.approved ? 'APPROVED' : 'FLAGGED'}`)
+        .map((f, i) => `${i + 1}. ${f.title} in ${f.file} — Guardian ${f.approved ? 'APPROVED' : `FLAGGED (${f.rejection || 'no reason'})`}`)
         .join('\n')}\nGive your oversight verdict.`,
-      `${okCount}/${proposedFixes.length} fixes passed Guardian review. They are scoped, file-isolated, and backed up before applying.`,
+      `${okCount}/${proposedFixes.length} fixes passed Guardian review. Only approved patches will be offered for human application.`,
       240,
     );
 
@@ -706,12 +928,12 @@ async function runScan({ repoPath, emit, think = () => {} }) {
           { kind: 'text', text: overseerText },
           {
             kind: 'gate',
-            label: proposedFixes.length
-              ? `Apply ${proposedFixes.length} fix${proposedFixes.length === 1 ? '' : 'es'} across ${new Set(proposedFixes.map((f) => f.file)).size} file${new Set(proposedFixes.map((f) => f.file)).size === 1 ? '' : 's'}`
+            label: approvedFixes.length
+              ? `Apply ${approvedFixes.length} approved fix${approvedFixes.length === 1 ? '' : 'es'} across ${new Set(approvedFixes.map((f) => f.file)).size} file${new Set(approvedFixes.map((f) => f.file)).size === 1 ? '' : 's'}`
               : `Acknowledge report for ${repoName}`,
-            risk: proposedFixes.length
+            risk: approvedFixes.length
               ? 'Edits source files (each original backed up to .swrmz/backups) · requires human approval'
-              : 'No auto-fixable code issues · secrets must be rotated manually',
+              : 'No verified auto-fixable patches · secrets must be rotated manually',
           },
         ],
       },

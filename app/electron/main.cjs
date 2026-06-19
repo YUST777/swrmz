@@ -125,6 +125,84 @@ function isBandFinal(rows) {
   });
 }
 
+function isBandTerminal(rows) {
+  if (isBandFinal(rows)) return true;
+  return rows.some((row) => {
+    const sender = `${row.sender || ''}`.toLowerCase();
+    const content = `${row.content || ''}`.toLowerCase();
+    if (/@swrmz\s+(analyst|fixer|reviewer)/i.test(content)) return false;
+    if (
+      sender.includes('analyst') &&
+      /(only secrets|no fixable|no code issue|no code finding|nothing to hand off|do not mention another agent)/i.test(content)
+    ) {
+      return true;
+    }
+    if (
+      (sender.includes('fixer') || sender.includes('reviewer')) &&
+      /(verdict|verified|approved|rejected|complete|done|cannot safely|no safe patch|final)/i.test(content)
+    ) {
+      return true;
+    }
+    return false;
+  });
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function runBandSidecar({ repoPath, sessionId, base, messages, emit, think, state, localDone }) {
+  const seen = new Set();
+  let lastCount = 0;
+  try {
+    think({ agent: 'recon', text: 'Creating a real Band room with Operator, Analyst, Fixer, and Reviewer…' });
+    const started = await bandBridge.startBandScan(repoPath);
+    state.chatId = started.chatId;
+    think({
+      agent: 'recon',
+      text: `Band room created (${state.chatId}). Running local aggressive scan/fix engine in parallel.`,
+    });
+    store.saveSession({ ...base, status: 'live', bandChatId: state.chatId, messages });
+
+    const startedAt = Date.now();
+    const maxMs = Number(process.env.BAND_BRIDGE_MAX_MS || 2 * 60 * 1000);
+    while (!localDone() && Date.now() - startedAt < maxMs) {
+      const rows = await bandBridge.getTranscript(state.chatId);
+      for (const row of rows) {
+        if (seen.has(row.id)) continue;
+        seen.add(row.id);
+        emit(bandRowToMessage(row));
+      }
+
+      if (rows.length !== lastCount) {
+        lastCount = rows.length;
+        think({
+          agent: 'analysis',
+          text: `Band transcript updated: ${rows.length} message${rows.length === 1 ? '' : 's'} in the room.`,
+        });
+      }
+
+      if (isBandTerminal(rows)) {
+        think({
+          agent: 'guardian',
+          text: 'Band reached a terminal response. Local scanner/fixer continues so the app never stalls on the room.',
+        });
+        return;
+      }
+
+      await sleep(2500);
+    }
+  } catch (err) {
+    const message = {
+      id: `band-error-${Date.now()}`,
+      agent: 'guardian',
+      at: atTime(),
+      blocks: [{ kind: 'text', text: `Band room sidecar failed, local scan continues: ${String(err?.message || err)}` }],
+    };
+    emit(message);
+  }
+}
+
 // --- Targets / sessions persistence ---
 ipcMain.handle('targets:list', () => store.listTargets());
 ipcMain.handle('sessions:list', () => store.listSessions());
@@ -180,108 +258,43 @@ ipcMain.handle('scan:start', async (_e, repoPath) => {
   };
   store.saveSession(base);
 
-  if (bandBridge.enabled()) {
-    (async () => {
-      const seen = new Set();
-      let chatId = null;
-      try {
-        think({ agent: 'recon', text: 'Creating a real Band room with Operator, Analyst, Fixer, and Reviewer…' });
-        const started = await bandBridge.startBandScan(repoPath);
-        chatId = started.chatId;
-        think({ agent: 'recon', text: `Band room created (${chatId}). Waiting for Analyst to receive the scan request…` });
-
-        const startedAt = Date.now();
-        let stableFinalSince = null;
-        let lastCount = 0;
-
-        while (Date.now() - startedAt < 8 * 60 * 1000) {
-          const rows = await bandBridge.getTranscript(chatId);
-          for (const row of rows) {
-            if (seen.has(row.id)) continue;
-            seen.add(row.id);
-            const message = bandRowToMessage(row);
-            messages.push(message);
-            mainWindow?.webContents.send('scan:event', { sessionId, message });
-          }
-
-          if (rows.length !== lastCount) {
-            lastCount = rows.length;
-            stableFinalSince = null;
-            think({ agent: 'analysis', text: `Band transcript updated: ${rows.length} message${rows.length === 1 ? '' : 's'} in the room.` });
-          }
-
-          if (isBandFinal(rows)) {
-            if (!stableFinalSince) stableFinalSince = Date.now();
-            if (Date.now() - stableFinalSince > 8000) {
-              const complete = {
-                id: `band-complete-${Date.now()}`,
-                agent: 'reporter',
-                at: atTime(),
-                blocks: [
-                  {
-                    kind: 'text',
-                    text:
-                      '✅ Band assessment complete. Operator, Analyst, Fixer, and Reviewer coordinated through the Band room. The transcript above is the audit trail.',
-                  },
-                ],
-              };
-              messages.push(complete);
-              mainWindow?.webContents.send('scan:event', { sessionId, message: complete });
-              const session = {
-                ...base,
-                status: 'done',
-                agents: 4,
-                bandChatId: chatId,
-                messages,
-                result: { repoPath, repoName: path.basename(repoPath), findings: [], counts: {}, fileCount: 0, auditRan: false, band: true },
-              };
-              store.saveSession(session);
-              mainWindow?.webContents.send('scan:done', { sessionId, status: 'done', result: session.result });
-              return;
-            }
-          }
-
-          await new Promise((resolve) => setTimeout(resolve, 3500));
-        }
-
-        const timeout = {
-          id: `band-timeout-${Date.now()}`,
-          agent: 'guardian',
-          at: atTime(),
-          blocks: [{ kind: 'text', text: 'Band room is still active, but this app timed out waiting for the Reviewer final message.' }],
-        };
-        messages.push(timeout);
-        mainWindow?.webContents.send('scan:event', { sessionId, message: timeout });
-        const session = { ...base, status: 'awaiting', agents: 4, bandChatId: chatId, messages };
-        store.saveSession(session);
-        mainWindow?.webContents.send('scan:done', { sessionId, status: 'awaiting' });
-      } catch (err) {
-        const message = {
-          id: `band-error-${Date.now()}`,
-          agent: 'guardian',
-          at: atTime(),
-          blocks: [{ kind: 'text', text: `Band flow failed: ${String(err?.message || err)}` }],
-        };
-        messages.push(message);
-        mainWindow?.webContents.send('scan:event', { sessionId, message });
-        const session = { ...base, status: 'error', agents: 4, bandChatId: chatId, messages };
-        store.saveSession(session);
-        mainWindow?.webContents.send('scan:done', { sessionId, status: 'error', error: String(err?.message || err) });
-      }
-    })();
-
-    return { sessionId, targetId };
-  }
-
   // run async; resolve immediately with the id so the renderer can subscribe
   (async () => {
+    const bandState = { chatId: null };
+    let localComplete = false;
+    if (bandBridge.enabled()) {
+      runBandSidecar({
+        repoPath,
+        sessionId,
+        base,
+        messages,
+        emit,
+        think,
+        state: bandState,
+        localDone: () => localComplete,
+      }).catch(() => {});
+    }
+
     try {
+      if (bandBridge.enabled()) {
+        think({ agent: 'analysis', text: 'Starting local aggressive scan/fix engine now; Band will not block completion.' });
+      }
       const result = await runScan({ repoPath, emit, think });
+      localComplete = true;
       const status = result.findings.length ? 'awaiting' : 'done';
-      const session = { ...base, status, agents: result.findings.length ? 5 : 3, result, report: result.report, messages };
+      const session = {
+        ...base,
+        status,
+        agents: result.findings.length ? 5 : 3,
+        bandChatId: bandState.chatId || undefined,
+        result: { ...result, bandChatId: bandState.chatId || undefined },
+        report: result.report,
+        messages,
+      };
       store.saveSession(session);
       mainWindow?.webContents.send('scan:done', { sessionId, status, result });
     } catch (err) {
+      localComplete = true;
       mainWindow?.webContents.send('scan:done', { sessionId, status: 'error', error: String(err) });
     }
   })();
@@ -294,7 +307,9 @@ ipcMain.handle('scan:approve', async (_e, sessionId) => {
   const session = store.getSession(sessionId);
   if (!session || !session.result) throw new Error('Session not ready');
 
-  const fixes = session.result.proposedFixes || (session.result.proposedFix ? [session.result.proposedFix] : []);
+  const fixes = (session.result.proposedFixes || (session.result.proposedFix ? [session.result.proposedFix] : [])).filter(
+    (fix) => fix && fix.approved !== false,
+  );
   const applied = [];
   for (const fix of fixes) {
     try {
