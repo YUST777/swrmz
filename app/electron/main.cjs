@@ -258,46 +258,49 @@ ipcMain.handle('scan:start', async (_e, repoPath) => {
   };
   store.saveSession(base);
 
-  // run async; resolve immediately with the id so the renderer can subscribe
-  (async () => {
-    const bandState = { chatId: null };
-    let localComplete = false;
-    if (bandBridge.enabled()) {
-      runBandSidecar({
-        repoPath,
-        sessionId,
-        base,
-        messages,
-        emit,
-        think,
-        state: bandState,
-        localDone: () => localComplete,
-      }).catch(() => {});
-    }
-
-    try {
+  // Resolve first so the renderer can set scanningId before early thinking events arrive.
+  setTimeout(() => {
+    (async () => {
+      const bandState = { chatId: null };
+      let localComplete = false;
+      think({ agent: 'recon', text: 'Booting the local scan engine and preparing the Band sidecar…' });
       if (bandBridge.enabled()) {
-        think({ agent: 'analysis', text: 'Starting local aggressive scan/fix engine now; Band will not block completion.' });
+        runBandSidecar({
+          repoPath,
+          sessionId,
+          base,
+          messages,
+          emit,
+          think,
+          state: bandState,
+          localDone: () => localComplete,
+        }).catch(() => {});
       }
-      const result = await runScan({ repoPath, emit, think });
-      localComplete = true;
-      const status = result.findings.length ? 'awaiting' : 'done';
-      const session = {
-        ...base,
-        status,
-        agents: result.findings.length ? 5 : 3,
-        bandChatId: bandState.chatId || undefined,
-        result: { ...result, bandChatId: bandState.chatId || undefined },
-        report: result.report,
-        messages,
-      };
-      store.saveSession(session);
-      mainWindow?.webContents.send('scan:done', { sessionId, status, result });
-    } catch (err) {
-      localComplete = true;
-      mainWindow?.webContents.send('scan:done', { sessionId, status: 'error', error: String(err) });
-    }
-  })();
+
+      try {
+        if (bandBridge.enabled()) {
+          think({ agent: 'analysis', text: 'Starting local aggressive scan/fix engine now; Band will not block completion.' });
+        }
+        const result = await runScan({ repoPath, emit, think });
+        localComplete = true;
+        const status = result.findings.length ? 'awaiting' : 'done';
+        const session = {
+          ...base,
+          status,
+          agents: result.findings.length ? 5 : 3,
+          bandChatId: bandState.chatId || undefined,
+          result: { ...result, bandChatId: bandState.chatId || undefined },
+          report: result.report,
+          messages,
+        };
+        store.saveSession(session);
+        mainWindow?.webContents.send('scan:done', { sessionId, status, result });
+      } catch (err) {
+        localComplete = true;
+        mainWindow?.webContents.send('scan:done', { sessionId, status: 'error', error: String(err) });
+      }
+    })();
+  }, 75);
 
   return { sessionId, targetId };
 });

@@ -137,6 +137,7 @@ function WorkingIndicator({ thinking }: { thinking: ThinkEntry[] }) {
   const [open, setOpen] = useState(true); // expanded while working (1Code pattern)
   const latest = thinking[thinking.length - 1];
   const hasSteps = thinking.length > 0;
+  const label = latest ? `${AGENTS[latest.agent as keyof typeof AGENTS]?.name ?? 'Swarm'} is working…` : 'Swarm is warming up…';
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-3">
@@ -154,7 +155,7 @@ function WorkingIndicator({ thinking }: { thinking: ThinkEntry[] }) {
               className={`text-text-faint transition-transform duration-200 ${open ? 'rotate-90' : ''}`}
             />
           )}
-          <span className="text-[13px] font-medium text-text-dim">Swarm is working…</span>
+          <span className="text-[13px] font-medium text-text-dim">{label}</span>
           {!open && latest && (
             <span className="truncate text-[11.5px] text-text-faint">· {latest.text}</span>
           )}
