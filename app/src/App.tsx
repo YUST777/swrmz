@@ -5,7 +5,7 @@ import { SessionList } from './components/SessionList';
 import { RoomView } from './components/RoomView';
 import { PromptBar } from './components/PromptBar';
 import { WelcomeScreen } from './components/WelcomeScreen';
-import { api, hasBridge, type ScanDone, type ScanEvent, type Status, type ThinkEntry } from './lib/api';
+import { api, hasBridge, type BandRoomEvent, type ScanDone, type ScanEvent, type Status, type ThinkEntry } from './lib/api';
 import type { RoomMessage, Session, Target } from './data/types';
 
 export function App() {
@@ -21,6 +21,8 @@ export function App() {
   const [panelOpen, setPanelOpen] = useState(true);
   const [asking, setAsking] = useState(false);
   const [thinking, setThinking] = useState<ThinkEntry[]>([]);
+  const [activeBandChatId, setActiveBandChatId] = useState<string | null>(null);
+  const [activeBandParticipants, setActiveBandParticipants] = useState<string[]>([]);
   const scanningId = useRef<string | null>(null);
 
   const refresh = useCallback(async () => {
@@ -41,17 +43,28 @@ export function App() {
       if (sessionId !== scanningId.current) return;
       setMessages((prev) => [...prev, message]);
     });
+    const offBandRoom = api().onBandRoom(({ sessionId, chatId, participants }: BandRoomEvent) => {
+      if (sessionId !== scanningId.current) return;
+      setActiveBandChatId(chatId);
+      setActiveBandParticipants(
+        (participants ?? [])
+          .map((p) => p.name || p.handle)
+          .filter((name): name is string => Boolean(name)),
+      );
+    });
     const offThink = api().onScanThinking((e: ThinkEntry) => {
       if (e.sessionId !== scanningId.current) return;
       setThinking((prev) => [...prev, e]);
     });
-    const offDone = api().onScanDone(({ sessionId, status: st }: ScanDone) => {
+    const offDone = api().onScanDone(({ sessionId, status: st, result }: ScanDone) => {
       if (sessionId !== scanningId.current) return;
       setStatus(st);
+      if (result?.bandChatId) setActiveBandChatId(result.bandChatId);
       refresh();
     });
     return () => {
       offEvent();
+      offBandRoom();
       offThink();
       offDone();
     };
@@ -64,6 +77,8 @@ export function App() {
       setApproved(false);
       setStatus('live');
       setThinking([]);
+      setActiveBandChatId(null);
+      setActiveBandParticipants([]);
       const res = await api().startScan(repoPath);
       scanningId.current = res.sessionId;
       setActiveSessionId(res.sessionId);
@@ -98,6 +113,8 @@ export function App() {
     setMessages(s.messages ?? []);
     setStatus(s.status);
     setApproved(!!s.report);
+    setActiveBandChatId(s.bandChatId ?? s.result?.bandChatId ?? null);
+    setActiveBandParticipants(s.bandParticipants ?? []);
     setPhase('running');
   };
 
@@ -184,7 +201,10 @@ export function App() {
 
   const activeTarget = targets.find((t) => t.id === activeTargetId) || null;
   const title = activeTarget ? `Scan — ${activeTarget.name}` : 'Scan';
-  const reportPath = sessions.find((s) => s.id === activeSessionId)?.report?.path;
+  const activeSession = sessions.find((s) => s.id === activeSessionId);
+  const reportPath = activeSession?.report?.path;
+  const bandChatId = activeBandChatId ?? activeSession?.bandChatId ?? activeSession?.result?.bandChatId ?? null;
+  const bandParticipants = activeBandParticipants.length ? activeBandParticipants : activeSession?.bandParticipants ?? [];
 
   return (
     <div className="flex h-screen flex-col overflow-hidden">
@@ -221,6 +241,8 @@ export function App() {
                 onApprove={handleApprove}
                 reportPath={reportPath}
                 integrations={integrations}
+                bandChatId={bandChatId}
+                bandParticipants={bandParticipants}
                 panelOpen={panelOpen}
                 onTogglePanel={togglePanel}
                 thinking={thinking}

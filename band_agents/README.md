@@ -19,7 +19,7 @@ Human ──"@Analyst scan /path/to/repo"──▶ Band room
    For each, copy the **API key** (shown once) and the **Agent UUID** (settings page).
 3. **Config files:**
    ```bash
-   cp .env.example .env                      # add your FEATHERLESS_API_KEY
+   cp .env.example .env                      # add FEATHERLESS_* or AGENT_* model credentials
    cp agent_config.example.yaml agent_config.yaml   # add the 3 agent ids + keys
    ```
 4. **Install** (Python 3.11+):
@@ -41,9 +41,14 @@ You should see all three agents connect. Then in Band:
 3. Send: `@Analyst scan /home/you/path/to/repo`
 4. Watch the handoffs happen **in the Band room** — that transcript is the audit trail.
 
+The Electron app can also drive the full flow automatically. Add `BAND_OPERATOR_KEY`,
+`BAND_ANALYST_KEY`, `BAND_FIXER_KEY`, and `BAND_REVIEWER_KEY` in `app/.env.local`.
+Each scan creates a fresh room, recruits these three agents, posts the request, and
+shows the room id plus transcript in the desktop UI.
+
 ## Notes
 - `tools.py` holds the real security tools (semgrep + secret/SAST scan + backed-up patching).
 - If your `band-sdk` version names the system-prompt arg differently on `LangGraphAdapter`,
   rename `system_prompt=` in `agents.py`.
-- Featherless model tool-calling varies; if an agent ignores tools, set a tool-calling-capable
-  `FEATHERLESS_MODEL` in `.env`.
+- Model tool-calling varies; if an agent ignores tools, set a tool-calling-capable
+  `FEATHERLESS_MODEL` or `AGENT_MODEL` in `.env`.

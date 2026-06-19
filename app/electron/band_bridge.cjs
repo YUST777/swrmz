@@ -69,14 +69,20 @@ async function findWorkers() {
 /** Create a fresh room, recruit the 3 agents, and post the scan request. Returns {chatId}. */
 async function startBandScan(repoPath) {
   const workers = await findWorkers();
-  if (!workers.analyst) throw new Error('SWRMZ Analyst not found in peer network — is the agent registered?');
+  const missing = Object.entries(workers)
+    .filter(([, worker]) => !worker)
+    .map(([role]) => `SWRMZ ${role[0].toUpperCase()}${role.slice(1)}`);
+  if (missing.length) {
+    throw new Error(`Band worker peer${missing.length === 1 ? '' : 's'} not found: ${missing.join(', ')}`);
+  }
 
   const created = await request('POST', '/chats', { chat: {} });
   const chatId = created.json?.data?.id;
   if (!chatId) throw new Error('Could not create Band room');
 
-  for (const w of [workers.analyst, workers.fixer, workers.reviewer]) {
-    if (w) await request('POST', `/chats/${chatId}/participants`, { participant: { participant_id: w.id } });
+  const participants = [workers.analyst, workers.fixer, workers.reviewer];
+  for (const w of participants) {
+    await request('POST', `/chats/${chatId}/participants`, { participant: { participant_id: w.id } });
   }
 
   await request('POST', `/chats/${chatId}/messages`, {
@@ -86,7 +92,10 @@ async function startBandScan(repoPath) {
     },
   });
 
-  return { chatId };
+  return {
+    chatId,
+    participants: participants.map((w) => ({ id: w.id, name: w.name, handle: w.handle })),
+  };
 }
 
 /** Pull the full room transcript by merging the 3 worker agents' /context views

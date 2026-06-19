@@ -77,6 +77,8 @@ export interface Session {
   updated: string;
   createdAt: number;
   messages?: RoomMessage[];
+  bandChatId?: string;
+  bandParticipants?: string[];
   result?: ScanResult;
   report?: { path: string; hash: string };
 }
@@ -84,6 +86,7 @@ export interface Session {
 export interface ScanResult {
   repoPath: string;
   repoName: string;
+  bandChatId?: string;
   findings: Finding[];
   counts: Partial<Record<Severity, number>>;
   fileCount: number;

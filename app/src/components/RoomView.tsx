@@ -33,6 +33,8 @@ export function RoomView({
   onApprove,
   reportPath,
   integrations,
+  bandChatId,
+  bandParticipants,
   panelOpen,
   onTogglePanel,
   thinking = [],
@@ -44,13 +46,22 @@ export function RoomView({
   onApprove: () => void;
   reportPath?: string;
   integrations?: Status | null;
+  bandChatId?: string | null;
+  bandParticipants?: string[];
   panelOpen: boolean;
   onTogglePanel: () => void;
   thinking?: ThinkEntry[];
 }) {
   return (
     <div className="flex min-h-0 min-w-0 flex-1 flex-col bg-ink">
-      <RoomHeader title={title} integrations={integrations} panelOpen={panelOpen} onTogglePanel={onTogglePanel} />
+      <RoomHeader
+        title={title}
+        integrations={integrations}
+        bandChatId={bandChatId}
+        bandParticipants={bandParticipants}
+        panelOpen={panelOpen}
+        onTogglePanel={onTogglePanel}
+      />
       <div className="relative flex-1 overflow-y-auto">
         <div className="relative mx-auto flex max-w-[760px] flex-col gap-5 px-6 py-7">
           <AnimatePresence initial={false}>
@@ -79,26 +90,37 @@ export function RoomView({
 function RoomHeader({
   title,
   integrations,
+  bandChatId,
+  bandParticipants = [],
   panelOpen,
   onTogglePanel,
 }: {
   title: string;
   integrations?: Status | null;
+  bandChatId?: string | null;
+  bandParticipants?: string[];
   panelOpen: boolean;
   onTogglePanel: () => void;
 }) {
   const modelLabel = integrations?.model ? integrations.model.split('/').pop() : 'no model';
+  const participantLabel = bandParticipants.length ? ` · ${bandParticipants.join(' / ')}` : '';
   return (
-    <div className="drag flex h-12 shrink-0 items-center gap-2 border-b border-line-soft bg-panel-2 px-3">
+    <div className="drag flex h-14 shrink-0 items-center gap-2 border-b border-line-soft bg-panel-2 px-3">
       <button
         onClick={onTogglePanel}
-        title={panelOpen ? 'Collapse chats' : 'Show chats'}
+        aria-label={panelOpen ? 'Collapse chats' : 'Show chats'}
         className="no-drag grid size-7 shrink-0 place-items-center rounded-md text-text-dim transition-colors hover:bg-surface hover:text-text"
       >
         {panelOpen ? <PanelLeftClose size={15} /> : <PanelLeftOpen size={15} />}
       </button>
       <div className="min-w-0">
         <div className="truncate text-[13px] font-semibold text-text">{title}</div>
+        <div className="mt-0.5 flex min-w-0 items-center gap-1.5 text-[10.5px] text-text-faint">
+          <span className={`size-1.5 shrink-0 rounded-full ${bandChatId ? 'bg-maroon-bright' : 'bg-text-faint'}`} />
+          <span className="shrink-0">Band room</span>
+          <span className="truncate font-mono text-text-dim">{bandChatId ?? 'pending'}</span>
+          <span className="truncate text-text-faint">{participantLabel}</span>
+        </div>
       </div>
       <div className="no-drag ml-auto flex items-center gap-1.5">
         {(['recon', 'analysis', 'remediation', 'guardian', 'reporter'] as const).map((id, i) => {
@@ -106,7 +128,7 @@ function RoomHeader({
           return (
             <div
               key={id}
-              title={`${a.name} · ${a.role}`}
+              aria-label={`${a.name} · ${a.role}`}
               className="grid size-7 place-items-center rounded-full border border-line text-[10px] font-bold"
               style={{ color: a.color, background: `${a.color}1a`, marginLeft: i ? -6 : 0 }}
             >
@@ -115,14 +137,14 @@ function RoomHeader({
           );
         })}
         <span
-          title="Model provider"
+          aria-label="Model provider"
           className="ml-2 inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-2.5 py-1 text-[11px] text-text-dim"
         >
           <span className={`size-1.5 rounded-full ${integrations?.modelReady ? 'bg-[#5fb87a]' : 'bg-text-faint'}`} />
           {modelLabel}
         </span>
         <span
-          title={integrations?.bandReady ? `Band: ${integrations.bandIdentity ?? 'connected'}` : 'Band not configured — running locally'}
+          aria-label={integrations?.bandReady ? `Band: ${integrations.bandIdentity ?? 'connected'}` : 'Band not configured — running locally'}
           className="inline-flex items-center gap-1.5 rounded-full border border-line bg-panel px-2.5 py-1 text-[11px] text-text-dim"
         >
           <span className={`size-1.5 rounded-full ${integrations?.bandReady ? 'bg-maroon-bright' : 'bg-text-faint'}`} />

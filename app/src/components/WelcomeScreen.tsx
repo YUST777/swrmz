@@ -16,7 +16,7 @@ export function WelcomeScreen({
     <div className="relative flex flex-1 items-center justify-center overflow-hidden bg-ink">
       <button
         onClick={onTogglePanel}
-        title={panelOpen ? 'Collapse chats' : 'Show chats'}
+        aria-label={panelOpen ? 'Collapse chats' : 'Show chats'}
         className="no-drag absolute left-3 top-3 z-20 grid size-7 place-items-center rounded-md text-text-dim transition-colors hover:bg-surface hover:text-text"
       >
         {panelOpen ? <PanelLeftClose size={15} /> : <PanelLeftOpen size={15} />}

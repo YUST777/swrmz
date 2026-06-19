@@ -73,6 +73,25 @@ Security isn't a one-time scan. The swarm runs as long as your stack evolves:
 5. Guard    →  Continuous monitoring, reporting, and lockdown
 ```
 
+## Band.ai Hackathon Flow
+
+SWRMZ uses Band as the real coordination layer for the desktop scan flow, not as a final notification channel.
+
+- The Electron app authenticates as a Band Operator and creates a fresh Band room for each scan.
+- The Operator recruits three registered Band remote agents: `SWRMZ Analyst`, `SWRMZ Fixer`, and `SWRMZ Reviewer`.
+- The scan request is posted into that Band room. Analyst hands findings to Fixer, Fixer hands patch context to Reviewer, and Reviewer signs off through Band mentions.
+- The app shows the live Band room id and mirrors the room transcript beside the local scan/fix engine so the handoffs are visible to the user and auditable in the saved session.
+
+Relevant source: [app/electron/band_bridge.cjs](app/electron/band_bridge.cjs), [app/electron/main.cjs](app/electron/main.cjs), and [band_agents/](band_agents/).
+
+Local proof command, after configuring the four Band keys and starting `band_agents/run.py`:
+
+```bash
+node app/electron/smoke_band_flow.cjs
+```
+
+It creates a temporary vulnerable repo, opens a real Band room, waits for Operator → Analyst → Fixer → Reviewer messages, and prints the room id plus sender summary.
+
 ---
 
 ## Tech Stack

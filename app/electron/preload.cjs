@@ -34,6 +34,11 @@ contextBridge.exposeInMainWorld('swrmz', {
     ipcRenderer.on('scan:event', handler);
     return () => ipcRenderer.removeListener('scan:event', handler);
   },
+  onBandRoom: (cb) => {
+    const handler = (_e, payload) => cb(payload);
+    ipcRenderer.on('scan:band', handler);
+    return () => ipcRenderer.removeListener('scan:band', handler);
+  },
   onScanThinking: (cb) => {
     const handler = (_e, payload) => cb(payload);
     ipcRenderer.on('scan:thinking', handler);

@@ -52,14 +52,14 @@ export function SessionList({
           <div className="no-drag flex items-center gap-1">
             <button
               onClick={onNewChat}
-              title="New chat for this project"
+              aria-label="New chat for this project"
               className="grid size-7 place-items-center rounded-md border border-line bg-panel text-text-dim transition-colors hover:border-maroon/60 hover:text-maroon-bright"
             >
               <Plus size={15} />
             </button>
             <button
               onClick={onToggle}
-              title="Collapse panel"
+              aria-label="Collapse panel"
               className="grid size-7 place-items-center rounded-md border border-line bg-panel text-text-dim transition-colors hover:text-text"
             >
               <PanelLeftClose size={15} />
@@ -90,7 +90,7 @@ export function SessionList({
                     </span>
                     {onDelete && (
                       <button
-                        title="Delete chat"
+                        aria-label="Delete chat"
                         onClick={(e) => {
                           e.stopPropagation();
                           onDelete(s.id);

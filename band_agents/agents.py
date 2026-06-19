@@ -21,10 +21,15 @@ from tools import apply_patch, read_code, scan_repo
 def _llm():
     # Backend model via an OpenAI-compatible endpoint (works cleanly with the
     # Band LangGraph adapter — streams and posts). Configurable via env.
+    api_key = os.getenv("AGENT_API_KEY") or os.getenv("FEATHERLESS_API_KEY")
+    base_url = os.getenv("AGENT_BASE_URL") or (
+        "https://api.freemodel.dev/v1" if os.getenv("AGENT_API_KEY") else "https://api.featherless.ai/v1"
+    )
+    model = os.getenv("AGENT_MODEL") or os.getenv("FEATHERLESS_MODEL") or "Qwen/Qwen3-Coder-Next"
     return ChatOpenAI(
-        model=os.getenv("AGENT_MODEL", "claude-sonnet-4-6"),
-        base_url=os.getenv("AGENT_BASE_URL", "https://api.freemodel.dev/v1"),
-        api_key=os.getenv("AGENT_API_KEY"),
+        model=model,
+        base_url=base_url,
+        api_key=api_key,
         temperature=0.2,
         max_tokens=1024,
     )

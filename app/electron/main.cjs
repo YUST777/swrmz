@@ -158,11 +158,41 @@ async function runBandSidecar({ repoPath, sessionId, base, messages, emit, think
     think({ agent: 'recon', text: 'Creating a real Band room with Operator, Analyst, Fixer, and Reviewer…' });
     const started = await bandBridge.startBandScan(repoPath);
     state.chatId = started.chatId;
+    const participants = [
+      { name: 'SWRMZ Operator', handle: 'operator' },
+      ...(started.participants || []),
+    ];
+    const participantNames = participants.map((p) => p.name || p.handle).filter(Boolean);
+    state.participants = participantNames;
+    mainWindow?.webContents.send('scan:band', { sessionId, chatId: state.chatId, participants });
     think({
       agent: 'recon',
       text: `Band room created (${state.chatId}). Running local aggressive scan/fix engine in parallel.`,
     });
-    store.saveSession({ ...base, status: 'live', bandChatId: state.chatId, messages });
+    emit({
+      id: `band-room-${state.chatId}`,
+      agent: 'recon',
+      at: atTime(),
+      blocks: [
+        {
+          kind: 'text',
+          text: `Band room ${state.chatId} is live. Participants: ${participantNames.join(
+            ', ',
+          )}. The scan request was posted into Band; Analyst, Fixer, and Reviewer handoffs are mirrored below.`,
+        },
+      ],
+    });
+
+    const current = store.getSession(sessionId) || base;
+    store.saveSession({
+      ...current,
+      status: current.status === 'live' ? 'live' : current.status,
+      bandChatId: state.chatId,
+      bandParticipants: participantNames,
+      result: current.result ? { ...current.result, bandChatId: state.chatId } : current.result,
+      messages,
+      updated: 'now',
+    });
 
     const startedAt = Date.now();
     const maxMs = Number(process.env.BAND_BRIDGE_MAX_MS || 2 * 60 * 1000);
@@ -284,17 +314,19 @@ ipcMain.handle('scan:start', async (_e, repoPath) => {
         const result = await runScan({ repoPath, emit, think });
         localComplete = true;
         const status = result.findings.length ? 'awaiting' : 'done';
+        const finalResult = { ...result, bandChatId: bandState.chatId || undefined };
         const session = {
           ...base,
           status,
           agents: result.findings.length ? 5 : 3,
           bandChatId: bandState.chatId || undefined,
-          result: { ...result, bandChatId: bandState.chatId || undefined },
+          bandParticipants: bandState.participants || undefined,
+          result: finalResult,
           report: result.report,
           messages,
         };
         store.saveSession(session);
-        mainWindow?.webContents.send('scan:done', { sessionId, status, result });
+        mainWindow?.webContents.send('scan:done', { sessionId, status, result: finalResult });
       } catch (err) {
         localComplete = true;
         mainWindow?.webContents.send('scan:done', { sessionId, status: 'error', error: String(err) });

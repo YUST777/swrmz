@@ -10,6 +10,11 @@ export interface ScanDone {
   result?: ScanResult;
   error?: string;
 }
+export interface BandRoomEvent {
+  sessionId: string;
+  chatId: string;
+  participants?: Array<{ id?: string; name?: string; handle?: string }>;
+}
 export interface ThinkEntry {
   sessionId: string;
   agent: string;
@@ -45,6 +50,7 @@ interface SwrmzBridge {
   bandScan(repoPath: string): Promise<{ chatId: string }>;
   bandTranscript(chatId: string): Promise<Array<{ id: string; sender: string; senderId: string; content: string; type: string; at: string }>>;
   onScanEvent(cb: (e: ScanEvent) => void): () => void;
+  onBandRoom(cb: (e: BandRoomEvent) => void): () => void;
   onScanThinking(cb: (e: ThinkEntry) => void): () => void;
   onScanDone(cb: (e: ScanDone) => void): () => void;
 }
