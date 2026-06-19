@@ -90,7 +90,6 @@ export function LoginPage() {
       <div className="relative overflow-hidden border-r border-[#2b1f22] max-[820px]:hidden">
         <div className="absolute inset-0 bg-[url('/background.webp')] bg-cover bg-center" aria-hidden="true" />
         <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(94,29,35,0.45)_0%,rgba(12,8,9,0.35)_50%,rgba(12,8,9,0.85)_100%)] mix-blend-multiply" aria-hidden="true" />
-        <div className="absolute inset-0 bg-[radial-gradient(120%_90%_at_30%_10%,rgba(192,68,76,0.3),transparent_60%)]" aria-hidden="true" />
         <div className="absolute left-8 top-7 z-10">
           <BrandMark />
         </div>

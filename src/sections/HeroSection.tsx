@@ -53,7 +53,7 @@ export function HeroSection() {
         </nav>
 
         <a
-          className="relative z-10 inline-flex min-h-[38px] items-center justify-center gap-1.5 justify-self-end rounded-md bg-[#77262d] px-5 text-[0.72rem] font-[680] text-white shadow-[0_8px_20px_rgba(119,38,45,0.35)] transition-colors duration-200 hover:bg-[#8a2c34] focus-visible:bg-[#8a2c34] max-[820px]:min-h-9 max-[820px]:px-3.5"
+          className="relative z-10 inline-flex min-h-[38px] items-center justify-center gap-1.5 justify-self-end rounded-md bg-[#77262d] px-5 text-[0.72rem] font-[680] text-white transition-colors duration-200 hover:bg-[#8a2c34] focus-visible:bg-[#8a2c34] max-[820px]:min-h-9 max-[820px]:px-3.5"
           href="/login"
         >
           <span>Login now</span>
@@ -65,10 +65,10 @@ export function HeroSection() {
         <div className="grid h-full w-full grid-cols-[minmax(0,1fr)_auto] grid-rows-1 gap-10 max-[1180px]:h-auto max-[1180px]:grid-cols-1 max-[1180px]:[grid-template-rows:auto] max-[1180px]:gap-7 max-[820px]:block">
           <div className="w-full max-w-[640px] self-end pb-4 min-[1500px]:max-w-[720px] max-[1180px]:max-w-[700px] max-[1180px]:self-auto max-[1180px]:pb-0">
             <div className="mb-5 flex flex-wrap gap-2 max-[820px]:mb-5" aria-label="Launch status">
-              <span className="inline-flex min-h-5 items-center rounded-[3px] bg-[linear-gradient(180deg,#f0c9cc,#e0a0a5)] px-2.5 font-mono text-[0.52rem] font-[760] uppercase leading-none text-[#77262d] shadow-[0_10px_22px_rgba(13,32,31,0.05)] min-[1500px]:min-h-[22px] min-[1500px]:px-3 min-[1500px]:text-[0.56rem] max-[820px]:min-h-6 max-[820px]:rounded-[5px] max-[820px]:text-[0.58rem]">
+              <span className="inline-flex min-h-5 items-center rounded-[3px] bg-[#e0a0a5] px-2.5 font-mono text-[0.52rem] font-[760] uppercase leading-none text-[#77262d] min-[1500px]:min-h-[22px] min-[1500px]:px-3 min-[1500px]:text-[0.56rem] max-[820px]:min-h-6 max-[820px]:rounded-[5px] max-[820px]:text-[0.58rem]">
                 Agentic Security
               </span>
-              <span className="inline-flex min-h-5 items-center rounded-[3px] bg-[#20171a]/90 px-2.5 font-mono text-[0.52rem] font-[760] uppercase leading-none text-[#c2b2b4] shadow-[0_10px_22px_rgba(13,32,31,0.05)] min-[1500px]:min-h-[22px] min-[1500px]:px-3 min-[1500px]:text-[0.56rem] max-[820px]:min-h-6 max-[820px]:rounded-[5px] max-[820px]:text-[0.58rem]">
+              <span className="inline-flex min-h-5 items-center rounded-[3px] bg-[#20171a]/90 px-2.5 font-mono text-[0.52rem] font-[760] uppercase leading-none text-[#c2b2b4] min-[1500px]:min-h-[22px] min-[1500px]:px-3 min-[1500px]:text-[0.56rem] max-[820px]:min-h-6 max-[820px]:rounded-[5px] max-[820px]:text-[0.58rem]">
                 Now in Beta
               </span>
             </div>
@@ -94,14 +94,14 @@ export function HeroSection() {
 
           <div className="flex shrink-0 items-center justify-end gap-4 self-end pb-4 max-[1180px]:justify-start max-[1180px]:self-auto max-[1180px]:pb-0 max-[820px]:mt-6 max-[820px]:max-w-full max-[820px]:flex-col max-[820px]:items-stretch max-[820px]:gap-3" aria-label="Hero actions">
             <a
-              className="inline-flex min-h-[40px] min-w-36 items-center justify-center gap-2.5 whitespace-nowrap rounded-md bg-[linear-gradient(180deg,#8a2c34,#6a212a)] px-[18px] text-[0.74rem] font-[720] leading-none text-[#ffffff] shadow-[0_14px_30px_rgba(119,38,45,0.2),inset_0_1px_0_rgba(255,255,255,0.68)] transition-transform duration-300 hover:-translate-y-0.5 focus-visible:-translate-y-0.5 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[156px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
+              className="inline-flex min-h-[40px] min-w-36 items-center justify-center gap-2.5 whitespace-nowrap rounded-md bg-[#77262d] px-[18px] text-[0.74rem] font-[720] leading-none text-[#ffffff] transition-colors duration-200 hover:bg-[#8a2c34] focus-visible:bg-[#8a2c34] min-[1500px]:min-h-[44px] min-[1500px]:min-w-[156px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
               href="/login"
             >
               <span>Download the app</span>
               <ArrowRight className="shrink-0" size={15} strokeWidth={2.4} />
             </a>
             <a
-              className="inline-flex min-h-[40px] min-w-[156px] items-center justify-center gap-2.5 whitespace-nowrap rounded-md border border-[#36262a]/50 bg-[#5e1d23]/85 px-[18px] text-[0.74rem] font-[720] leading-none text-[#f4eef0] shadow-[inset_0_1px_0_rgba(255,255,255,0.16)] backdrop-blur-[14px] transition duration-300 hover:-translate-y-0.5 hover:border-[#241a1d]/85 hover:bg-[#6a212a]/90 focus-visible:-translate-y-0.5 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[174px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
+              className="inline-flex min-h-[40px] min-w-[156px] items-center justify-center gap-2.5 whitespace-nowrap rounded-md border border-[#36262a]/50 bg-[#5e1d23]/85 px-[18px] text-[0.74rem] font-[720] leading-none text-[#f4eef0] backdrop-blur-[14px] transition-colors duration-200 hover:border-[#241a1d]/85 hover:bg-[#6a212a]/90 focus-visible:bg-[#6a212a]/90 min-[1500px]:min-h-[44px] min-[1500px]:min-w-[174px] min-[1500px]:text-[0.78rem] max-[820px]:min-h-11 max-[820px]:w-full max-[820px]:min-w-0 max-[820px]:rounded-[7px] max-[820px]:text-[0.88rem]"
               href="#demo"
             >
               <Play className="shrink-0" size={14} fill="currentColor" strokeWidth={2.2} />
@@ -112,7 +112,7 @@ export function HeroSection() {
       </div>
 
       <div
-        className="relative z-20 mx-auto mb-5 grid w-[min(94vw,1180px)] shrink-0 grid-cols-[minmax(110px,140px)_1fr] items-center gap-[22px] rounded-lg border border-white/10 bg-[#15100f]/90 px-7 py-4 shadow-[0_20px_54px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.07)] backdrop-blur-[22px] backdrop-saturate-125 min-[1500px]:mb-6 min-[1500px]:w-[min(90vw,1320px)] min-[1500px]:px-8 min-[1500px]:py-5 max-[1180px]:w-[calc(100%-48px)] max-[820px]:hidden"
+        className="relative z-20 mx-auto mb-5 grid w-[min(94vw,1180px)] shrink-0 grid-cols-[minmax(110px,140px)_1fr] items-center gap-[22px] rounded-lg border border-white/10 bg-[#15100f]/90 px-7 py-4 min-[1500px]:mb-6 min-[1500px]:w-[min(90vw,1320px)] min-[1500px]:px-8 min-[1500px]:py-5 max-[1180px]:w-[calc(100%-48px)] max-[820px]:hidden"
         aria-label="SWRMZ performance metrics"
       >
         <h2 className="text-[0.96rem] font-[680] leading-[1.16] tracking-[0] text-[#f2eaeb] min-[1500px]:text-[1.06rem] max-[820px]:text-[1.05rem] max-[820px]:leading-[1.1]">

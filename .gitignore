@@ -9,6 +9,9 @@ dist-ssr/
 # vendored third-party skills library (not part of this app)
 skills/
 
+# local scan reports
+.swrmz/
+
 # logs
 npm-debug.log*
 yarn-debug.log*

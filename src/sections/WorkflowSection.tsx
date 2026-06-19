@@ -34,7 +34,7 @@ export function WorkflowSection() {
   return (
     <section id="workflow" className="px-6 py-16 max-[760px]:px-4 max-[760px]:py-12">
       <div className="mx-auto grid max-w-[1120px] grid-cols-[0.96fr_1.04fr] gap-8 max-[960px]:grid-cols-1">
-        <article className="relative min-h-[620px] overflow-hidden rounded-[26px] border border-[#8a2c34] shadow-[0_28px_90px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.1)] max-[960px]:min-h-[540px] max-[640px]:min-h-[500px]">
+        <article className="relative min-h-[620px] overflow-hidden rounded-[26px] border border-[#8a2c34] max-[960px]:min-h-[540px] max-[640px]:min-h-[500px]">
           <div
             className="absolute inset-0 bg-[url('/background.webp')] bg-cover bg-center"
             aria-hidden="true"
@@ -60,11 +60,11 @@ export function WorkflowSection() {
           <div className="absolute left-1/2 top-6 h-[calc(100%-48px)] -translate-x-1/2 border-l border-dashed border-[#8a4248]/50 max-[640px]:hidden" aria-hidden="true" />
           {steps.map(({ step, title, tail, copy, variant }) => (
             <article
-              className="relative z-10 min-h-[184px] overflow-hidden rounded-[20px] border border-[#36262a] bg-[#100b0c]/92 p-9 shadow-[0_20px_56px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-[8px] max-[640px]:p-6"
+              className="relative z-10 min-h-[184px] overflow-hidden rounded-[20px] border border-[#36262a] bg-[#100b0c]/92 p-9 max-[640px]:p-6"
               key={step}
             >
               <div
-                className="pointer-events-none absolute right-3 top-1/2 size-[150px] -translate-y-1/2 opacity-55 [mask-image:radial-gradient(circle_at_72%_50%,#000_30%,transparent_74%)] max-[960px]:right-0 max-[960px]:top-0 max-[960px]:size-[150px] max-[960px]:translate-y-0 max-[960px]:opacity-45 max-[960px]:[mask-image:radial-gradient(circle_at_88%_12%,#000_18%,transparent_66%)]"
+                className="pointer-events-none absolute right-3 top-1/2 size-[150px] -translate-y-1/2 opacity-35 max-[960px]:right-0 max-[960px]:top-0 max-[960px]:size-[150px] max-[960px]:translate-y-0"
                 aria-hidden="true"
               >
                 <StepArt variant={variant} />

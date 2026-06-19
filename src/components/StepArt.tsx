@@ -1,14 +1,9 @@
 type StepVariant = 'deploy' | 'guard' | 'radar';
 
-function GridGlow({ id }: { id: string }) {
+function GridPanel({ id }: { id: string }) {
   return (
     <>
       <defs>
-        <radialGradient id={`${id}_glow`} cx="50%" cy="55%" r="62%">
-          <stop offset="0%" stopColor="#c0444c" stopOpacity="0.45" />
-          <stop offset="55%" stopColor="#77262d" stopOpacity="0.16" />
-          <stop offset="100%" stopColor="#77262d" stopOpacity="0" />
-        </radialGradient>
         <pattern id={`${id}_grid`} width="14" height="14" patternUnits="userSpaceOnUse">
           <path d="M14 0H0V14" fill="none" stroke="#c0444c" strokeOpacity="0.1" strokeWidth="1" />
         </pattern>
@@ -16,12 +11,8 @@ function GridGlow({ id }: { id: string }) {
           <stop offset="0%" stopColor="#f3c9cd" />
           <stop offset="100%" stopColor="#9a2f37" />
         </linearGradient>
-        <filter id={`${id}_blur`} x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="2.4" />
-        </filter>
       </defs>
       <rect width="120" height="120" fill={`url(#${id}_grid)`} />
-      <rect width="120" height="120" fill={`url(#${id}_glow)`} />
     </>
   );
 }
@@ -37,7 +28,7 @@ function DeployArt() {
   const cycle = 3.2;
   return (
     <svg viewBox="0 0 120 120" fill="none" className="size-full">
-      <GridGlow id="dp" />
+      <GridPanel id="dp" />
       {/* faint base connections */}
       <g stroke="url(#dp_stroke)" strokeWidth="1.3" strokeLinecap="round" strokeDasharray="2 3" strokeOpacity="0.32">
         {nodes.map((n, i) => (
@@ -71,7 +62,7 @@ function DeployArt() {
         <g key={i}>
           <circle cx={n.x} cy={n.y} r="6" fill="#1a1012" stroke="#e7b3b7" strokeWidth="1.4" strokeOpacity="0.5" />
           <g style={{ animation: `deploy-node ${cycle}s ease-in-out infinite`, animationDelay: `${i * 0.55}s` }}>
-            <circle cx={n.x} cy={n.y} r="8" fill="#c0444c" filter="url(#dp_blur)" />
+            <circle cx={n.x} cy={n.y} r="8" fill="#c0444c" opacity="0.35" />
             <circle cx={n.x} cy={n.y} r="6" fill="none" stroke="#f3c9cd" strokeWidth="1.4" />
             <circle cx={n.x} cy={n.y} r="2" fill="#f3c9cd" />
           </g>
@@ -83,7 +74,7 @@ function DeployArt() {
         cy={hub.y}
         r="16"
         fill="#c0444c"
-        filter="url(#dp_blur)"
+        opacity="0.75"
         style={{ animation: 'art-pulse 2.4s ease-in-out infinite' }}
       />
       <g fill="#f3c9cd" transform={`translate(${hub.x} ${hub.y}) scale(0.17) translate(-74 -73)`}>
@@ -104,7 +95,7 @@ function DeployArt() {
 function GuardArt() {
   return (
     <svg viewBox="0 0 120 120" fill="none" className="size-full">
-      <GridGlow id="gd" />
+      <GridPanel id="gd" />
       {/* threshold guardrail (static) */}
       <line
         x1="12"
@@ -137,7 +128,7 @@ function GuardArt() {
           values="M14 84 L30 78 L42 82 L54 64 L66 86 L80 74 L92 80 L106 70;M14 80 L30 84 L42 74 L54 70 L66 80 L80 68 L92 82 L106 64;M14 86 L30 76 L42 80 L54 62 L66 88 L80 78 L92 74 L106 72;M14 82 L30 80 L42 76 L54 68 L66 82 L80 72 L92 84 L106 66;M14 84 L30 78 L42 82 L54 64 L66 86 L80 74 L92 80 L106 70"
         />
       </path>
-      <circle cx="54" cy="64" r="6" fill="#c0444c" filter="url(#gd_blur)" style={{ animation: 'art-pulse 1.5s ease-in-out infinite' }}>
+      <circle cx="54" cy="64" r="6" fill="#c0444c" opacity="0.45" style={{ animation: 'art-pulse 1.5s ease-in-out infinite' }}>
         <animate attributeName="cy" dur="4.5s" repeatCount="indefinite" keyTimes="0;0.25;0.5;0.75;1" values="64;70;62;68;64" />
       </circle>
       <circle cx="54" cy="64" r="3" fill="#f3c9cd">
@@ -148,7 +139,7 @@ function GuardArt() {
         <path
           d="M0 -28 L20 -20 V2 C20 18 11 26 0 32 C-11 26 -20 18 -20 2 V-20 Z"
           fill="#c0444c"
-          filter="url(#gd_blur)"
+          opacity="0.75"
           style={{ animation: 'art-pulse 2.6s ease-in-out infinite' }}
         />
         <path
@@ -166,7 +157,7 @@ function GuardArt() {
 function RadarArt() {
   return (
     <svg viewBox="0 0 120 120" fill="none" className="size-full">
-      <GridGlow id="rd" />
+      <GridPanel id="rd" />
       <defs>
         <linearGradient id="rd_sweep" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#c0444c" stopOpacity="0.55" />
@@ -185,7 +176,7 @@ function RadarArt() {
         <line x1="60" y1="60" x2="60" y2="18" stroke="#f3c9cd" strokeWidth="1.4" strokeOpacity="0.8" />
       </g>
       {/* blips */}
-      <circle cx="78" cy="40" r="6" fill="#c0444c" filter="url(#rd_blur)" opacity="0.6" />
+      <circle cx="78" cy="40" r="6" fill="#c0444c" opacity="0.32" />
       <circle cx="78" cy="40" r="2.6" fill="#f3c9cd" />
       <circle cx="42" cy="74" r="2.2" fill="#e7b3b7" opacity="0.85" />
       <circle cx="74" cy="80" r="1.8" fill="#e7b3b7" opacity="0.7" />

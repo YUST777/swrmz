@@ -126,7 +126,7 @@ export function PricingSection() {
 
   return (
     <section id="pricing" className="px-6 py-14 max-[760px]:px-4 max-[760px]:py-12">
-      <div className="mx-auto max-w-[1120px] rounded-[14px] border border-[#2b1f22] bg-[#140f11]/80 px-7 py-9 shadow-[0_28px_90px_rgba(0,0,0,0.4),inset_0_1px_0_rgba(255,255,255,0.05)] max-[760px]:px-4">
+      <div className="mx-auto max-w-[1120px] rounded-[14px] border border-[#2b1f22] bg-[#140f11]/80 px-7 py-9 max-[760px]:px-4">
         <div className="mx-auto max-w-[520px] text-center">
           <h2 className="text-[2.1rem] font-[620] leading-[1.12] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.75rem]">
             Simple. Transparent.
@@ -168,8 +168,8 @@ export function PricingSection() {
               ref={plan.highlighted ? featuredRef : undefined}
               className={`relative flex min-h-[620px] flex-col overflow-hidden rounded-[9px] border p-6 max-[980px]:min-h-0 max-[980px]:w-[82%] max-[980px]:shrink-0 max-[980px]:snap-center ${
                 plan.highlighted
-                  ? "border-[#8a2c34] bg-[linear-gradient(180deg,rgba(30,16,18,0.84),rgba(12,8,9,0.93)),url('/background.webp')] bg-cover bg-center shadow-[0_22px_58px_rgba(119,38,45,0.28),inset_0_1px_0_rgba(255,255,255,0.06)]"
-                  : 'border-[#2b1f22] bg-[#181114]/85 shadow-[0_18px_48px_rgba(22,57,53,0.05)]'
+                  ? "border-[#8a2c34] bg-[linear-gradient(180deg,rgba(30,16,18,0.84),rgba(12,8,9,0.93)),url('/background.webp')] bg-cover bg-center"
+                  : 'border-[#2b1f22] bg-[#181114]/85'
               }`}
               key={plan.name}
             >
@@ -212,10 +212,10 @@ export function PricingSection() {
               </div>
 
               <a
-                className={`mt-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] border px-4 text-[0.78rem] font-[720] transition-transform duration-300 hover:-translate-y-0.5 ${
+                className={`mt-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] border px-4 text-[0.78rem] font-[720] transition-colors duration-200 ${
                   plan.highlighted
-                    ? 'border-[#6a212a] bg-[#77262d] text-[#ffffff] shadow-[0_16px_30px_rgba(119,38,45,0.18)]'
-                    : 'border-[#5e3a3e] bg-[#15100f] text-[#d98a90]'
+                    ? 'border-[#6a212a] bg-[#77262d] text-[#ffffff] hover:bg-[#8a2c34]'
+                    : 'border-[#5e3a3e] bg-[#15100f] text-[#d98a90] hover:border-[#7a4b50]'
                 }`}
                 href={plan.highlighted ? '/login' : '#early-access'}
               >

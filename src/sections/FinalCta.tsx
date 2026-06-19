@@ -24,7 +24,7 @@ export function FinalCta() {
             aria-hidden="true"
           />
           <div
-            className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(12,8,9,0.68),rgba(12,8,9,0.9)),radial-gradient(120%_140%_at_50%_0%,rgba(119,38,45,0.3),transparent_60%)]"
+            className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(12,8,9,0.68),rgba(12,8,9,0.9))]"
             aria-hidden="true"
           />
           <h2 className="mx-auto max-w-[560px] text-[2rem] font-[620] leading-[1.13] tracking-[0] text-[#f2eaeb] max-[640px]:text-[1.7rem]">
@@ -39,7 +39,7 @@ export function FinalCta() {
           </p>
           <div className="mt-7 flex justify-center gap-3 max-[560px]:flex-col">
             <a
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] bg-[#77262d] px-5 text-[0.78rem] font-[720] text-[#ffffff] shadow-[0_16px_30px_rgba(119,38,45,0.18)] transition-transform duration-300 hover:-translate-y-0.5"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] bg-[#77262d] px-5 text-[0.78rem] font-[720] text-[#ffffff] transition-colors duration-200 hover:bg-[#8a2c34]"
               href="/login"
             >
               Download the app
@@ -47,7 +47,7 @@ export function FinalCta() {
             </a>
             <a
               id="docs"
-              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] border border-[#5e3a3e] bg-[#181114]/85 px-5 text-[0.78rem] font-[720] text-[#d98a90] transition-transform duration-300 hover:-translate-y-0.5"
+              className="inline-flex min-h-11 items-center justify-center gap-2 rounded-[7px] border border-[#5e3a3e] bg-[#181114]/85 px-5 text-[0.78rem] font-[720] text-[#d98a90] transition-colors duration-200 hover:border-[#7a4b50]"
               href="#platform"
             >
               <Play size={14} fill="currentColor" strokeWidth={2.2} />

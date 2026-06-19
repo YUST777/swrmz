@@ -1,0 +1,17 @@
+# Copy to agent_config.yaml and fill in the IDs + keys from app.band.ai.
+# Create THREE Remote Agents (Agents page → New Agent → Remote Agent):
+#   "SWRMZ Analyst", "SWRMZ Fixer", "SWRMZ Reviewer".
+# Each creation popup shows the API key once — copy it. The Agent UUID is on
+# the agent settings page (bottom right).
+
+analyst:
+  agent_id: "<analyst-agent-uuid>"
+  api_key: "<analyst-api-key>"
+
+fixer:
+  agent_id: "<fixer-agent-uuid>"
+  api_key: "<fixer-api-key>"
+
+reviewer:
+  agent_id: "<reviewer-agent-uuid>"
+  api_key: "<reviewer-api-key>"

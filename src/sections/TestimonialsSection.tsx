@@ -54,7 +54,7 @@ export function TestimonialsSection() {
           <div className="mt-7 flex gap-2">
             <button
               onClick={() => go(-1)}
-              className="grid size-9 cursor-pointer place-items-center rounded-[7px] border border-[#8a2c34] bg-[#77262d] text-[#f4eef0] shadow-[0_10px_24px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#8a2c34]"
+              className="grid size-9 cursor-pointer place-items-center rounded-[7px] border border-[#8a2c34] bg-[#77262d] text-[#f4eef0] transition-colors duration-200 hover:bg-[#8a2c34]"
               type="button"
               aria-label="Previous testimonial"
             >
@@ -62,7 +62,7 @@ export function TestimonialsSection() {
             </button>
             <button
               onClick={() => go(1)}
-              className="grid size-9 cursor-pointer place-items-center rounded-[7px] border border-[#8a2c34] bg-[#77262d] text-[#f4eef0] shadow-[0_10px_24px_rgba(0,0,0,0.35)] transition-transform duration-300 hover:-translate-y-0.5 hover:bg-[#8a2c34]"
+              className="grid size-9 cursor-pointer place-items-center rounded-[7px] border border-[#8a2c34] bg-[#77262d] text-[#f4eef0] transition-colors duration-200 hover:bg-[#8a2c34]"
               type="button"
               aria-label="Next testimonial"
             >
@@ -71,7 +71,7 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        <div className="relative min-h-[400px] overflow-hidden rounded-[16px] border border-[#2b1f22] shadow-[0_22px_66px_rgba(0,0,0,0.45)]">
+        <div className="relative min-h-[400px] overflow-hidden rounded-[16px] border border-[#2b1f22]">
           <AnimatePresence>
             <motion.div
               key={active}
