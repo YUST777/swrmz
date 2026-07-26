@@ -4,6 +4,7 @@ import { AttackRun } from '@/components/attack-run'
 import { FeatureBento } from '@/components/feature-bento'
 import { Hero } from '@/components/hero'
 import { Pricing } from '@/components/pricing'
+import { SiteFooter } from '@/components/site-footer'
 
 export const Route = createFileRoute('/')({
   component: LandingPage,
@@ -25,6 +26,7 @@ function LandingPage() {
       <FeatureBento />
       <AttackRun />
       <Pricing />
+      <SiteFooter />
     </main>
   )
 }
