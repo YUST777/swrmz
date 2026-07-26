@@ -1,146 +1,392 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@keyframes ascii-fly {
-  from {
-    transform: translateX(-18vw);
-  }
-  to {
-    transform: translateX(120vw);
-  }
+@theme {
+  /* Inter sets body copy, Mulish sets headings and UI chrome */
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-display: 'Mulish Variable', 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* surfaces */
+  --color-ink: #030303;
+  --color-ink-2: #0a0809;
+  --color-panel: #0d0a0b;
+  --color-panel-2: #121011;
+  --color-hairline: rgba(255, 255, 255, 0.08);
+
+  /* brand red */
+  --color-blood-50: #ff6b6b;
+  --color-blood-100: #ff3b3b;
+  --color-blood-200: #ff1f1f;
+  --color-blood-300: #e11414;
+  --color-blood-400: #8f1116;
+  --color-blood-500: #4a0a0d;
+  --color-blood-600: #2b0508;
+
+  --animate-sheen: sheen 6s ease-in-out infinite;
 }
 
-@keyframes ascii-fly-rev {
-  from {
-    transform: translateX(120vw);
-  }
-  to {
-    transform: translateX(-18vw);
-  }
-}
-
-@keyframes ascii-bob {
+@keyframes sheen {
   0%,
   100% {
-    transform: translateY(0);
+    opacity: 0.75;
   }
   50% {
-    transform: translateY(-14px);
+    opacity: 1;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply bg-ink text-white font-sans antialiased;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* headings take the display face; body copy stays on Inter */
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+
+  ::selection {
+    background: var(--color-blood-300);
+    color: #fff;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* ── bento feature visuals ─────────────────────────────────────────────
+   The six looping illustrations in the feature grid. Every keyframe here
+   drives only transform, opacity or stroke-dashoffset, so a card can loop
+   forever without ever touching layout.
+
+   Anything that must still read correctly with motion disabled keeps its
+   resting state on the element itself and lets the keyframes hide it — so
+   when the media query below kills the animation, the frame you are left
+   looking at is the finished one, not an empty stage. */
+
+@layer components {
+  /* a lit packet running along a link — pair with pathLength={100} */
+  .bv-flow {
+    stroke-dasharray: 2.5 97.5;
+    animation: bv-flow 3.4s linear infinite;
+  }
+
+  .bv-breathe {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bv-breathe 3.6s ease-in-out infinite;
+  }
+
+  /* transform-origin comes from the call site, in viewBox units */
+  .bv-spin-slow {
+    transform-box: view-box;
+    animation: bv-spin 15s linear infinite;
+  }
+
+  .bv-ping {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bv-ping 5.4s ease-out infinite backwards;
+  }
+
+  /* the 24h sweep — distance comes from --bv-run, set at the call site */
+  .bv-track {
+    animation: bv-track 5.4s linear infinite;
+  }
+
+  .bv-alert {
+    animation: bv-alert 5.4s ease-out infinite;
+  }
+
+  /* a safe action walking its lane and straight through the gate */
+  .bv-pass {
+    animation: bv-pass 5.4s linear infinite backwards;
+  }
+
+  /* a harmful one: runs to the rail, waits to be cleared, then goes */
+  .bv-hold {
+    animation: bv-hold 5.4s ease-in-out infinite backwards;
+  }
+
+  /* anything that lands after the fact — approvals, verdicts, callouts.
+     Always paired with an animation-delay; `backwards` keeps it hidden
+     until its cue instead of flashing on at load. */
+  .bv-reveal {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: bv-reveal 5.4s ease-out infinite backwards;
+  }
+
+  .bv-step {
+    animation: bv-step 5.4s ease-in-out infinite backwards;
+  }
+
+  .bv-scan {
+    animation: bv-scan 5s linear infinite;
+  }
+
+  .bv-flag {
+    animation: bv-flag 5s ease-out infinite;
+  }
+
+  .bv-caret {
+    animation: bv-caret 1.1s ease-in-out infinite;
+  }
+
+  .bv-type {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: bv-type 6s ease-out infinite;
+  }
+
+  .bv-boot {
+    animation: bv-boot 6s ease-out infinite;
+  }
+
+  .bv-strike {
+    transform-box: fill-box;
+    transform-origin: left center;
+    animation: bv-strike 6s ease-out infinite;
+  }
+}
+
+@keyframes bv-flow {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes bv-breathe {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+
+@keyframes bv-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes bv-ping {
+  0% {
+    opacity: 0.75;
+    transform: scale(0.35);
+  }
+  34% {
+    opacity: 0;
+    transform: scale(2);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2);
+  }
+}
+
+/* the watch head crossing the 24h strip */
+@keyframes bv-track {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--bv-run, 400px));
+  }
+}
+
+/* the 3am spike, lighting as the watch reaches it */
+@keyframes bv-alert {
+  0%,
+  10% {
+    opacity: 0.25;
+  }
+  16% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.25;
+  }
+}
+
+@keyframes bv-pass {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  8% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--bv-run, 300px));
+  }
+}
+
+/* --bv-run stops at the rail, --bv-run-2 is where it lands once cleared */
+@keyframes bv-hold {
+  0% {
+    opacity: 0;
+    transform: translateX(0);
+  }
+  6% {
+    opacity: 1;
+  }
+  32%,
+  64% {
+    transform: translateX(var(--bv-run, 240px));
+  }
+  92% {
+    opacity: 1;
+    transform: translateX(var(--bv-run-2, 320px));
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(var(--bv-run-2, 320px));
+  }
+}
+
+@keyframes bv-reveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  9% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  52% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  62%,
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes bv-step {
+  0%,
+  10% {
+    opacity: 0.22;
+  }
+  26% {
+    opacity: 1;
+  }
+  82% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.22;
+  }
+}
+
+@keyframes bv-scan {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--bv-run, 560px));
+  }
+}
+
+@keyframes bv-flag {
+  0% {
+    opacity: 0;
+  }
+  6% {
+    opacity: 1;
+  }
+  76% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes bv-caret {
+  0%,
+  46% {
+    opacity: 1;
+  }
+  50%,
+  96% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes bv-type {
+  0% {
+    transform: scaleX(0);
+  }
+  28% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes bv-boot {
+  0%,
+  32% {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  46% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bv-strike {
+  0%,
+  44% {
+    transform: scaleX(0);
+  }
+  62% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [style*="ascii-fly"],
-  [style*="ascii-bob"] {
+  [class*='bv-'] {
     animation: none !important;
   }
-}
-
-/* Custom scrollbar — maroon theme */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: #77262d #0e0a0b;
-}
-
-::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0e0a0b;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #8a2c34, #77262d);
-  border: 3px solid #0e0a0b;
-  border-radius: 999px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #a3343d, #8a2c34);
-}
-
-::-webkit-scrollbar-corner {
-  background: #0e0a0b;
-}
-
-/* Console preview tab transition */
-@keyframes console-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Step illustration animations */
-@keyframes dash-flow {
-  to {
-    stroke-dashoffset: -20;
-  }
-}
-
-@keyframes art-pulse {
-  0%,
-  100% {
-    opacity: 0.28;
-  }
-  50% {
-    opacity: 0.68;
-  }
-}
-
-/* Sequential swarm deploy + live chart bob */
-@keyframes deploy-node {
-  0%,
-  34% {
-    opacity: 0.15;
-  }
-  44% {
-    opacity: 1;
-  }
-  70% {
-    opacity: 0.4;
-  }
-  100% {
-    opacity: 0.15;
-  }
-}
-
-@keyframes chart-bob {
-  0%,
-  100% {
-    transform: translateY(3.5px);
-  }
-  50% {
-    transform: translateY(-3.5px);
-  }
-}
-
-/* Global font */
-body {
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-}
-
-/* Subtle film grain overlay */
-.grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* Lenis smooth scroll */
-html.lenis,
-html.lenis body {
-  height: auto;
-}
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-.lenis.lenis-stopped {
-  overflow: hidden;
 }

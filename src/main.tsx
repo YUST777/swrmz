@@ -1,75 +1,31 @@
-import { StrictMode, useEffect } from 'react';
-import { createRoot } from 'react-dom/client';
-import Lenis from 'lenis';
-import {
-  createRootRoute,
-  createRoute,
-  createRouter,
-  RouterProvider,
-} from '@tanstack/react-router';
-import { LandingPage } from './LandingPage';
-import { LoginPage } from './LoginPage';
-import { WaitlistPage } from './WaitlistPage';
-import './styles.css';
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import { RouterProvider, createRouter } from '@tanstack/react-router'
 
-const rootRoute = createRootRoute();
+// self-hosted so the hero never waits on a third-party font request.
+// Mulish carries headings and UI, Inter the body copy; Geist Mono stays for
+// anything that has to read as terminal output.
+import '@fontsource-variable/mulish'
+import '@fontsource-variable/inter'
+import '@fontsource-variable/geist-mono'
 
-const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/',
-  component: LandingPage,
-});
+import { routeTree } from './routeTree.gen'
+import './styles.css'
 
-const loginRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/login',
-  component: LoginPage,
-});
-
-const waitlistRoute = createRoute({
-  getParentRoute: () => rootRoute,
-  path: '/waitlist',
-  component: WaitlistPage,
-});
-
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, waitlistRoute]);
-
-const router = createRouter({ routeTree });
+const router = createRouter({
+  routeTree,
+  defaultPreload: 'intent',
+  scrollRestoration: true,
+})
 
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router;
+    router: typeof router
   }
-}
-
-function Root() {
-  useEffect(() => {
-    // Fast, snappy smooth scroll (higher lerp = quicker catch-up).
-    const lenis = new Lenis({
-      lerp: 0.14,
-      wheelMultiplier: 1.15,
-      smoothWheel: true,
-      touchMultiplier: 1.6,
-    });
-
-    let raf = 0;
-    const loop = (time: number) => {
-      lenis.raf(time);
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-
-    return () => {
-      cancelAnimationFrame(raf);
-      lenis.destroy();
-    };
-  }, []);
-
-  return <RouterProvider router={router} />;
 }
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <Root />
+    <RouterProvider router={router} />
   </StrictMode>,
-);
+)
