@@ -159,6 +159,17 @@
     transform-origin: left center;
     animation: bv-strike 6s ease-out infinite;
   }
+
+  /* The attack run's drone, idling.
+     Everything else in that section is driven by the scroll position, which
+     means the moment you stop scrolling the scene is a still photograph and
+     reads as broken. This is the one thing in there on a timer: it costs
+     nothing, and it is the difference between "loading failed" and "hovering".
+     It rides an inner element so it never fights the scroll-driven transform
+     on the wrapper. */
+  .bv-hover {
+    animation: bv-hover 3.8s ease-in-out infinite;
+  }
 }
 
 @keyframes bv-flow {
@@ -372,6 +383,16 @@
   }
 }
 
+@keyframes bv-hover {
+  0%,
+  100% {
+    transform: translateY(-4px);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
 @keyframes bv-strike {
   0%,
   44% {
@@ -385,8 +406,15 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  [class*='bv-'] {
-    animation: none !important;
-  }
-}
+/* There used to be a blanket
+     @media (prefers-reduced-motion: reduce) { [class*='bv-'] { animation: none } }
+   here, and it was too broad. Every loop above is a low-amplitude decoration
+   sealed inside a ~460px card — a sweep crossing a chart, a chip fading in.
+   None of it is the full-viewport parallax or zoom that preference exists to
+   stop, and killing all of it left the feature grid looking like a dead
+   screenshot for anyone whose browser reports `reduce` (which, on a dev
+   machine, is easy to have on without knowing it).
+
+   The resting states are still authored as the finished frame, so nothing here
+   depends on animation to be readable. If large motion needs to respect the
+   preference later, gate that motion specifically rather than by class prefix. */
