@@ -3,6 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { AttackRun } from '@/components/attack-run'
 import { FeatureBento } from '@/components/feature-bento'
 import { Hero } from '@/components/hero'
+import { Pricing } from '@/components/pricing'
 
 export const Route = createFileRoute('/')({
   component: LandingPage,
@@ -23,7 +24,7 @@ function LandingPage() {
       <Hero />
       <FeatureBento />
       <AttackRun />
-      {/* next sections land here */}
+      <Pricing />
     </main>
   )
 }
