@@ -28,8 +28,8 @@ import { cn } from '@/lib/utils'
 const TARGETS = [
   { name: 'My store', meta: 'shop.example.com', icon: FolderGit2, active: true },
   { name: 'Live watch', meta: 'on since 9:04', icon: Server },
-  { name: 'vuln-sample', meta: '~/Desktop/swrmz', icon: FolderGit2 },
-  { name: 'swrmz', meta: '~/Desktop', icon: FolderGit2 },
+  { name: 'Landing page', meta: 'swrmz.tech', icon: FolderGit2 },
+  { name: 'Admin panel', meta: 'admin.example.com', icon: FolderGit2 },
 ]
 
 const SCAN_LOG = [
@@ -40,7 +40,7 @@ const SCAN_LOG = [
 
 function Pill({ children, dot }: { children: React.ReactNode; dot?: string }) {
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/[0.08] bg-[#131011] px-3 py-1.5 text-[12px] text-neutral-400">
+    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/[0.08] bg-[#131011] px-2.5 py-1 text-[11px] text-neutral-400 sm:px-3 sm:py-1.5 sm:text-[12px]">
       {dot && <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: dot }} />}
       {children}
     </span>
@@ -49,7 +49,7 @@ function Pill({ children, dot }: { children: React.ReactNode; dot?: string }) {
 
 export function AppPreview() {
   return (
-    <div className="relative mx-auto w-full max-w-[1300px] px-4 text-left">
+    <div className="relative mx-auto w-full max-w-[1300px] px-1 text-left sm:px-4">
       {/* the light bar riding the top edge of the card */}
       <div className="pointer-events-none absolute inset-x-0 -top-2 flex justify-center">
         <div className="h-[70px] w-[54%] rounded-[100%] bg-blood-200/35 blur-[55px]" />
@@ -61,14 +61,14 @@ export function AppPreview() {
       {/* the crimson hairline round the card is what ties it to the frame */}
       <div className="relative overflow-hidden rounded-[22px] border border-blood-300/35 bg-[#0a0809] shadow-[0_-1px_70px_-10px_rgba(255,59,59,0.45),0_0_0_1px_rgba(255,59,59,0.06),0_40px_120px_-30px_rgba(0,0,0,0.9)]">
         {/* ── title bar ───────────────────────────────────────────── */}
-        <div className="flex h-11 items-center justify-between border-b border-white/[0.06] px-4">
-          <span className="text-[10.5px] font-semibold tracking-[0.24em] text-neutral-500">
+        <div className="flex h-9 items-center justify-between border-b border-white/[0.06] px-3 sm:h-11 sm:px-4">
+          <span className="text-[9px] font-semibold tracking-[0.2em] text-neutral-500 sm:text-[10.5px] sm:tracking-[0.24em]">
             SWRMZ
           </span>
 
           <span className="flex items-center gap-2">
             {['#2a2626', '#2a2626', '#3a2022'].map((c, i) => (
-              <span key={i} className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: c }} />
+              <span key={i} className="h-2 w-2 rounded-full sm:h-2.5 sm:w-2.5" style={{ backgroundColor: c }} />
             ))}
           </span>
         </div>
@@ -128,62 +128,62 @@ export function AppPreview() {
               composer stays pinned to the bottom edge. */}
           <div className="flex min-w-0 flex-1 flex-col md:min-h-[565px]">
             {/* room header — just the label now, kept deliberately quiet */}
-            <div className="border-b border-white/[0.06] px-5 py-2.5">
-              <h3 className="truncate text-[11.5px] font-medium text-neutral-400">
+            <div className="border-b border-white/[0.06] px-3.5 py-2 sm:px-5 sm:py-2.5">
+              <h3 className="truncate text-[10.5px] font-medium text-neutral-400 sm:text-[11.5px]">
                 Checking — My store
               </h3>
             </div>
 
             {/* transcript */}
-            <div className="min-w-0 flex-1 space-y-5 px-5 py-5">
+            <div className="min-w-0 flex-1 space-y-4 px-3.5 py-4 sm:space-y-5 sm:px-5 sm:py-5">
               {/* operator turn */}
-              <div className="flex gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-white/[0.06] text-[9.5px] font-semibold text-neutral-300">
+              <div className="flex gap-2.5 sm:gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-white/[0.06] text-[9px] font-semibold text-neutral-300 sm:h-7 sm:w-7 sm:text-[9.5px]">
                   YO
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="flex items-center gap-2.5 text-[13px]">
+                  <p className="flex items-center gap-2 text-[12px] sm:gap-2.5 sm:text-[13px]">
                     <span className="font-semibold text-white">You</span>
-                    <span className="rounded-md border border-white/[0.08] px-2 py-0.5 text-[11px] text-neutral-400">
+                    <span className="rounded-md border border-white/[0.08] px-1.5 py-0.5 text-[10px] text-neutral-400 sm:px-2 sm:text-[11px]">
                       → Analysis
                     </span>
                   </p>
-                  <p className="mt-1.5 truncate font-mono text-[12.5px] text-neutral-400">
+                  <p className="mt-1.5 truncate font-mono text-[11.5px] text-neutral-400 sm:text-[12.5px]">
                     check my store for holes
                   </p>
                 </div>
               </div>
 
               {/* analyst turn */}
-              <div className="flex gap-3">
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-[#7c4a12] text-[9.5px] font-semibold text-white/90">
+              <div className="flex gap-2.5 sm:gap-3">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-md bg-[#7c4a12] text-[9px] font-semibold text-white/90 sm:h-7 sm:w-7 sm:text-[9.5px]">
                   AN
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="flex items-center gap-2.5 text-[13px]">
+                  <p className="flex items-center gap-2 text-[12px] sm:gap-2.5 sm:text-[13px]">
                     <span className="font-semibold text-white">Analysis</span>
                     <span className="hidden text-[12px] text-neutral-500 sm:inline">
-                      Vulnerability scanning
+                      Looking for holes
                     </span>
-                    <span className="rounded-md border border-white/[0.08] px-2 py-0.5 text-[11px] text-neutral-400">
-                      → Remediation
+                    <span className="rounded-md border border-white/[0.08] px-1.5 py-0.5 text-[10px] text-neutral-400 sm:px-2 sm:text-[11px]">
+                      → Fix it
                     </span>
                   </p>
 
                   {/* tool call */}
                   <div className="mt-2.5 overflow-hidden rounded-lg border border-white/[0.07] bg-[#0d0b0c]">
-                    <div className="flex items-center gap-2.5 border-b border-white/[0.05] px-3 py-2">
+                    <div className="flex items-center gap-2 border-b border-white/[0.05] px-2.5 py-1.5 sm:gap-2.5 sm:px-3 sm:py-2">
                       <span className="font-mono text-[12px] text-blood-50">{'>_'}</span>
-                      <span className="truncate font-mono text-[12.5px] text-neutral-300">
+                      <span className="truncate font-mono text-[11.5px] text-neutral-300 sm:text-[12.5px]">
                         pages · code · logins
                       </span>
-                      <span className="ml-auto shrink-0 font-mono text-[12px] text-emerald-400">
+                      <span className="ml-auto shrink-0 font-mono text-[11px] text-emerald-400 sm:text-[12px]">
                         ✓ done
                       </span>
                     </div>
-                    <ul className="space-y-1.5 px-3 py-2.5">
+                    <ul className="space-y-1 px-2.5 py-2 sm:space-y-1.5 sm:px-3 sm:py-2.5">
                       {SCAN_LOG.map(({ ok, text }) => (
-                        <li key={text} className="flex items-start gap-2 font-mono text-[12px]">
+                        <li key={text} className="flex items-start gap-1.5 font-mono text-[11px] sm:gap-2 sm:text-[12px]">
                           <span className={ok ? 'text-emerald-400' : 'text-neutral-600'}>
                             {ok ? '✓' : '·'}
                           </span>
@@ -197,12 +197,12 @@ export function AppPreview() {
             </div>
 
             {/* composer */}
-            <div className="px-5 pb-5">
-              <div className="rounded-xl border border-blood-400/30 bg-[#100c0d] p-3">
-                <p className="px-1 pt-1 pb-4 text-[13.5px] text-neutral-600">
-                  Scan a target, ask the swarm, / for commands…
+            <div className="px-3.5 pb-4 sm:px-5 sm:pb-5">
+              <div className="rounded-xl border border-blood-400/30 bg-[#100c0d] p-2.5 sm:p-3">
+                <p className="truncate px-1 pt-1 pb-3 text-[12px] text-neutral-600 sm:pb-4 sm:text-[13.5px]">
+                  Ask the swarm anything…
                 </p>
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2 sm:gap-2.5">
                   <Pill>
                     <InfinityIcon className="h-3.5 w-3.5" strokeWidth={1.8} />
                     Swarm
@@ -218,7 +218,7 @@ export function AppPreview() {
                   <span className="ml-auto flex items-center gap-3 text-neutral-600">
                     <AtSign className="hidden h-4 w-4 sm:block" strokeWidth={1.8} />
                     <Paperclip className="hidden h-4 w-4 sm:block" strokeWidth={1.8} />
-                    <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[linear-gradient(180deg,#8f1116,#5c0b0f)] text-white shadow-[0_0_16px_rgba(255,43,43,0.35)]">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[linear-gradient(180deg,#8f1116,#5c0b0f)] text-white shadow-[0_0_16px_rgba(255,43,43,0.35)] sm:h-9 sm:w-9">
                       <SendHorizontal className="h-4 w-4" strokeWidth={1.9} />
                     </span>
                   </span>

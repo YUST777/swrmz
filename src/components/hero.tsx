@@ -14,14 +14,14 @@ function WhatsNewBadge() {
   return (
     <a
       href="#changelog"
-      className="group inline-flex items-center rounded-full border border-white/[0.09] bg-[#0c0a0b]/90 py-1 pr-2 pl-1 backdrop-blur-sm transition-colors hover:border-blood-100/35"
+      className="group inline-flex max-w-full items-center rounded-full border border-white/[0.09] bg-[#0c0a0b]/90 py-1 pr-2 pl-1 backdrop-blur-sm transition-colors hover:border-blood-100/35"
     >
-      <span className="rounded-full bg-[linear-gradient(180deg,#ff5c5c,#d81318)] px-3.5 py-1.5 text-[12.5px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)]">
+      <span className="shrink-0 rounded-full bg-[linear-gradient(180deg,#ff5c5c,#d81318)] px-3 py-1.5 text-[11.5px] font-semibold text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.28)] sm:px-3.5 sm:text-[12.5px]">
         Whats New
       </span>
 
-      <span className="flex items-center gap-1 pr-1 pl-3 text-[13px] text-neutral-300">
-        Ease Update v0.1
+      <span className="flex min-w-0 items-center gap-1 pr-1 pl-2.5 text-[12px] text-neutral-300 sm:pl-3 sm:text-[13px]">
+        <span className="truncate">Ease Update v0.1</span>
         <ChevronRight
           className="h-3.5 w-3.5 text-neutral-500 transition-transform duration-300 group-hover:translate-x-0.5"
           strokeWidth={2}
@@ -38,8 +38,8 @@ function WhatsNewBadge() {
  */
 function HeroActions() {
   return (
-    <div className="flex flex-wrap items-center justify-center gap-3">
-      <div className="relative inline-flex">
+    <div className="flex w-full flex-col items-center justify-center gap-3 sm:w-auto sm:flex-row">
+      <div className="relative inline-flex w-full sm:w-auto">
         {/* The bloom hugs the button. It used to run to -inset-x-8/-inset-y-5
             with a 32px blur, which made the primary read as a visibly bigger
             control than its neighbour even though both boxes are 152×47 — the
@@ -49,7 +49,7 @@ function HeroActions() {
 
         <a
           href="#read-more"
-          className="group relative inline-flex min-w-[152px] items-center justify-center gap-2 rounded-full border border-blood-100/45 bg-[linear-gradient(180deg,#211012,#0c0708)] px-6 py-3 text-[14px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_0_14px_rgba(255,43,43,0.28)] transition-all duration-300 hover:border-blood-100/70 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_22px_rgba(255,43,43,0.45)]"
+          className="group relative inline-flex w-full min-w-[152px] items-center justify-center gap-2 rounded-full border border-blood-100/45 sm:w-auto bg-[linear-gradient(180deg,#211012,#0c0708)] px-6 py-3 text-[14px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_0_14px_rgba(255,43,43,0.28)] transition-all duration-300 hover:border-blood-100/70 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_22px_rgba(255,43,43,0.45)]"
         >
           Read more
           <ArrowRight
@@ -64,7 +64,7 @@ function HeroActions() {
           different weights. Only the surface differs. */}
       <a
         href="#trailer"
-        className="group inline-flex min-w-[152px] items-center justify-center gap-2 rounded-full border border-white/[0.14] bg-[linear-gradient(180deg,#26232a,#16141a)] px-6 py-3 text-[14px] font-medium text-neutral-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors duration-300 hover:border-white/25 hover:bg-[linear-gradient(180deg,#302c36,#1e1b23)] hover:text-white"
+        className="group inline-flex w-full min-w-[152px] items-center justify-center gap-2 rounded-full border border-white/[0.14] sm:w-auto bg-[linear-gradient(180deg,#26232a,#16141a)] px-6 py-3 text-[14px] font-medium text-neutral-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors duration-300 hover:border-white/25 hover:bg-[linear-gradient(180deg,#302c36,#1e1b23)] hover:text-white"
       >
         <Play className="h-3 w-3 fill-current" strokeWidth={0} />
         See Trailer
@@ -96,14 +96,14 @@ export function Hero() {
       <div className="relative z-20">
         <SiteHeader />
 
-        <div className="mx-auto max-w-[1400px] px-6 pt-14 text-center sm:pt-[88px]">
+        <div className="mx-auto max-w-[1400px] px-5 pt-10 text-center sm:px-6 sm:pt-[88px]">
           <motion.div {...rise(0)}>
             <WhatsNewBadge />
           </motion.div>
 
           <motion.h1
             {...rise(0.08)}
-            className="mt-5 text-[clamp(1.8rem,3.7vw,2.85rem)] leading-[1.14] font-semibold tracking-[-0.015em]"
+            className="mt-5 text-[clamp(1.6rem,7vw,2.85rem)] leading-[1.14] font-semibold tracking-[-0.015em]"
           >
             <span className="block text-[#8d8d8d]">Stay in control</span>
             <span className="block text-white">Your security on autopilot</span>
@@ -111,7 +111,7 @@ export function Hero() {
 
           <motion.p
             {...rise(0.16)}
-            className="mx-auto mt-5 max-w-[620px] text-[14px] leading-[1.65] text-neutral-400"
+            className="mx-auto mt-5 max-w-[620px] text-[13.5px] leading-[1.6] text-neutral-400 sm:text-[14px] sm:leading-[1.65]"
           >
             A swarm of AI agents that scan your code, hunt real vulnerabilities, and defend your
             stack while your team sleeps — with every risky action cleared by you first.
@@ -121,7 +121,7 @@ export function Hero() {
             <HeroActions />
           </motion.div>
 
-          <motion.div {...rise(0.34)} className="mt-16 pb-10 sm:mt-24 sm:pb-14">
+          <motion.div {...rise(0.34)} className="mt-12 pb-8 sm:mt-24 sm:pb-14">
             <AppPreview />
           </motion.div>
         </div>
