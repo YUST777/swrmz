@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react'
-import { ArrowUpRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 
 import { DroneGlyph, TextLogo } from '@/components/brand-logo'
 
@@ -44,40 +44,38 @@ function FooterCta() {
           <span aria-hidden className="absolute inset-x-8 top-4 -z-10 h-7 rounded-full bg-blood-100/30 blur-[18px]" />
         </div>
         <p className="font-mono text-[10px] tracking-[0.14em] text-blood-50 uppercase">Your perimeter, under watch</p>
-        <h2 className="mt-4 max-w-[13ch] text-balance text-[clamp(2.4rem,5vw,4.5rem)] leading-[0.95] font-light tracking-[-0.065em] text-white">
+        {/* Same heading and lede treatment as every other section — the
+            top-lit gradient ramp at -0.02em, and the 14px/1.65 lede. This was
+            4.5rem flat white at -0.065em, which read as a different site. */}
+        <h2 className="mt-4 max-w-[16ch] bg-[linear-gradient(100deg,#5f5f5f_0%,#ffffff_52%,#c9c9c9_100%)] bg-clip-text text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.1] pb-[0.14em] font-light tracking-[-0.02em] text-balance text-transparent">
           Let the swarm take first watch.
         </h2>
-        <p className="mt-5 max-w-[48ch] text-[14px] leading-[1.65] text-neutral-400">
+        <p className="mt-5 max-w-[48ch] text-[14px] leading-[1.65] text-neutral-500">
           Point it at what your team is building. Swrmz finds the way in, proves it, and waits for
           your word before it touches anything.
         </p>
+
+        {/* The page's primary button recipe, identical to the hero's. */}
         <a
           href="mailto:hello@swarms.tech?subject=Swrmz%20early%20access"
-          className="group mt-8 inline-flex items-center gap-2 rounded-full border border-blood-100/50 bg-[linear-gradient(180deg,#501215,#21090a)] px-6 py-3 text-[13px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.16),0_0_22px_rgba(255,43,43,0.28)] transition-all duration-300 hover:border-blood-100/75 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_32px_rgba(255,43,43,0.45)]"
+          className="group mt-8 inline-flex min-w-[152px] items-center justify-center gap-2 rounded-full border border-blood-100/45 bg-[linear-gradient(180deg,#211012,#0c0708)] px-6 py-3 text-[14px] font-medium text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.14),0_0_14px_rgba(255,43,43,0.28)] transition-all duration-300 hover:border-blood-100/70 hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_22px_rgba(255,43,43,0.45)]"
         >
           Request early access
-          <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" strokeWidth={1.8} />
+          <ArrowRight
+            className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+            strokeWidth={1.8}
+          />
         </a>
       </div>
     </motion.section>
   )
 }
 
-/** X, LinkedIn and GitHub, drawn inline — three glyphs is not worth a dep. */
+/** GitHub only — one glyph is not worth a dependency. */
 const SOCIALS = [
   {
-    label: 'X',
-    href: 'https://x.com',
-    path: 'M13.6 10.6 20.9 2h-1.7l-6.3 7.4L7.8 2H2l7.7 11.2L2 22h1.7l6.7-7.8L15.8 22h5.8l-8-11.4Zm-2.4 2.8-.8-1.1L4.4 3.3h2.7l5 7.1.8 1.1 6.5 9.2h-2.7l-5.3-7.6Z',
-  },
-  {
-    label: 'LinkedIn',
-    href: 'https://linkedin.com',
-    path: 'M6.9 21.4H2.9V8.7h4Zm-2-14.5C3.6 6.9 2.5 5.8 2.5 4.4A2.4 2.4 0 0 1 4.9 2c1.3 0 2.4 1.1 2.4 2.4S6.2 6.9 4.9 6.9ZM21.5 21.4h-4v-6.2c0-1.5 0-3.4-2.1-3.4s-2.4 1.6-2.4 3.3v6.3h-4V8.7h3.8v1.7h.1a4.2 4.2 0 0 1 3.8-2.1c4 0 4.8 2.7 4.8 6.1Z',
-  },
-  {
     label: 'GitHub',
-    href: 'https://github.com',
+    href: 'https://github.com/YUST777/swrmz',
     path: 'M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.4-3.4-1.4-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.7.4-1.1.6-1.4-2.2-.2-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7 0-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.4 4.8-4.6 5 .4.3.7 1 .7 2v2.9c0 .3.2.6.7.5A10 10 0 0 0 12 2Z',
   },
 ]

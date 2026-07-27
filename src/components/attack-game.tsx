@@ -48,7 +48,24 @@ const GUARD_DROP = 56
  */
 const PLAY_SCALE = 0.6
 
-const KINDS = ['sqli', 'xss', 'rce', 'csrf', 'ssrf', 'idor', 'xxe', 'lfi', 'rfi', 'ssti']
+/**
+ * What is falling at you. Plain names, not acronyms — this used to read
+ * sqli / xss / rce / csrf / ssrf / idor / xxe / lfi / rfi / ssti, which asks
+ * the player to shoot ten things they cannot identify. Kept short: they
+ * render inside small chips and a long string overflows.
+ */
+const KINDS = [
+  'data theft',
+  'fake login',
+  'account steal',
+  'site flood',
+  'bad code',
+  'password grab',
+  'card skimmer',
+  'file leak',
+  'spy script',
+  'ransom',
+]
 
 type Threat = { live: boolean; x: number; y: number; vy: number }
 type Shot = { live: boolean; x: number; y: number }
@@ -340,14 +357,30 @@ export function AttackGame({
     const gap = window.innerWidth - document.documentElement.clientWidth
     body.style.overflow = 'hidden'
     if (gap > 0) body.style.paddingRight = `${gap}px`
+
+    // overflow:hidden does not stop Lenis — it drives scrollTo on its own rAF
+    // and would keep scrolling a locked body right out from under the player.
+    window.__lenis?.stop()
+
     return () => {
       body.style.overflow = prevOverflow
       body.style.paddingRight = prevPad
+      window.__lenis?.start()
     }
   }, [phase])
 
   /* ── transitions ──────────────────────────────────────────────────── */
-  const start = useCallback(() => {
+
+  /**
+   * Empty every pool and hide every node.
+   *
+   * Needed at BOTH ends of a run. On the way in it stops the previous run's
+   * leftovers appearing; on the way out it is what returns the stage to the
+   * still frame it was before you played. Without it the rAF loop stops with
+   * whatever was mid-flight still painted, and the scene keeps a scatter of
+   * frozen chips hanging over it.
+   */
+  const clearEntities = useCallback(() => {
     const w = world.current
     w.threats.forEach((t) => (t.live = false))
     w.shots.forEach((s) => (s.live = false))
@@ -355,6 +388,11 @@ export function AttackGame({
     threatEls.current.forEach((el) => el && (el.style.opacity = '0'))
     shotEls.current.forEach((el) => el && (el.style.opacity = '0'))
     burstEls.current.forEach((el) => el && (el.style.opacity = '0'))
+  }, [])
+
+  const start = useCallback(() => {
+    const w = world.current
+    clearEntities()
     w.contained = 0
     w.breached = 0
     w.droneX = 0
@@ -367,20 +405,30 @@ export function AttackGame({
     animate(droneDrop, GUARD_DROP, { duration: 0.45, ease: [0.22, 1, 0.36, 1] })
     animate(droneScale, PLAY_SCALE, { duration: 0.45, ease: [0.22, 1, 0.36, 1] })
     setPhaseBoth('playing')
-  }, [droneX, droneDrop, droneScale, setPhaseBoth])
+  }, [clearEntities, droneX, droneDrop, droneScale, setPhaseBoth])
 
   const exit = useCallback(() => {
+    // Clear first, then fly home — the stage has to be empty by the time the
+    // drone lands or the scroll scene is left sitting under a frozen swarm.
+    clearEntities()
     animate(droneX, 0, { duration: 0.4 })
     animate(droneDrop, 0, { duration: 0.45, ease: [0.22, 1, 0.36, 1] })
     animate(droneScale, 1, { duration: 0.45, ease: [0.22, 1, 0.36, 1] })
     setPhaseBoth('idle')
-  }, [droneX, droneDrop, droneScale, setPhaseBoth])
+  }, [clearEntities, droneX, droneDrop, droneScale, setPhaseBoth])
 
   // Scrolling back up out of the ending un-arms the toy, so it cannot be left
   // hanging over a scene that has rewound to the middle of the run.
   useEffect(() => {
     if (!armed && phase === 'idle') droneX.set(0)
   }, [armed, phase, droneX])
+
+  // The run can end three ways — clock, too many breaches, or Escape — and the
+  // rAF loop stops the moment it does, leaving whatever was mid-flight painted
+  // where it stood. Clearing on the transition covers all three at once.
+  useEffect(() => {
+    if (phase === 'over') clearEntities()
+  }, [phase, clearEntities])
 
   const playing = phase === 'playing'
 
@@ -442,7 +490,7 @@ export function AttackGame({
 
       {/* ── the invitation ───────────────────────────────────────────────
           No button. The drone itself is the affordance: an arrow points at it
-          and you double-click it to take over. A capsule sitting in the middle
+          and you click it to take over. A capsule sitting in the middle
           of the scene read as another CTA competing with the hero's, and this
           keeps the eye on the thing you are about to fly. */}
       {armed && phase === 'idle' && (
@@ -454,14 +502,14 @@ export function AttackGame({
             style={{ top: idleBoxTop + 16, left: 0, width: 'calc(50% - 46px)' }}
           >
             <span className="font-mono text-[10.5px] tracking-[0.06em] whitespace-nowrap text-neutral-400">
-              double-click to fly it
+              click me
             </span>
             {/* Hand-drawn arrow, pointing right at the drone. The source art
                 is a single filled path (not a stroke), so it takes the colour
                 through `fill` and scales cleanly at any size. */}
             <svg
-              width="74"
-              height="31"
+              width="44"
+              height="18"
               viewBox="0 0 115.6 48"
               className="shrink-0 text-blood-50"
               aria-hidden
@@ -473,17 +521,11 @@ export function AttackGame({
             </svg>
           </div>
 
-          {/* The hit area sits over the drone. Enter/Space work too, because a
-              double-click is unreachable without a pointer. */}
+          {/* The hit area sits over the drone. A plain onClick covers the
+              keyboard case too — a <button> fires it on Enter and Space. */}
           <button
             type="button"
-            onDoubleClick={start}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault()
-                start()
-              }
-            }}
+            onClick={start}
             aria-label="Take the controls and defend the endpoint"
             className="absolute z-30 -translate-x-1/2 cursor-pointer rounded-full transition-colors duration-300 hover:bg-white/[0.04] focus-visible:bg-white/[0.05] focus-visible:outline-none"
             style={{

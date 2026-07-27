@@ -27,7 +27,7 @@ const CARDS = [
   {
     span: 'md:col-span-7',
     title: 'One swarm, one objective',
-    body: 'Recon, scanning and response agents coordinate under a single shared goal instead of running as isolated one-offs.',
+    body: 'Dozens of agents working toward one goal instead of a pile of separate tools that never talk to each other.',
     visual: <SwarmVisual />,
   },
   {
@@ -45,19 +45,19 @@ const CARDS = [
   {
     span: 'md:col-span-7',
     title: 'Proof, not another alarm',
-    body: 'Everyone else ships alerts that ring 24/7. Swrmz runs the injection, confirms the payload lands, and hands you the reproduction.',
+    body: 'Everyone else hands you a list of maybes. Swrmz breaks in for real, shows you what it reached, and tells you exactly how it got there.',
     visual: <ProofVisual />,
   },
   {
     span: 'md:col-span-6',
-    title: 'Thirty developers, one reviewer',
-    body: 'Point it at everything your team is shipping and it sweeps every file — pre-recon, recon, then a full vulnerability pass.',
+    title: 'Your whole team, one reviewer',
+    body: 'Point it at everything your team is shipping and it reads every file, looking for the holes someone could get in through.',
     visual: <ReviewVisual />,
   },
   {
     span: 'md:col-span-6',
     title: 'No install, no API keys',
-    body: 'Open swarms.tech and it is running. Handing your key to a tool is a breach in itself, so we never ask for one.',
+    body: 'Open swarms.tech and it is running. Nothing to download, nothing to set up, no keys to hand over.',
     visual: <AccessVisual />,
   },
 ]
@@ -145,7 +145,7 @@ export function FeatureBento() {
           transition={{ duration: reduceMotion ? 0.01 : 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="text-center"
         >
-          <h2 className="mx-auto max-w-[16ch] bg-[linear-gradient(100deg,#5f5f5f_0%,#ffffff_52%,#c9c9c9_100%)] bg-clip-text text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.1] font-light tracking-[-0.02em] text-transparent">
+          <h2 className="mx-auto max-w-[16ch] bg-[linear-gradient(100deg,#5f5f5f_0%,#ffffff_52%,#c9c9c9_100%)] bg-clip-text text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.1] pb-[0.14em] font-light tracking-[-0.02em] text-transparent">
             Relentless &amp; Accountable
           </h2>
 

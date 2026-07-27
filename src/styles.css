@@ -69,6 +69,43 @@
     background: var(--color-blood-300);
     color: #fff;
   }
+
+  /* ── the scrollbar ──────────────────────────────────────────────────
+     The default light-grey bar is the one piece of chrome that gives away
+     that this is a browser window rather than the product. A thin crimson
+     thumb on the page ink keeps it inside the brand.
+
+     Both syntaxes are here on purpose: `scrollbar-color` is the standard and
+     is what Firefox honours, while the ::-webkit-scrollbar block is what
+     Chrome and Safari actually use — neither one covers every engine alone. */
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-blood-400) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #070506;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #8f1116, #4a0a0d);
+    border: 2px solid #070506;
+    border-radius: 999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #e11414, #8f1116);
+  }
+
+  /* stops the little empty square where the two bars meet */
+  ::-webkit-scrollbar-corner {
+    background: #070506;
+  }
 }
 
 @utility no-scrollbar {
@@ -171,17 +208,6 @@
     transform-box: fill-box;
     transform-origin: left center;
     animation: bv-strike 6s ease-out infinite;
-  }
-
-  /* The attack run's drone, idling.
-     Everything else in that section is driven by the scroll position, which
-     means the moment you stop scrolling the scene is a still photograph and
-     reads as broken. This is the one thing in there on a timer: it costs
-     nothing, and it is the difference between "loading failed" and "hovering".
-     It rides an inner element so it never fights the scroll-driven transform
-     on the wrapper. */
-  .bv-hover {
-    animation: bv-hover 3.8s ease-in-out infinite;
   }
 }
 

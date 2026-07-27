@@ -31,13 +31,20 @@ import { DroneGlyph } from '@/components/brand-logo'
  * 1024px the whole thing renders as the finished frame and fades in once.
  */
 
-/** where each line lights up, in scroll progress */
+/**
+ * Where each line lights up, in scroll progress.
+ *
+ * Plain language on purpose. The reader is a founder, not a pentester — they
+ * do not know what `' OR 1=1--` or `POST /api/login` mean, and a line they
+ * have to decode is a line they skip. Every beat names the consequence
+ * instead of the technique, and the last one is the point of the section.
+ */
 const STAGES = [
-  { at: 0.05, step: '01', label: 'recon', detail: '412 routes mapped' },
-  { at: 0.27, step: '02', label: 'locked', detail: 'POST /api/login' },
-  { at: 0.44, step: '03', label: 'firing', detail: "' OR 1=1--" },
-  { at: 0.63, step: '04', label: 'confirmed', detail: 'reproduction captured' },
-  { at: 0.83, step: '05', label: 'held', detail: 'patch waiting on you' },
+  { at: 0.05, step: '01', label: 'looks', detail: 'finds every way in' },
+  { at: 0.27, step: '02', label: 'finds', detail: 'a hole in your login' },
+  { at: 0.44, step: '03', label: 'breaks in', detail: 'reaches your data' },
+  { at: 0.63, step: '04', label: 'proves it', detail: 'shows you how' },
+  { at: 0.83, step: '05', label: 'stops', detail: 'waits for your word' },
 ]
 
 /**
@@ -216,12 +223,12 @@ function Target({ progress }: { progress: MotionValue<number> }) {
         style={{ borderColor: shellBorder, height: TARGET_H, y: shellNudge }}
       >
         <div className="flex items-center justify-between border-b border-white/[0.06] px-3.5 py-2">
-          <span className="font-mono text-[11.5px] text-neutral-300">POST /api/login</span>
+          <span className="font-sans text-[11.5px] text-neutral-300">Your login page</span>
           <motion.span
             className="rounded-md border border-blood-100/40 bg-blood-500/40 px-2 py-0.5 font-mono text-[10px] tracking-[0.1em] text-blood-50"
             style={{ opacity: verdictOpacity }}
           >
-            SQLI
+            BROKEN IN
           </motion.span>
         </div>
 
@@ -233,11 +240,14 @@ function Target({ progress }: { progress: MotionValue<number> }) {
               className="absolute top-[3px] h-[9px] w-[62%] rounded-full bg-white/[0.07]"
               style={{ opacity: cleanField }}
             />
+            {/* What the reader needs to see is the OUTCOME, not the string that
+                caused it. `' OR 1=1--` is meaningless to them; "all 12,480
+                customer records" is not. */}
             <motion.span
-              className="absolute top-0 font-mono text-[11.5px] text-blood-50"
+              className="absolute top-0 font-sans text-[11.5px] text-blood-50"
               style={{ opacity: dirtyField }}
             >
-              &apos; OR 1=1--
+              all your customer data
             </motion.span>
           </div>
           <div className="mt-2 h-[9px] w-[44%] rounded-full bg-white/[0.05]" />
@@ -375,14 +385,15 @@ function AttackRunScene({ scrub, reduceMotion }: { scrub: boolean; reduceMotion:
             <div>
               {/* the break is hard-set: left to itself this lands as
                   "…Then it / waits." and orphans the payload word */}
-              <h2 className="bg-[linear-gradient(100deg,#5f5f5f_0%,#ffffff_52%,#c9c9c9_100%)] bg-clip-text text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.1] font-light tracking-[-0.02em] text-transparent">
+              <h2 className="bg-[linear-gradient(100deg,#5f5f5f_0%,#ffffff_52%,#c9c9c9_100%)] bg-clip-text text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.1] pb-[0.14em] font-light tracking-[-0.02em] text-transparent">
                 <span className="block">It breaks in.</span>
                 <span className="block">Then it waits.</span>
               </h2>
 
               <p className="mt-5 max-w-[46ch] text-[14px] leading-[1.65] text-neutral-500">
-                One run, end to end. The swarm maps your surface, picks the way in, proves it lands
-                — and parks the destructive half behind a rail only you can drop.
+                Swrmz attacks your product the way a real attacker would, and shows you exactly
+                what it reached. Then it stops. It will not touch, change or delete anything until
+                you tell it to.
               </p>
 
               <ol className="mt-9 space-y-[13px]">
@@ -475,7 +486,7 @@ function AttackRunScene({ scrub, reduceMotion }: { scrub: boolean; reduceMotion:
                   className="h-full w-full"
                   style={{ x: gameX, y: gameDrop, scale: gameScale }}
                 >
-                  <span className="bv-hover absolute inset-0 block">
+                  <span className="absolute inset-0 block">
                     <span className="pointer-events-none absolute inset-[-22%] rounded-full bg-blood-200/22 blur-[16px]" />
                     <svg viewBox="0 0 150 150" className="relative h-full w-full">
                       <DroneGlyph x={75} y={75} size={150} fill="#ff5252" />

@@ -94,7 +94,7 @@ function Caption({ h, children }: { h: number; children: React.ReactNode }) {
 
 /* ── 1 · swarm orchestration ─────────────────────────────────────────── */
 
-const ROLES = ['recon', 'scan', 'respond']
+const ROLES = ['look', 'test', 'defend']
 
 export function SwarmVisual() {
   return (
@@ -189,31 +189,11 @@ export function SwarmVisual() {
               </g>
             ))}
 
-            {/* the objective everything is pulling toward */}
-            <circle cx={goalX} cy={cy} r={ring + 16} fill={RED} opacity="0.06" />
-            <circle
-              cx={goalX}
-              cy={cy}
-              r={ring}
-              fill="none"
-              stroke={RED}
-              strokeOpacity="0.18"
-              strokeWidth="1"
-              strokeDasharray="3 8"
-              className="bv-spin-slow"
-              style={{ transformOrigin: `${goalX}px ${cy}px` }}
-            />
-            <circle
-              cx={goalX}
-              cy={cy}
-              r={ring * 0.62}
-              fill="#0b0809"
-              stroke={RED}
-              strokeOpacity="0.32"
-              strokeWidth="1"
-            />
-            {/* the objective is the product itself, so it wears the mark */}
-            <DroneGlyph x={goalX} y={cy} size={ring * 0.94} fill={HOT} />
+            {/* The objective everything is pulling toward — the drone mark on
+                its own. This used to sit inside a halo, a rotating dashed ring
+                and a dark disc; three concentric circles around one small glyph
+                read as decoration for its own sake and buried the mark. */}
+            <DroneGlyph x={goalX} y={cy} size={ring * 1.5} fill={HOT} />
 
             <Caption h={h}>{count * 3} agents · 1 shared objective</Caption>
           </>
@@ -369,7 +349,7 @@ export function RadarVisual() {
               </text>
             ))}
 
-            <Caption h={h}>03:14 · contained · nobody paged</Caption>
+            <Caption h={h}>3am · stopped it · told you</Caption>
           </>
         )
       }}
@@ -385,11 +365,11 @@ export function RadarVisual() {
  * split legible at a glance — four walk through, one stops.
  */
 const ACTIONS = [
-  { label: 'map exposed routes', short: 'map routes', safe: true },
-  { label: 'read source tree', short: 'read source', safe: true },
-  { label: 'fuzz login params', short: 'fuzz params', safe: true },
-  { label: 'diff dependencies', short: 'diff deps', safe: true },
-  { label: 'drop table users', short: 'drop table', safe: false },
+  { label: 'check your pages', short: 'check pages', safe: true },
+  { label: 'read your code', short: 'read code', safe: true },
+  { label: 'test your login', short: 'test login', safe: true },
+  { label: 'check what you installed', short: 'check installs', safe: true },
+  { label: 'delete your data', short: 'delete data', safe: false },
 ]
 
 export function GateVisual() {
@@ -533,20 +513,20 @@ export function GateVisual() {
  * is the only place anything is confirmed.
  */
 const NOISE = [
-  'possible sqli',
-  'weak cipher suite',
-  'open redirect?',
-  'verbose error page',
-  'missing csp header',
-  'cookie not httponly',
-  'possible sqli',
+  'might be a problem',
+  'weak setting found',
+  'check this page?',
+  'error page too chatty',
+  'missing a header',
+  'cookie not locked down',
+  'might be a problem',
 ]
 
 const PROOF_LINES = [
-  { text: 'POST /api/login', hot: "' OR 1=1--" },
-  { text: '200 OK · 1482 rows · 41ms', hot: '' },
-  { text: 'auth bypassed — no password', hot: '' },
-  { text: 'poc.http + har attached', hot: '' },
+  { text: 'Your login page', hot: 'broken in' },
+  { text: 'got in without a password', hot: '' },
+  { text: 'reached every customer record', hot: '' },
+  { text: 'here is exactly how', hot: '' },
 ]
 
 export function ProofVisual() {
@@ -689,7 +669,7 @@ export function ProofVisual() {
               </text>
             </g>
 
-            <Caption h={h}>247 alerts · 1 reproduction</Caption>
+            <Caption h={h}>a pile of maybes · 1 proven</Caption>
           </>
         )
       }}

@@ -26,16 +26,16 @@ import { cn } from '@/lib/utils'
  */
 
 const TARGETS = [
-  { name: 'demo-vulnerable-repo', meta: '~/Desktop/swrmz', icon: FolderGit2, active: true },
-  { name: 'SOC', meta: '127.0.0.1:19999', icon: Server },
+  { name: 'My store', meta: 'shop.example.com', icon: FolderGit2, active: true },
+  { name: 'Live watch', meta: 'on since 9:04', icon: Server },
   { name: 'vuln-sample', meta: '~/Desktop/swrmz', icon: FolderGit2 },
   { name: 'swrmz', meta: '~/Desktop', icon: FolderGit2 },
 ]
 
 const SCAN_LOG = [
-  { ok: true, text: 'semgrep p/default + p/secrets' },
-  { ok: false, text: 'npm audit skipped (no package.json)' },
-  { ok: true, text: '6 raw signals · 3 secret · 3 sast' },
+  { ok: true, text: 'read every page and file' },
+  { ok: false, text: 'checking what you installed' },
+  { ok: true, text: 'found 6 things worth a look' },
 ]
 
 function Pill({ children, dot }: { children: React.ReactNode; dot?: string }) {
@@ -130,7 +130,7 @@ export function AppPreview() {
             {/* room header — just the label now, kept deliberately quiet */}
             <div className="border-b border-white/[0.06] px-5 py-2.5">
               <h3 className="truncate text-[11.5px] font-medium text-neutral-400">
-                Scan — demo-vulnerable-repo
+                Checking — My store
               </h3>
             </div>
 
@@ -149,7 +149,7 @@ export function AppPreview() {
                     </span>
                   </p>
                   <p className="mt-1.5 truncate font-mono text-[12.5px] text-neutral-400">
-                    @Analyst scan ~/demo-vulnerable-repo
+                    check my store for holes
                   </p>
                 </div>
               </div>
@@ -175,7 +175,7 @@ export function AppPreview() {
                     <div className="flex items-center gap-2.5 border-b border-white/[0.05] px-3 py-2">
                       <span className="font-mono text-[12px] text-blood-50">{'>_'}</span>
                       <span className="truncate font-mono text-[12.5px] text-neutral-300">
-                        semgrep + secrets + sast
+                        pages · code · logins
                       </span>
                       <span className="ml-auto shrink-0 font-mono text-[12px] text-emerald-400">
                         ✓ done
@@ -210,7 +210,7 @@ export function AppPreview() {
                   </Pill>
                   <span className="hidden sm:inline">
                     <Pill dot="#ff3b3b">
-                      Claude Sonnet
+                      Swrmz
                       <ChevronDown className="h-3 w-3" strokeWidth={2} />
                     </Pill>
                   </span>

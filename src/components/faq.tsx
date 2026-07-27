@@ -50,27 +50,26 @@ export default function FAQs() {
       <div className="mx-auto max-w-6xl px-6 md:px-8">
         <div className="grid gap-10 md:grid-cols-[minmax(0,0.62fr)_minmax(0,1fr)] md:gap-16">
           <div>
-            <h2 className="text-foreground text-4xl font-semibold md:text-5xl">FAQs</h2>
-            <p className="text-muted-foreground mt-4 text-lg">Your questions answered</p>
-            <p className="text-muted-foreground mt-8 text-lg">
-              Can't find what you're looking for? Contact our{' '}
-              <a
-                href="mailto:hello@swarms.tech"
-                className="text-foreground font-medium hover:underline"
-              >
-                customer support team
-              </a>
+            {/* Same heading treatment as every other section: the top-lit
+                gradient ramp, font-light, -0.02em, and the 14px/1.65 lede. */}
+            <h2 className="bg-[linear-gradient(100deg,#5f5f5f_0%,#ffffff_52%,#c9c9c9_100%)] bg-clip-text text-[clamp(1.9rem,4vw,3.1rem)] leading-[1.1] pb-[0.14em] font-light tracking-[-0.02em] text-transparent">
+              FAQs
+            </h2>
+            <p className="mt-5 max-w-[38ch] text-[14px] leading-[1.65] text-neutral-500">
+              Your questions answered
             </p>
           </div>
 
           <Accordion type="single" collapsible className="w-full">
             {faqItems.map((item) => (
               <AccordionItem key={item.id} value={item.id}>
-                <AccordionTrigger className="cursor-pointer text-lg hover:no-underline">
+                <AccordionTrigger className="cursor-pointer text-[14.5px] hover:no-underline">
                   {item.question}
                 </AccordionTrigger>
                 <AccordionContent>
-                  <p className="text-base">{item.answer}</p>
+                  <p className="max-w-[62ch] text-[13px] leading-[1.7] text-neutral-400">
+                    {item.answer}
+                  </p>
                 </AccordionContent>
               </AccordionItem>
             ))}

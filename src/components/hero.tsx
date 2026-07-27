@@ -40,10 +40,12 @@ function HeroActions() {
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
       <div className="relative inline-flex">
-        {/* the red bloom sitting under the button — kept low so it reads as
-            a lit edge rather than a lamp */}
-        <div className="pointer-events-none absolute -inset-x-4 -inset-y-3 rounded-full bg-blood-200/20 blur-[18px]" />
-        <div className="pointer-events-none absolute -inset-x-8 -inset-y-5 rounded-[100%] bg-blood-300/10 blur-[32px]" />
+        {/* The bloom hugs the button. It used to run to -inset-x-8/-inset-y-5
+            with a 32px blur, which made the primary read as a visibly bigger
+            control than its neighbour even though both boxes are 152×47 — the
+            glow was doing the sizing, not the geometry. */}
+        <div className="pointer-events-none absolute -inset-x-1 -inset-y-1 rounded-full bg-blood-200/20 blur-[12px]" />
+        <div className="pointer-events-none absolute -inset-x-2 -inset-y-1.5 rounded-[100%] bg-blood-300/10 blur-[20px]" />
 
         <a
           href="#read-more"
@@ -57,9 +59,12 @@ function HeroActions() {
         </a>
       </div>
 
+      {/* Same geometry as the primary — min-w, px, py and gap all match, so the
+          pair reads as one control with two states rather than two buttons at
+          different weights. Only the surface differs. */}
       <a
         href="#trailer"
-        className="group inline-flex min-w-[152px] items-center justify-center gap-2.5 rounded-full border border-white/[0.14] bg-[linear-gradient(180deg,#26232a,#16141a)] px-6 py-3 text-[14px] font-medium text-neutral-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors duration-300 hover:border-white/25 hover:bg-[linear-gradient(180deg,#302c36,#1e1b23)] hover:text-white"
+        className="group inline-flex min-w-[152px] items-center justify-center gap-2 rounded-full border border-white/[0.14] bg-[linear-gradient(180deg,#26232a,#16141a)] px-6 py-3 text-[14px] font-medium text-neutral-100 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] transition-colors duration-300 hover:border-white/25 hover:bg-[linear-gradient(180deg,#302c36,#1e1b23)] hover:text-white"
       >
         <Play className="h-3 w-3 fill-current" strokeWidth={0} />
         See Trailer
