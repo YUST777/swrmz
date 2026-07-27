@@ -65,11 +65,27 @@ function ChevronStack({ side }: { side: 'left' | 'right' }) {
             <stop offset="52%" stopColor="#fff" stopOpacity="0.88" />
             <stop offset="92%" stopColor="#fff" stopOpacity="0" />
           </linearGradient>
+
+          {/* And fades them out vertically too. Without this the wrapper's
+              overflow-hidden sliced the ribbons at y=1040 — right where their
+              gradients are hottest — leaving a dead-straight bright line across
+              both flanks. */}
+          <linearGradient id={`${id}-fade-y`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#fff" stopOpacity="1" />
+            <stop offset="62%" stopColor="#fff" stopOpacity="1" />
+            <stop offset="100%" stopColor="#fff" stopOpacity="0" />
+          </linearGradient>
+
           <mask id={`${id}-mask`}>
             <rect x="0" y="0" width="400" height="1040" fill={`url(#${id}-fade)`} />
           </mask>
+
+          <mask id={`${id}-mask-y`}>
+            <rect x="0" y="0" width="400" height="1040" fill={`url(#${id}-fade-y)`} />
+          </mask>
         </defs>
 
+        <g mask={`url(#${id}-mask-y)`}>
         <g mask={`url(#${id}-mask)`}>
           {/* widest, dimmest ribbon sitting furthest back */}
           <polyline
@@ -125,20 +141,20 @@ function ChevronStack({ side }: { side: 'left' | 'right' }) {
             filter={`url(#${id}-haze)`}
           />
         </g>
+        </g>
       </svg>
     </div>
   )
 }
 
 /**
- * Anchored to the hero, but deliberately not clipped by it.
+ * The hero's chevron artwork.
  *
- * The section used to carry `overflow-hidden`, which cut every bloom off at
- * the hero's bottom edge — a dead straight line where a lit red stage became
- * flat black. The clip now lives on <main>, so the low glow is free to carry
- * past the boundary and the grid below starts inside the same light. Nothing
- * here is anchored to a page offset; the bleed hangs off the section's own
- * bottom edge, so it stays put however tall the hero gets.
+ * This used to carry the hero's entire light rig too — six blooms plus a
+ * vignette. That light now comes from SiteAtmosphere, which spans the whole
+ * page, so keeping a second set here just doubled the exposure at the top and
+ * blew the hero out relative to everything below it. What is left is the
+ * geometry: the ribbons themselves, catching the page's light.
  */
 export function BackgroundDecor() {
   return (
@@ -146,31 +162,10 @@ export function BackgroundDecor() {
       <ChevronStack side="left" />
       <ChevronStack side="right" />
 
-      {/* The bloom pools LOW on both flanks — it is what makes the frame read as
-          lit from below rather than evenly tinted. Sits under the vignette so the
-          headline never has to fight it. */}
-      <div className="absolute top-[560px] -left-56 h-[620px] w-[560px] rounded-full bg-blood-200/40 blur-[150px]" />
-      <div className="absolute top-[560px] -right-56 h-[620px] w-[560px] rounded-full bg-blood-200/40 blur-[150px]" />
-
-      {/* hotter, tighter core inside each bloom */}
-      <div className="absolute top-[700px] -left-32 h-[380px] w-[300px] rounded-full bg-blood-100/35 blur-[110px]" />
-      <div className="absolute top-[700px] -right-32 h-[380px] w-[300px] rounded-full bg-blood-100/35 blur-[110px]" />
-
-      {/* The carry-through. Same flanks, wider and dimmer, hung off the
-          bottom edge so roughly half of each one lands in the next section —
-          this is what removes the seam. */}
-      <div className="absolute -bottom-[440px] -left-64 h-[860px] w-[620px] rounded-full bg-blood-300/20 blur-[190px]" />
-      <div className="absolute -bottom-[440px] -right-64 h-[860px] w-[620px] rounded-full bg-blood-300/20 blur-[190px]" />
-
-      {/* and one broad ember on the centre line, low enough to come up under
-          the next section's heading rather than pooling on the boundary */}
-      <div className="absolute -bottom-[400px] left-1/2 h-[660px] w-[1150px] -translate-x-1/2 rounded-[100%] bg-blood-400/20 blur-[170px]" />
-
-      {/* keeps the centre of the stage black so the type stays legible */}
-      <div className="absolute inset-x-0 top-0 h-[1040px] bg-[radial-gradient(ellipse_58%_60%_at_50%_32%,#030303_0%,#030303_36%,rgba(3,3,3,0.9)_58%,rgba(3,3,3,0.45)_80%,transparent_100%)]" />
-
-      {/* top vignette so the header sits on solid black */}
-      <div className="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-ink via-ink/80 to-transparent" />
+      {/* Keeps the centre of the stage dark enough for the headline. Sized to
+          the chevrons rather than the viewport, and it fades out completely at
+          its edges so it never reads as a box over the page field. */}
+      <div className="absolute inset-x-0 top-0 h-[1040px] bg-[radial-gradient(ellipse_56%_58%_at_50%_32%,#030303_0%,rgba(3,3,3,0.88)_42%,rgba(3,3,3,0.4)_72%,transparent_100%)]" />
     </div>
   )
 }

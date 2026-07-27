@@ -9,6 +9,8 @@ import {
 } from 'motion/react'
 import type { MotionValue } from 'motion/react'
 
+import { AttackGame } from '@/components/attack-game'
+import type { GamePhase } from '@/components/attack-game'
 import { DroneGlyph } from '@/components/brand-logo'
 
 /**
@@ -311,8 +313,38 @@ function AttackRunScene({ scrub, reduceMotion }: { scrub: boolean; reduceMotion:
   const headOpacity = useTransform(progress, [0.39, 0.43, 0.55, 0.6], [0, 1, 1, 0])
 
   const railScale = useTransform(progress, [0.76, 0.9], [0, 1])
-  const railOpacity = useTransform(progress, [0.74, 0.81], [0, 1])
-  const holdOpacity = useTransform(progress, [0.85, 0.94], [0, 1])
+  const scrubRailOpacity = useTransform(progress, [0.74, 0.81], [0, 1])
+  const scrubHoldOpacity = useTransform(progress, [0.85, 0.94], [0, 1])
+
+  // ── the game ────────────────────────────────────────────────────────
+  // The scene ends holding at the rail. Everything below hands that ending
+  // to the reader: once the run is parked, the drone becomes flyable.
+  const [gamePhase, setGamePhase] = useState<GamePhase>('idle')
+  const [armed, setArmed] = useState(false)
+
+  // Separate layer from the scroll's transform. Both write the drone, and a
+  // single motion value would mean last-writer-wins every frame.
+  const gameX = useMotionValue(0)
+  const gameDrop = useMotionValue(0)
+  const gameScale = useMotionValue(1)
+
+  // Armed only at the very end of the scrub, so the invitation cannot appear
+  // while the drone is still diving.
+  useEffect(() => {
+    if (!scrub) {
+      setArmed(false)
+      return
+    }
+    const sync = (value: number) => setArmed(value >= 0.93)
+    sync(progress.get())
+    return progress.on('change', sync)
+  }, [scrub, progress])
+
+  // Once the reader takes over, the rail and its chip step aside — they are
+  // the scroll story's ending, and the game is a different one.
+  const cleared = gamePhase !== 'idle'
+  const railOpacity = cleared ? 0 : scrubRailOpacity
+  const holdOpacity = cleared ? 0 : scrubHoldOpacity
 
   return (
     <section
@@ -435,15 +467,39 @@ function AttackRunScene({ scrub, reduceMotion }: { scrub: boolean; reduceMotion:
                   opacity: droneOpacity,
                 }}
               >
-                {/* the idle bob lives in here so it stacks with, rather than
-                    overwrites, the scroll-driven transform on the wrapper */}
-                <span className="bv-hover absolute inset-0 block">
-                  <span className="pointer-events-none absolute inset-[-22%] rounded-full bg-blood-200/22 blur-[16px]" />
-                  <svg viewBox="0 0 150 150" className="relative h-full w-full">
-                    <DroneGlyph x={75} y={75} size={150} fill="#ff5252" />
-                  </svg>
-                </span>
+                {/* Three nested layers, one owner each: the scroll drives the
+                    wrapper, the game drives this, and the CSS bob drives the
+                    innermost. Collapsing any two of them means one silently
+                    overwrites the other every frame. */}
+                <motion.div
+                  className="h-full w-full"
+                  style={{ x: gameX, y: gameDrop, scale: gameScale }}
+                >
+                  <span className="bv-hover absolute inset-0 block">
+                    <span className="pointer-events-none absolute inset-[-22%] rounded-full bg-blood-200/22 blur-[16px]" />
+                    <svg viewBox="0 0 150 150" className="relative h-full w-full">
+                      <DroneGlyph x={75} y={75} size={150} fill="#ff5252" />
+                    </svg>
+                  </span>
+                </motion.div>
               </motion.div>
+
+              {scrub && (
+                <AttackGame
+                  armed={armed}
+                  geometry={{
+                    stageH: STAGE_H,
+                    targetTop: TARGET_TOP,
+                    droneTop: DRONE_TOP,
+                    droneBox: DRONE_BOX,
+                    droneEndY: DRONE_END_Y,
+                  }}
+                  droneX={gameX}
+                  droneDrop={gameDrop}
+                  droneScale={gameScale}
+                  onPhaseChange={setGamePhase}
+                />
+              )}
             </div>
           </div>
         </motion.div>

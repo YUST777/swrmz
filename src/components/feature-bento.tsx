@@ -132,14 +132,11 @@ export function FeatureBento() {
     // off at a hard line and put the seam straight back.
     // asymmetric padding: the top is tight because the hero's app shot already
     // sits above it, the bottom keeps the full breathing room for what follows
-    <section className="relative isolate pt-10 pb-24 sm:pt-14 sm:pb-32">
-      {/* picks the hero's light back up further down, so the field keeps
-          decaying through the grid instead of stopping at the first row */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute top-[380px] left-1/2 h-[620px] w-[1080px] -translate-x-1/2 rounded-[100%] bg-blood-400/14 blur-[170px]"
-      />
-
+    <section id="features" className="relative isolate scroll-mt-20 pt-10 pb-24 sm:pt-14 sm:pb-32">
+      {/* No section-level bloom any more. The one that lived here was anchored
+          at top-[380px] and was spent long before the section's bottom edge,
+          which left the run-up to the next section flat black. The page mesh
+          lights this stretch continuously instead. */}
       <div className="relative mx-auto max-w-[1180px] px-6">
         <motion.div
           initial={{ opacity: 0, y: reduceMotion ? 0 : 14 }}

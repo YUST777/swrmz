@@ -77,20 +77,6 @@ function Price({ plan }: { plan: Plan }) {
   )
 }
 
-function SwarmGlint() {
-  return (
-    <svg
-      aria-hidden
-      viewBox="0 0 72 72"
-      className="pointer-events-none absolute top-4 right-4 h-12 w-12 text-white/75 drop-shadow-[0_0_12px_rgba(255,113,113,0.8)]"
-    >
-      <path d="M43 3L46.2 19.8 63 23l-16.8 3.2L43 43l-3.2-16.8L23 23l16.8-3.2L43 3Z" fill="currentColor" />
-      <path d="M17 36l1.7 8.3L27 46l-8.3 1.7L17 56l-1.7-8.3L7 46l8.3-1.7L17 36Z" fill="currentColor" opacity=".7" />
-      <circle cx="59" cy="52" r="2" fill="currentColor" opacity=".8" />
-    </svg>
-  )
-}
-
 function PlanCard({ plan, index }: { plan: Plan; index: number }) {
   const reduceMotion = useReducedMotion()
 
@@ -114,7 +100,6 @@ function PlanCard({ plan, index }: { plan: Plan; index: number }) {
             className="pointer-events-none absolute inset-0 opacity-35 [background-image:radial-gradient(rgba(255,255,255,0.55)_0.75px,transparent_0.75px)] [background-size:5px_5px] [mask-image:linear-gradient(to_bottom,#000,transparent_52%)]"
           />
           <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-48 bg-[radial-gradient(ellipse_at_center_bottom,rgba(255,72,72,0.5),transparent_68%)]" />
-          <SwarmGlint />
         </>
       )}
 
@@ -162,10 +147,11 @@ export function Pricing() {
   const reduceMotion = useReducedMotion()
 
   return (
-    <section id="pricing" className="relative isolate overflow-hidden px-6 pt-28 pb-32 sm:pt-36 sm:pb-40">
-      <div aria-hidden className="pointer-events-none absolute inset-x-0 top-0 h-[620px] bg-[radial-gradient(ellipse_at_50%_12%,rgba(143,17,22,0.2),transparent_56%)]" />
-      <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)] [background-size:32px_32px] [mask-image:linear-gradient(to_bottom,#000,transparent_72%)]" />
-
+    // No overflow-hidden and no decor of its own. The clip used to guillotine
+    // this section's light flush with its own top and bottom edges, so the
+    // field switched on and off exactly on the two section lines. The page
+    // mesh lights this stretch now.
+    <section id="pricing" className="relative isolate px-6 pt-28 pb-32 sm:pt-36 sm:pb-40">
       <div className="relative mx-auto max-w-[1120px]">
         <motion.div
           initial={{ opacity: 0, y: reduceMotion ? 0 : 12 }}

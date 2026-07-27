@@ -14,7 +14,11 @@ export function SiteHeader() {
   const [open, setOpen] = useState(false)
 
   return (
-    <header className="relative z-30 border-b border-white/[0.07] bg-[#0b0a0a]/85 backdrop-blur-xl">
+    // No border-b and no opaque fill. Both drew a hard edge across the top of
+    // the page — the border literally, and the #0b0a0a band by being lighter
+    // than the ink beneath it. The mesh puts a soft ink gradient behind the
+    // header instead, and the blur keeps the nav legible over it.
+    <header className="relative z-30 backdrop-blur-xl">
       <div className="mx-auto flex h-[54px] max-w-[1400px] items-center justify-between px-6">
         <a
           href="/"
@@ -66,8 +70,16 @@ export function SiteHeader() {
       {open && (
         <nav
           id="mobile-nav"
-          className="border-t border-white/[0.07] bg-[#0b0a0a]/95 px-6 py-3 backdrop-blur-xl md:hidden"
+          // Keeps a surface, unlike the header bar: this is an overlay panel
+          // sitting on top of page content, so it needs something opaque to be
+          // readable. The top edge is a fading hairline rather than a border
+          // rule so it still dissolves into the field at both ends.
+          className="relative bg-[#0b0a0a]/95 px-6 py-3 backdrop-blur-xl md:hidden"
         >
+          <div
+            aria-hidden
+            className="absolute inset-x-0 top-0 h-px bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.09)_20%,rgba(255,255,255,0.09)_80%,transparent)]"
+          />
           {NAV.map((item) => (
             <a
               key={item.label}

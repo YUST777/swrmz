@@ -388,9 +388,14 @@ export function AttackGame({
     <>
       {/* The play surface. Inert until the run starts, so it never eats a
           scroll or a click while the scene is still scrubbing. */}
+      {/* `overflow-hidden` is the fix for threats painting outside the stage:
+          they spawn above the top edge, and without a clip they render over the
+          section background where the HUD's fade band cannot reach them. Safe
+          here because nothing inside this layer is sticky — the sticky element
+          is an ancestor, and a scroll container only breaks its descendants. */}
       <div
         ref={layerRef}
-        className={`absolute inset-0 z-20 ${playing ? 'cursor-crosshair' : 'pointer-events-none'}`}
+        className={`absolute inset-0 z-20 overflow-hidden rounded-[18px] ${playing ? 'cursor-crosshair' : 'pointer-events-none'}`}
         onMouseMove={playing ? (e) => aim(e.clientX) : undefined}
         onMouseDown={
           playing
@@ -451,27 +456,19 @@ export function AttackGame({
             <span className="font-mono text-[10.5px] tracking-[0.06em] whitespace-nowrap text-neutral-400">
               double-click to fly it
             </span>
+            {/* Hand-drawn arrow, pointing right at the drone. The source art
+                is a single filled path (not a stroke), so it takes the colour
+                through `fill` and scales cleanly at any size. */}
             <svg
-              width="52"
-              height="30"
-              viewBox="0 0 52 30"
-              fill="none"
+              width="74"
+              height="31"
+              viewBox="0 0 115.6 48"
               className="shrink-0 text-blood-50"
               aria-hidden
             >
               <path
-                d="M2 6C18 4 34 9 45 19"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeDasharray="3 3"
-              />
-              <path
-                d="M38 17.5L46.5 20.5L41 27"
-                stroke="currentColor"
-                strokeWidth="1.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                fill="currentColor"
+                d="m99 21.6c-4.6-2.8-7.3-3.5-7.2-8.3 3.2-0.3 4.1-0.4 5.8 1 3.4 2.5 7.7 4.4 13.1 5.9l-0.3 0.2c-2.1 5-4.3 7.9-8.4 12.6-1.6 1.9-2.6 2.3-5.5 2.3-0.5-5.2 1.4-4.4 6.4-11.5-3.4 1.2-6.9 2.5-12.2 2.5-7-0.1-15.1-1.4-21.7-2.9-14.1-3.1-25.1-6.7-37.7-3.3-10.7 2.9-18.3 9.4-26.3 15.1 2.9-7.7 9-13.2 16.4-16.7 13.4-6.4 24.6-6.5 38.7-3.2 12.3 2.6 19.2 5.6 33.9 6l5 0.3z"
               />
             </svg>
           </div>

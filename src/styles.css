@@ -23,6 +23,19 @@
   --color-blood-600: #2b0508;
 
   --animate-sheen: sheen 6s ease-in-out infinite;
+
+  /* shadcn's semantic names, pointed at this site's palette. Components
+     authored against the shadcn vocabulary (bg-card, text-muted-foreground,
+     rounded-(--radius)) then drop in and pick up the brand automatically. */
+  --color-background: #030303;
+  --color-foreground: #f2f3f4;
+  --color-muted: transparent;
+  --color-muted-foreground: #9a9a9a;
+  --color-card: rgba(16, 12, 13, 0.72);
+  --color-card-foreground: #f2f3f4;
+  --color-primary: #ff6b6b;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --radius: 22px;
 }
 
 @keyframes sheen {
