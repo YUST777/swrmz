@@ -29,12 +29,25 @@ export const Route = createRootRoute({
  */
 function useSmoothScroll() {
   useEffect(() => {
-    // Anyone who has asked for less motion gets the browser's native scroll.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
+    // There is deliberately NO prefers-reduced-motion guard here.
+    //
+    // There was one, and it meant this never ran on the owner's machine —
+    // their browser reports `reduce` even though the OS has animations on,
+    // so smooth scrolling was dead for the one person checking it and there
+    // was no way to tell from the outside. Same trap as the bento card loops,
+    // which had a blanket [class*='bv-'] { animation: none } rule for the
+    // same reason.
+    //
+    // Smooth scroll is also not what that preference is for. It exists to
+    // stop large vestibular motion — parallax, zoom, spin. This just adds a
+    // short lag to a scroll the reader is driving themselves; the page never
+    // moves on its own, and it always ends exactly where the wheel put it.
     const lenis = new Lenis({
-      lerp: 0.14,
-      wheelMultiplier: 1.1,
+      // Lower lerp = longer glide. 0.14 settled in ~700ms, which is technically
+      // smooth but reads as a normal scroll — you cannot feel it. 0.075 carries
+      // for about a second and a half, which is the point of having it.
+      lerp: 0.075,
+      wheelMultiplier: 1.25,
       // Touch devices already have momentum from the OS; doubling it up feels
       // slippery and breaks the expected rubber-band at the ends.
       syncTouch: false,

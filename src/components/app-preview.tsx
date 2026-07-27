@@ -228,6 +228,22 @@ export function AppPreview() {
           </div>
         </div>
       </div>
+
+      {/* ── the dissolve ──────────────────────────────────────────────────
+          The card's bottom edge used to stop dead — a lit rounded rectangle
+          against the page, with a visible border running along the bottom.
+          This fades the lower fifth into the page ink so the shot reads as
+          something the page is looking into rather than a screenshot pasted
+          on top of it.
+
+          It sits OUTSIDE the card, over the whole wrapper: inside, the card's
+          own overflow-hidden would clip it and its rounded corners would show
+          through the fade. `from-60%` keeps the entire UI legible and only
+          takes the last stretch. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_60%,rgba(3,3,3,0.72)_82%,#030303_100%)]"
+      />
     </div>
   )
 }
